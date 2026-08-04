@@ -13,7 +13,7 @@ export default async function ConversationDetailPage({ params }: { params: Promi
     .select("business_id")
     .eq("user_id", user.id)
     .limit(1)
-    .single();
+    .maybeSingle();
 
   const businessId = memberRes.data?.business_id;
   if (!businessId) redirect("/setup");

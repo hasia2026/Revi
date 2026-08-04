@@ -14,7 +14,7 @@ export default async function DashboardLayout({
 
   // Get profile + business in parallel
   const [profileRes, businessRes] = await Promise.all([
-    supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).single(),
+    supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).maybeSingle(),
     supabase
       .from("business_members")
       .select("businesses(id, name)")

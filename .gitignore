@@ -21,3 +21,8 @@
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Replit agent environment (skills library, workflow logs, container state)
+# — not project source, shouldn't live in git history
+/.local/
+/.config/

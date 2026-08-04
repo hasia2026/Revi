@@ -10,8 +10,8 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
   if (!user) redirect("/login");
 
   const [profileRes, memberRes] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user.id).single(),
-    supabase.from("business_members").select("business_id").eq("user_id", user.id).limit(1).single(),
+    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
+    supabase.from("business_members").select("business_id").eq("user_id", user.id).limit(1).maybeSingle(),
   ]);
 
   const businessId = memberRes.data?.business_id;

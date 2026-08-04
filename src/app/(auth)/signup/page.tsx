@@ -35,12 +35,12 @@ export default function SignupPage() {
 
   async function onSubmit(data: FormData) {
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
       options: {
         data: { full_name: data.fullName },
-        emailRedirectTo: `${window.location.origin}/setup`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/setup`,
       },
     });
 
@@ -49,8 +49,18 @@ export default function SignupPage() {
       return;
     }
 
-    toast.success("Account created! Check your email to confirm.");
-    router.push("/setup");
+    // If email confirmation is required, signUp() returns a user but no
+    // session yet — there's nothing to authenticate /setup with until the
+    // user clicks the confirmation link and /auth/callback exchanges the
+    // code. Redirecting to /setup here would just bounce off the proxy's
+    // auth check straight back to /login. Only navigate when a session
+    // actually exists (confirmation disabled in this Supabase project).
+    if (signUpData.session) {
+      router.push("/setup");
+      return;
+    }
+
+    toast.success("Account created! Check your email to confirm, then sign in.");
   }
 
   const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";

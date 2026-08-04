@@ -9,8 +9,8 @@ export default async function WebsitePage() {
   if (!user) redirect("/login");
 
   const [profileRes, memberRes] = await Promise.all([
-    supabase.from("profiles").select("full_name").eq("id", user.id).single(),
-    supabase.from("business_members").select("business_id, businesses(name)").eq("user_id", user.id).limit(1).single(),
+    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
+    supabase.from("business_members").select("business_id, businesses(name)").eq("user_id", user.id).limit(1).maybeSingle(),
   ]);
 
   const businessId = memberRes.data?.business_id;
@@ -22,7 +22,7 @@ export default async function WebsitePage() {
     .from("website_settings")
     .select("*")
     .eq("business_id", businessId)
-    .single();
+    .maybeSingle();
 
   return (
     <div className="flex flex-col h-full overflow-hidden">

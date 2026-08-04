@@ -9,8 +9,8 @@ export default async function SettingsPage() {
   if (!user) redirect("/login");
 
   const [profileRes, memberRes] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user.id).single(),
-    supabase.from("business_members").select("business_id, role, businesses(*)").eq("user_id", user.id).limit(1).single(),
+    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+    supabase.from("business_members").select("business_id, role, businesses(*)").eq("user_id", user.id).limit(1).maybeSingle(),
   ]);
 
   const businessId = memberRes.data?.business_id;

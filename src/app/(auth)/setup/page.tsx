@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -38,6 +38,7 @@ const STEPS = [
 export default function SetupPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
+  const [checkingExisting, setCheckingExisting] = useState(true);
 
   const {
     register,
@@ -46,10 +47,60 @@ export default function SetupPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
+  useEffect(() => {
+    let cancelled = false;
+
+    async function checkExistingBusiness() {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.replace("/login");
+        return;
+      }
+
+      const { data: membership } = await supabase
+        .from("business_members")
+        .select("business_id")
+        .eq("user_id", user.id)
+        .limit(1)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (membership) {
+        // Already set up — don't let them create a second business.
+        router.replace("/dashboard");
+        return;
+      }
+
+      setCheckingExisting(false);
+    }
+
+    checkExistingBusiness();
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
+
   async function onSubmit(data: FormData) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) { router.push("/login"); return; }
+
+    // Re-check right before writing — guards against a second tab/request
+    // completing setup between the mount-time check above and this submit.
+    const { data: existingMembership } = await supabase
+      .from("business_members")
+      .select("business_id")
+      .eq("user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (existingMembership) {
+      toast.error("You already have a business set up.");
+      router.push("/dashboard");
+      return;
+    }
 
     // Create business
     const { data: business, error: bizError } = await supabase
@@ -71,11 +122,23 @@ export default function SetupPage() {
     if (bizError) { toast.error(bizError.message); return; }
 
     // Add owner as admin member
-    await supabase.from("business_members").insert({
+    const { error: memberError } = await supabase.from("business_members").insert({
       business_id: business.id,
       user_id: user.id,
       role: "admin",
     });
+
+    if (memberError) { toast.error(memberError.message); return; }
+
+    // Seed default website settings so /website never has to handle a
+    // missing row for a brand-new business.
+    const { error: websiteError } = await supabase.from("website_settings").insert({
+      business_id: business.id,
+      hero_title: `Welcome to ${data.businessName}`,
+      hero_subtitle: "Your trusted local service provider",
+    });
+
+    if (websiteError) { toast.error(websiteError.message); return; }
 
     toast.success("Business set up successfully!");
     router.push("/dashboard");
@@ -93,6 +156,14 @@ export default function SetupPage() {
   const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";
   const labelClass = "block text-sm font-medium text-charcoal-300 mb-1.5";
   const errorClass = "mt-1.5 text-xs text-red-400";
+
+  if (checkingExisting) {
+    return (
+      <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
+        <p className="text-charcoal-400 text-sm">Checking your account…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">

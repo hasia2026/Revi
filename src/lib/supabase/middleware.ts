@@ -15,7 +15,9 @@ export async function updateSession(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet: { name: string; value: string; options?: CookieOptions }[]) {
+        setAll(
+          cookiesToSet: { name: string; value: string; options?: CookieOptions }[]
+        ) {
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value)
           );
@@ -33,9 +35,16 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
+
+  // Auth routes: login / signup
   const isAuthRoute =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
-  const isPublicRoute = pathname === "/" || isAuthRoute;
+
+  // Public routes that anyone (authenticated or not) can access.
+  // /auth/* must be public so the callback route can exchange the code BEFORE
+  // a session exists — otherwise the proxy would redirect to /login first.
+  const isPublicRoute =
+    pathname === "/" || isAuthRoute || pathname.startsWith("/auth/");
 
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
