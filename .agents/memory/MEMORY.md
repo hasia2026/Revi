@@ -1,0 +1,2 @@
+- [Supabase client typing](supabase-client-typing.md) — postgrest-js@2.109.0 select-string parser returns SelectQueryError→data:never under TS 5.9 strict; drop Database generic from clients
+- [Next.js proxy convention](nextjs-proxy.md) — Next.js 16+ uses src/proxy.ts exporting `proxy` function; middleware.ts/`middleware` export is deprecated
