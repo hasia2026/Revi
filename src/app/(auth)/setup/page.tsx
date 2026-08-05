@@ -111,9 +111,6 @@ export default function SetupPage() {
         industry: data.industry,
         phone: data.phone || null,
         email: data.email || null,
-        address: data.address || null,
-        city: data.city || null,
-        state: data.state || null,
         website: data.website || null,
       })
       .select()
