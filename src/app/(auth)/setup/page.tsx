@@ -257,7 +257,7 @@ export default function SetupPage() {
             </Button>
           ) : (
             <Button type="submit" variant="gold" loading={isSubmitting} className="flex-1">
-              Launch Revi
+              Launch CUE
             </Button>
           )}
         </div>

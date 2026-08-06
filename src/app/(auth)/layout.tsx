@@ -5,10 +5,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl gold-gradient shadow-gold-glow mb-4">
-            <span className="text-white font-bold text-2xl">R</span>
+            <span className="text-white font-bold text-2xl">C</span>
           </div>
-          <h1 className="text-2xl font-bold text-white">Revi</h1>
-          <p className="text-charcoal-400 text-sm mt-1">by HASIA Technologies</p>
+          <h1 className="text-2xl font-bold text-white">CUE</h1>
+          <p className="text-charcoal-400 text-sm mt-1">by HASI Technologies</p>
         </div>
         {children}
       </div>

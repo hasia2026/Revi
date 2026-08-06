@@ -70,7 +70,7 @@ export default function SignupPage() {
   return (
     <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
       <h2 className="text-xl font-semibold text-white mb-1">Create your account</h2>
-      <p className="text-charcoal-400 text-sm mb-7">Start your Revi journey today</p>
+      <p className="text-charcoal-400 text-sm mb-7">Start your CUE journey today</p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>

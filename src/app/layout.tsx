@@ -3,8 +3,8 @@ import { Toaster } from "sonner";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Revi — AI Employee for Service Businesses",
-  description: "Revi by HASIA Technologies. Your AI employee for service businesses.",
+  title: "CUE — The Heart of Your Business",
+  description: "CUE by HASI Technologies. Capture. Understand. Execute. Expand.",
   icons: { icon: "/favicon.ico" },
 };
 

@@ -13,21 +13,63 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Building2,
   LogOut,
+  Inbox,
+  Palette,
+  Compass,
+  Megaphone,
+  LibraryBig,
+  Sparkles,
+  TrendingUp,
+  Zap,
+  type LucideIcon,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
 
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/leads", label: "Leads", icon: Users },
-  { href: "/conversations", label: "Conversations", icon: MessageSquare },
-  { href: "/training", label: "Training", icon: GraduationCap },
+type NavLink = { href: string; label: string; icon: LucideIcon };
+type NavGroup = { label: string; icon: LucideIcon; children: NavLink[] };
+type NavEntry = NavLink | NavGroup;
+
+function isGroup(entry: NavEntry): entry is NavGroup {
+  return "children" in entry;
+}
+
+// CUE navigation. Customers and Brand Studio are groups because they each
+// bundle multiple existing (or planned) pages under one umbrella concept —
+// same interaction pattern for both rather than inventing a one-off UI for
+// either.
+const navEntries: NavEntry[] = [
+  { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+  {
+    label: "Customers",
+    icon: Users,
+    children: [
+      { href: "/leads", label: "Leads", icon: Users },
+      { href: "/conversations", label: "Conversations", icon: MessageSquare },
+    ],
+  },
+  { href: "/capture", label: "Capture", icon: Inbox },
   { href: "/knowledge", label: "Knowledge", icon: BookOpen },
-  { href: "/website", label: "Website", icon: Globe },
+  { href: "/training", label: "Training", icon: GraduationCap },
+  {
+    label: "Brand Studio",
+    icon: Palette,
+    children: [
+      { href: "/brand-studio/compass", label: "Company Compass", icon: Compass },
+      { href: "/brand-studio/website", label: "Website Builder", icon: Globe },
+      { href: "/brand-studio/marketing", label: "Marketing", icon: Megaphone },
+      { href: "/brand-studio/library", label: "Executive Library", icon: LibraryBig },
+      { href: "/brand-studio/mascot", label: "Mascot Studio", icon: Sparkles },
+    ],
+  },
+  { href: "/growth", label: "Growth", icon: TrendingUp },
+  { href: "/team", label: "Team", icon: Users },
+  { href: "/automations", label: "Automations", icon: Zap },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -43,6 +85,22 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
 
+  function groupIsActive(group: NavGroup) {
+    return group.children.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"));
+  }
+
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    const initial: Record<string, boolean> = {};
+    navEntries.filter(isGroup).forEach((g) => {
+      initial[g.label] = groupIsActive(g);
+    });
+    return initial;
+  });
+
+  function toggleGroup(label: string) {
+    setOpenGroups((prev) => ({ ...prev, [label]: !prev[label] }));
+  }
+
   async function handleSignOut() {
     setSigningOut(true);
     const supabase = createClient();
@@ -54,7 +112,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
     <aside
       className={cn(
         "relative flex flex-col bg-charcoal-900 text-white transition-all duration-300 flex-shrink-0",
-        collapsed ? "w-16" : "w-60"
+        collapsed ? "w-16" : "w-64"
       )}
     >
       {/* Logo */}
@@ -63,12 +121,12 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
         collapsed && "justify-center px-0"
       )}>
         <div className="h-8 w-8 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
-          <span className="text-white font-bold text-sm">R</span>
+          <span className="text-white font-bold text-sm">C</span>
         </div>
         {!collapsed && (
           <div className="min-w-0">
-            <p className="font-semibold text-sm text-white leading-none">Revi</p>
-            <p className="text-xs text-charcoal-400 mt-0.5 truncate">HASIA Technologies</p>
+            <p className="font-semibold text-sm text-white leading-none">CUE</p>
+            <p className="text-xs text-charcoal-400 mt-0.5 truncate">HASI Technologies</p>
           </div>
         )}
       </div>
@@ -85,12 +143,69 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto scrollbar-thin">
-        {navItems.map(({ href, label, icon: Icon }) => {
-          const active = pathname === href || pathname.startsWith(href + "/");
+        {navEntries.map((entry) => {
+          if (isGroup(entry)) {
+            const active = groupIsActive(entry);
+            const open = collapsed ? active : (openGroups[entry.label] ?? active);
+            const GroupIcon = entry.icon;
+
+            return (
+              <div key={entry.label}>
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(entry.label)}
+                  className={cn(
+                    "w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
+                    active
+                      ? "text-gold-300"
+                      : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
+                    collapsed && "justify-center px-0"
+                  )}
+                  title={collapsed ? entry.label : undefined}
+                >
+                  <GroupIcon
+                    className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")}
+                    style={{ height: "18px", width: "18px" }}
+                  />
+                  {!collapsed && (
+                    <>
+                      <span className="flex-1 text-left">{entry.label}</span>
+                      <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", open && "rotate-180")} />
+                    </>
+                  )}
+                </button>
+
+                {!collapsed && open && (
+                  <div className="mt-0.5 ml-4 pl-3 border-l border-charcoal-700 space-y-0.5">
+                    {entry.children.map((child) => {
+                      const childActive = pathname === child.href || pathname.startsWith(child.href + "/");
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={cn(
+                            "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                            childActive
+                              ? "bg-gold-500/20 text-gold-300"
+                              : "text-charcoal-400 hover:bg-charcoal-800 hover:text-white"
+                          )}
+                        >
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          const active = pathname === entry.href || pathname.startsWith(entry.href + "/");
+          const Icon = entry.icon;
           return (
             <Link
-              key={href}
-              href={href}
+              key={entry.href}
+              href={entry.href}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
                 active
@@ -98,10 +213,10 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
                   : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
                 collapsed && "justify-center px-0"
               )}
-              title={collapsed ? label : undefined}
+              title={collapsed ? entry.label : undefined}
             >
               <Icon className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")} style={{ height: "18px", width: "18px" }} />
-              {!collapsed && <span>{label}</span>}
+              {!collapsed && <span>{entry.label}</span>}
               {active && !collapsed && (
                 <div className="ml-auto h-1.5 w-1.5 rounded-full bg-gold-400" />
               )}
