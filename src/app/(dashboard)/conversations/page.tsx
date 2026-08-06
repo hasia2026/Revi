@@ -18,9 +18,9 @@ export default async function ConversationsPage() {
 
   const { data: conversations } = await supabase
     .from("conversations")
-    .select("*, leads(name, email)")
+    .select("*, leads(full_name, email)")
     .eq("business_id", businessId)
-    .order("last_message_at", { ascending: false, nullsFirst: false });
+    .order("updated_at", { ascending: false });
 
   return (
     <div className="flex flex-col h-full overflow-hidden">

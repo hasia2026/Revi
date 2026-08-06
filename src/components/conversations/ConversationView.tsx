@@ -14,10 +14,9 @@ import { cn } from "@/lib/utils";
 
 interface ConvWithLead {
   id: string;
-  channel: string;
   status: string;
   subject: string | null;
-  leads: { name: string; email: string | null; phone: string | null } | null;
+  leads: { full_name: string; email: string | null; phone: string | null } | null;
 }
 
 const STATUS_MAP: Record<string, "default" | "success" | "info" | "warning"> = {
@@ -50,10 +49,8 @@ export function ConversationView({
       .from("messages")
       .insert({
         conversation_id: conversation.id,
-        sender_type: "user",
-        sender_id: currentUserId,
-        content: text.trim(),
-        is_read: true,
+        sender: "business",
+        message: text.trim(),
       })
       .select()
       .single();
@@ -63,7 +60,7 @@ export function ConversationView({
     setSending(false);
   }
 
-  const contactName = conversation.leads?.name ?? conversation.subject ?? "Unknown";
+  const contactName = conversation.leads?.full_name ?? conversation.subject ?? "Unknown";
 
   return (
     <div className="flex flex-col h-full">
@@ -79,7 +76,6 @@ export function ConversationView({
           <p className="font-semibold text-charcoal-900 text-sm">{contactName}</p>
           <div className="flex items-center gap-2">
             <Badge variant={STATUS_MAP[conversation.status] ?? "default"} size="sm">{conversation.status}</Badge>
-            <span className="text-xs text-charcoal-400 capitalize">{conversation.channel}</span>
           </div>
         </div>
         <button className="p-2 rounded-lg hover:bg-charcoal-100 text-charcoal-400">
@@ -95,7 +91,7 @@ export function ConversationView({
           </div>
         )}
         {messages.map((msg) => {
-          const isUser = msg.sender_type === "user";
+          const isUser = msg.sender === "business";
           return (
             <div key={msg.id} className={cn("flex gap-3", isUser && "flex-row-reverse")}>
               <Avatar name={isUser ? "Me" : contactName} size="xs" className={isUser ? "bg-gold-500" : ""} />
@@ -106,7 +102,7 @@ export function ConversationView({
                     ? "bg-charcoal-900 text-white rounded-tr-sm"
                     : "bg-white border border-charcoal-100 text-charcoal-800 rounded-tl-sm shadow-card"
                 )}>
-                  {msg.content}
+                  {msg.message}
                 </div>
                 <p className="text-xs text-charcoal-400 mt-1 px-1">{formatRelativeTime(msg.created_at)}</p>
               </div>

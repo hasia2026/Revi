@@ -31,10 +31,9 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
       .from("training_courses")
       .insert({
         business_id: businessId,
-        title: form.title,
-        description: form.description || null,
-        is_published: false,
-        order_index: courses.length,
+        title_en: form.title,
+        description_en: form.description || null,
+        active: true,
       })
       .select("*, training_lessons(id)")
       .single();
@@ -104,9 +103,9 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
                     </button>
                   </div>
                 </div>
-                <h3 className="font-semibold text-charcoal-900 mb-1 line-clamp-2">{course.title}</h3>
-                {course.description && (
-                  <p className="text-sm text-charcoal-500 line-clamp-2 mb-3">{course.description}</p>
+                <h3 className="font-semibold text-charcoal-900 mb-1 line-clamp-2">{course.title_en}</h3>
+                {course.description_en && (
+                  <p className="text-sm text-charcoal-500 line-clamp-2 mb-3">{course.description_en}</p>
                 )}
                 <div className="flex items-center gap-2 mt-3">
                   <div className="flex items-center gap-1 text-xs text-charcoal-500">

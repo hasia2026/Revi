@@ -21,7 +21,7 @@ export default async function ConversationDetailPage({ params }: { params: Promi
   // Enforce business-scoped access: only fetch this conversation if it belongs to the user's business
   const { data: conv } = await supabase
     .from("conversations")
-    .select("*, leads(name, email, phone)")
+    .select("*, leads(full_name, email, phone)")
     .eq("id", id)
     .eq("business_id", businessId)
     .single();

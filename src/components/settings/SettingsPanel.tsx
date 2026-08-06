@@ -94,11 +94,10 @@ export function SettingsPanel({ profile, business, businessId, role, services: i
       .from("services")
       .insert({
         business_id: businessId,
-        name: svcForm.name,
-        description: svcForm.description || null,
+        name_en: svcForm.name,
+        description_en: svcForm.description || null,
         price: svcForm.price ? Number(svcForm.price) : null,
-        duration: svcForm.duration ? Number(svcForm.duration) : null,
-        is_active: true,
+        active: true,
       })
       .select().single();
     if (error) { toast.error(error.message); setSaving(false); return; }
@@ -210,7 +209,7 @@ export function SettingsPanel({ profile, business, businessId, role, services: i
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="font-medium text-charcoal-800">{svc.name}</p>
-                        <Badge variant={svc.is_active ? "success" : "default"}>{svc.is_active ? "Active" : "Inactive"}</Badge>
+                        <Badge variant={svc.active ? "success" : "default"}>{svc.active ? "Active" : "Inactive"}</Badge>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5 text-xs text-charcoal-400">
                         {svc.price != null && <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" />{formatCurrency(svc.price)}</span>}

@@ -56,7 +56,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
   const [saving, setSaving] = useState(false);
 
   const filtered = leads.filter((l) => {
-    const matchSearch = l.name.toLowerCase().includes(search.toLowerCase()) ||
+    const matchSearch = l.full_name.toLowerCase().includes(search.toLowerCase()) ||
       l.email?.toLowerCase().includes(search.toLowerCase()) || false;
     const matchStatus = statusFilter === "all" || l.status === statusFilter;
     return matchSearch && matchStatus;
@@ -68,7 +68,15 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
     const supabase = createClient();
     const { data, error } = await supabase
       .from("leads")
-      .insert({ ...form, business_id: businessId })
+      .insert({
+        business_id: businessId,
+        full_name: form.name,
+        email: form.email || null,
+        phone: form.phone || null,
+        status: form.status,
+        source: form.source || undefined,
+        notes: form.notes || null,
+      })
       .select()
       .single();
 
@@ -150,12 +158,9 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
                 <tr key={lead.id} className="hover:bg-charcoal-50/50 transition-colors group">
                   <td className="px-4 py-3.5">
                     <div className="flex items-center gap-3">
-                      <Avatar name={lead.name} size="sm" />
+                      <Avatar name={lead.full_name} size="sm" />
                       <div className="min-w-0">
-                        <p className="font-medium text-charcoal-800 truncate">{lead.name}</p>
-                        {lead.service_interest && (
-                          <p className="text-xs text-charcoal-400 truncate">{lead.service_interest}</p>
-                        )}
+                        <p className="font-medium text-charcoal-800 truncate">{lead.full_name}</p>
                       </div>
                     </div>
                   </td>

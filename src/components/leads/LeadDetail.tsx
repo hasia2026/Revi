@@ -19,12 +19,13 @@ const STATUS_OPTIONS = [
   { value: "new", label: "New" },
   { value: "contacted", label: "Contacted" },
   { value: "qualified", label: "Qualified" },
+  { value: "quote_sent", label: "Quote Sent" },
   { value: "converted", label: "Converted" },
   { value: "lost", label: "Lost" },
 ];
 
 const STATUS_MAP: Record<string, "default" | "success" | "warning" | "danger" | "gold" | "info"> = {
-  new: "gold", contacted: "info", qualified: "success", converted: "success", lost: "danger",
+  new: "gold", contacted: "info", qualified: "success", quote_sent: "warning", converted: "success", lost: "danger",
 };
 
 export function LeadDetail({ lead: initial }: { lead: Lead }) {
@@ -33,9 +34,8 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState({
-    name: lead.name, email: lead.email ?? "", phone: lead.phone ?? "",
+    name: lead.full_name, email: lead.email ?? "", phone: lead.phone ?? "",
     status: lead.status, source: lead.source ?? "", notes: lead.notes ?? "",
-    service_interest: lead.service_interest ?? "",
   });
 
   async function handleSave() {
@@ -43,7 +43,14 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
     const supabase = createClient();
     const { data, error } = await supabase
       .from("leads")
-      .update({ ...form, email: form.email || null, phone: form.phone || null })
+      .update({
+        full_name: form.name,
+        email: form.email || null,
+        phone: form.phone || null,
+        status: form.status,
+        source: form.source || undefined,
+        notes: form.notes || null,
+      })
       .eq("id", lead.id)
       .select()
       .single();
@@ -69,9 +76,9 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
         <div className="card p-6">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div className="flex items-center gap-4">
-              <Avatar name={lead.name} size="lg" />
+              <Avatar name={lead.full_name} size="lg" />
               <div>
-                <h2 className="text-xl font-semibold text-charcoal-900">{lead.name}</h2>
+                <h2 className="text-xl font-semibold text-charcoal-900">{lead.full_name}</h2>
                 <Badge variant={STATUS_MAP[lead.status] ?? "default"} size="md" className="mt-1">
                   {lead.status}
                 </Badge>
@@ -103,7 +110,6 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Source" value={form.source} onChange={(e) => setForm({ ...form, source: e.target.value })} />
-                <Input label="Service interest" value={form.service_interest} onChange={(e) => setForm({ ...form, service_interest: e.target.value })} />
               </div>
               <Textarea label="Notes" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} rows={4} />
             </div>
@@ -112,7 +118,6 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
               <InfoRow icon={Mail} label="Email" value={lead.email} />
               <InfoRow icon={Phone} label="Phone" value={lead.phone} />
               <InfoRow icon={Tag} label="Source" value={lead.source} />
-              <InfoRow icon={MessageSquare} label="Service interest" value={lead.service_interest} />
               <InfoRow icon={Calendar} label="Added" value={formatDate(lead.created_at)} />
               <InfoRow icon={Calendar} label="Updated" value={formatDate(lead.updated_at)} />
               {lead.notes && (

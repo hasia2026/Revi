@@ -32,12 +32,12 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     .from("training_lessons")
     .select("*")
     .eq("course_id", course.id)
-    .order("order_index", { ascending: true });
+    .order("display_order", { ascending: true });
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <TopBar
-        title={course.title}
+        title={course.title_en}
         subtitle="Training course"
         userName={profileRes.data?.full_name}
         userEmail={user.email}

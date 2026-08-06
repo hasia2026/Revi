@@ -27,12 +27,13 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
     const { data, error } = await supabase
       .from("training_lessons")
       .insert({
+        business_id: course.business_id,
         course_id: course.id,
-        title: form.title,
-        content: form.content || null,
+        title_en: form.title,
+        content_en: form.content || null,
         video_url: form.video_url || null,
-        duration: form.duration ? Number(form.duration) : null,
-        order_index: lessons.length,
+        duration_minutes: form.duration ? Number(form.duration) : null,
+        display_order: lessons.length,
       })
       .select()
       .single();
@@ -62,7 +63,7 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
         </div>
 
         <div className="card p-5 mb-6">
-          <p className="text-sm text-charcoal-600 leading-relaxed">{course.description || "No description."}</p>
+          <p className="text-sm text-charcoal-600 leading-relaxed">{course.description_en || "No description."}</p>
           <p className="text-xs text-charcoal-400 mt-2">{lessons.length} lesson{lessons.length !== 1 ? "s" : ""}</p>
         </div>
 
@@ -93,7 +94,7 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
                   {idx + 1}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-charcoal-800 truncate">{lesson.title}</p>
+                  <p className="font-medium text-charcoal-800 truncate">{lesson.title_en}</p>
                   {lesson.duration && (
                     <p className="text-xs text-charcoal-400 flex items-center gap-1 mt-0.5">
                       <Play className="h-3 w-3" /> {lesson.duration} min

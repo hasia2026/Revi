@@ -33,7 +33,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
 
   const filtered = articles.filter((a) => {
     const matchCat = !selectedCat || a.category_id === selectedCat;
-    const matchSearch = a.title.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = a.question_en.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
 
@@ -43,7 +43,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
     const supabase = createClient();
     const { data, error } = await supabase
       .from("knowledge_categories")
-      .insert({ business_id: businessId, name: catForm.name, description: catForm.description || null, order_index: categories.length })
+      .insert({ business_id: businessId, name_en: catForm.name, display_order: categories.length })
       .select().single();
     if (error) { toast.error(error.message); setSaving(false); return; }
     setCategories((p) => [...p, data]);
@@ -59,7 +59,13 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
     const supabase = createClient();
     const { data, error } = await supabase
       .from("knowledge_articles")
-      .insert({ business_id: businessId, title: artForm.title, content: artForm.content || null, category_id: artForm.category_id || categories[0]?.id, is_published: artForm.is_published, view_count: 0 })
+      .insert({
+        business_id: businessId,
+        question_en: artForm.title,
+        answer_en: artForm.content || "",
+        category_id: artForm.category_id || categories[0]?.id,
+        status: artForm.is_published ? "published" : "draft",
+      })
       .select().single();
     if (error) { toast.error(error.message); setSaving(false); return; }
     setArticles((p) => [data, ...p]);
@@ -75,7 +81,12 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
     const supabase = createClient();
     const { data, error } = await supabase
       .from("knowledge_articles")
-      .update({ title: artForm.title, content: artForm.content || null, category_id: artForm.category_id || editArticle.category_id, is_published: artForm.is_published })
+      .update({
+        question_en: artForm.title,
+        answer_en: artForm.content || "",
+        category_id: artForm.category_id || editArticle.category_id,
+        status: artForm.is_published ? "published" : "draft",
+      })
       .eq("id", editArticle.id).select().single();
     if (error) { toast.error(error.message); setSaving(false); return; }
     setArticles((p) => p.map((a) => a.id === editArticle.id ? data : a));
@@ -94,7 +105,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
 
   function openEdit(article: KnowledgeArticle) {
     setEditArticle(article);
-    setArtForm({ title: article.title, content: article.content ?? "", category_id: article.category_id, is_published: article.is_published });
+    setArtForm({ title: article.question_en, content: article.answer_en ?? "", category_id: article.category_id, is_published: article.status === "published" });
   }
 
   return (
@@ -125,7 +136,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
                 className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${selectedCat === cat.id ? "bg-gold-50 text-gold-700 font-medium" : "text-charcoal-600 hover:bg-charcoal-50"}`}
               >
                 <FolderOpen className="h-3.5 w-3.5 flex-shrink-0" />
-                <span className="truncate">{cat.name}</span>
+                <span className="truncate">{cat.name_en}</span>
                 <span className="ml-auto text-xs text-charcoal-400 flex-shrink-0">{count}</span>
               </button>
             );
@@ -157,18 +168,18 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
                     <div className="flex items-start gap-3">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-medium text-charcoal-800 truncate">{article.title}</h3>
-                          <Badge variant={article.is_published ? "success" : "default"} size="sm">
-                            {article.is_published ? "Published" : "Draft"}
+                          <h3 className="font-medium text-charcoal-800 truncate">{article.question_en}</h3>
+                          <Badge variant={article.status === "published" ? "success" : "default"} size="sm">
+                            {article.status === "published" ? "Published" : "Draft"}
                           </Badge>
                         </div>
                         <div className="flex items-center gap-3 text-xs text-charcoal-400">
-                          {cat && <span className="flex items-center gap-1"><FolderOpen className="h-3 w-3" />{cat.name}</span>}
+                          {cat && <span className="flex items-center gap-1"><FolderOpen className="h-3 w-3" />{cat.name_en}</span>}
                           <span>{formatRelativeTime(article.created_at)}</span>
                           <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{article.view_count} views</span>
                         </div>
-                        {article.content && (
-                          <p className="text-sm text-charcoal-500 mt-1.5 line-clamp-2">{article.content}</p>
+                        {article.answer_en && (
+                          <p className="text-sm text-charcoal-500 mt-1.5 line-clamp-2">{article.answer_en}</p>
                         )}
                       </div>
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
@@ -209,7 +220,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
               <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Category</label>
               <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
                 <option value="">Select category</option>
-                {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                {categories.map((c) => <option key={c.id} value={c.id}>{c.name_en}</option>)}
               </select>
             </div>
           )}
@@ -233,7 +244,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
             <div>
               <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Category</label>
               <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
-                {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
+                {categories.map((c) => <option key={c.id} value={c.id}>{c.name_en}</option>)}
               </select>
             </div>
           )}

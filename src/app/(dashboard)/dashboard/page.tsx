@@ -36,8 +36,8 @@ export default async function DashboardPage() {
   const totalCourses = coursesRes.count ?? 0;
 
   const [recentLeadsRes, recentConvsRes] = await Promise.all([
-    supabase.from("leads").select("id, name, email, phone, status, source, created_at").eq("business_id", businessId).order("created_at", { ascending: false }).limit(5),
-    supabase.from("conversations").select("id, channel, status, subject, last_message_at, leads(name)").eq("business_id", businessId).order("last_message_at", { ascending: false }).limit(5),
+    supabase.from("leads").select("id, full_name, email, phone, status, source, created_at").eq("business_id", businessId).order("created_at", { ascending: false }).limit(5),
+    supabase.from("conversations").select("id, status, subject, updated_at, leads(full_name)").eq("business_id", businessId).order("updated_at", { ascending: false }).limit(5),
   ]);
 
   const userName = profileRes.data?.full_name;

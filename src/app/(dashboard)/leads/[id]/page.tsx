@@ -30,7 +30,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <TopBar
-        title={lead.name}
+        title={lead.full_name}
         subtitle="Lead details"
         userName={profileRes.data?.full_name}
         userEmail={user.email}

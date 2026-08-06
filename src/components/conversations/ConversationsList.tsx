@@ -32,12 +32,11 @@ const STATUS_MAP: Record<string, "default" | "success" | "info" | "warning" | "d
 
 interface ConvRow {
   id: string;
-  channel: string;
   status: string;
   subject: string | null;
-  last_message_at: string | null;
+  updated_at: string;
   created_at: string;
-  leads: { name: string; email: string | null } | null;
+  leads: { full_name: string; email: string | null } | null;
 }
 
 export function ConversationsList({ conversations: initial, businessId }: { conversations: ConvRow[]; businessId: string }) {
@@ -61,7 +60,7 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
     const supabase = createClient();
     const { data, error } = await supabase
       .from("conversations")
-      .insert({ business_id: businessId, channel: form.channel, subject: form.subject || null, status: form.status })
+      .insert({ business_id: businessId, subject: form.subject || null, status: form.status })
       .select("*, leads(name, email)")
       .single();
     if (error) { toast.error(error.message); setSaving(false); return; }
@@ -116,22 +115,21 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
                 <li key={conv.id}>
                   <Link href={`/conversations/${conv.id}`} className="flex items-start gap-3 px-4 py-3.5 hover:bg-charcoal-50/70 transition-colors">
                     <div className="h-9 w-9 rounded-lg bg-charcoal-100 flex items-center justify-center text-base flex-shrink-0 mt-0.5">
-                      {CHANNEL_ICONS[conv.channel] ?? "💬"}
+                      💬
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
                         <p className="text-sm font-medium text-charcoal-800 truncate">
-                          {conv.leads?.name ?? conv.subject ?? "Untitled"}
+                          {conv.leads?.full_name ?? conv.subject ?? "Untitled"}
                         </p>
                         <span className="text-xs text-charcoal-400 flex-shrink-0">
-                          {conv.last_message_at ? formatRelativeTime(conv.last_message_at) : formatRelativeTime(conv.created_at)}
+                          {formatRelativeTime(conv.updated_at)}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 mt-1">
                         <Badge variant={STATUS_MAP[conv.status] ?? "default"}>
                           {conv.status}
                         </Badge>
-                        <span className="text-xs text-charcoal-400 capitalize">{conv.channel}</span>
                       </div>
                     </div>
                   </Link>

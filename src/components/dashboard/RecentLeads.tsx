@@ -32,9 +32,9 @@ export function RecentLeads({ leads }: { leads: Lead[] }) {
             return (
               <li key={lead.id}>
                 <Link href={`/leads/${lead.id}`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-charcoal-50/50 transition-colors">
-                  <Avatar name={lead.name} size="sm" />
+                  <Avatar name={lead.full_name} size="sm" />
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-charcoal-800 truncate">{lead.name}</p>
+                    <p className="text-sm font-medium text-charcoal-800 truncate">{lead.full_name}</p>
                     <p className="text-xs text-charcoal-400 truncate">{lead.email || lead.phone || "—"}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">

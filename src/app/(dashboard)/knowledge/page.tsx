@@ -17,7 +17,7 @@ export default async function KnowledgePage() {
   if (!businessId) redirect("/setup");
 
   const [categoriesRes, articlesRes] = await Promise.all([
-    supabase.from("knowledge_categories").select("*").eq("business_id", businessId).order("order_index", { ascending: true }),
+    supabase.from("knowledge_categories").select("*").eq("business_id", businessId).order("display_order", { ascending: true }),
     supabase.from("knowledge_articles").select("*").eq("business_id", businessId).order("created_at", { ascending: false }),
   ]);
 

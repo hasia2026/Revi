@@ -18,24 +18,31 @@ interface Props {
 export function WebsiteEditor({ settings: initial, businessId, businessName }: Props) {
   const [settings, setSettings] = useState(initial);
   const [form, setForm] = useState({
-    hero_title: initial?.hero_title ?? `Welcome to ${businessName}`,
-    hero_subtitle: initial?.hero_subtitle ?? "Your trusted local service provider",
+    site_title_en: initial?.site_title_en ?? `Welcome to ${businessName}`,
+    tagline_en: initial?.tagline_en ?? "Your trusted local service provider",
     primary_color: initial?.primary_color ?? "#C9931A",
     secondary_color: initial?.secondary_color ?? "#1A1A1C",
-    font_family: initial?.font_family ?? "Inter",
-    custom_domain: initial?.custom_domain ?? "",
-    is_published: initial?.is_published ?? false,
+    font_family: "Inter", // Not persisted - website_settings has no font_family column.
+    custom_domain: "", // Not persisted - website_settings has no custom_domain column.
+    published: initial?.published ?? false,
   });
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
     setSaving(true);
     const supabase = createClient();
+    const payload = {
+      site_title_en: form.site_title_en,
+      tagline_en: form.tagline_en,
+      primary_color: form.primary_color,
+      secondary_color: form.secondary_color,
+      published: form.published,
+    };
 
     if (settings) {
       const { data, error } = await supabase
         .from("website_settings")
-        .update({ ...form, custom_domain: form.custom_domain || null })
+        .update(payload)
         .eq("id", settings.id)
         .select().single();
       if (error) { toast.error(error.message); setSaving(false); return; }
@@ -43,7 +50,7 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
     } else {
       const { data, error } = await supabase
         .from("website_settings")
-        .insert({ business_id: businessId, ...form, custom_domain: form.custom_domain || null })
+        .insert({ business_id: businessId, ...payload })
         .select().single();
       if (error) { toast.error(error.message); setSaving(false); return; }
       setSettings(data);
@@ -66,14 +73,14 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
             <div className="space-y-4">
               <Input
                 label="Hero title"
-                value={form.hero_title}
-                onChange={(e) => setForm({ ...form, hero_title: e.target.value })}
+                value={form.site_title_en}
+                onChange={(e) => setForm({ ...form, site_title_en: e.target.value })}
                 placeholder="Welcome to Your Business"
               />
               <Input
                 label="Hero subtitle"
-                value={form.hero_subtitle}
-                onChange={(e) => setForm({ ...form, hero_subtitle: e.target.value })}
+                value={form.tagline_en}
+                onChange={(e) => setForm({ ...form, tagline_en: e.target.value })}
                 placeholder="Your trusted service provider"
               />
             </div>
@@ -143,17 +150,17 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
             <h3 className="font-semibold text-charcoal-800 mb-4">Status</h3>
             <div className="flex items-center justify-between mb-4">
               <span className="text-sm text-charcoal-600">Website</span>
-              <Badge variant={form.is_published ? "success" : "default"}>
-                {form.is_published ? "Live" : "Unpublished"}
+              <Badge variant={form.published ? "success" : "default"}>
+                {form.published ? "Live" : "Unpublished"}
               </Badge>
             </div>
             <Button
-              variant={form.is_published ? "secondary" : "gold"}
+              variant={form.published ? "secondary" : "gold"}
               size="sm"
               className="w-full"
-              onClick={() => setForm({ ...form, is_published: !form.is_published })}
+              onClick={() => setForm({ ...form, published: !form.published })}
             >
-              {form.is_published ? (
+              {form.published ? (
                 <><EyeOff className="h-4 w-4" /> Unpublish</>
               ) : (
                 <><Eye className="h-4 w-4" /> Publish Website</>
@@ -169,10 +176,10 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
               style={{ background: `linear-gradient(135deg, ${form.secondary_color}, ${form.primary_color})` }}
             >
               <p className="font-bold text-base leading-tight" style={{ fontFamily: form.font_family }}>
-                {form.hero_title || businessName}
+                {form.site_title_en || businessName}
               </p>
               <p className="text-xs opacity-80 mt-1.5 leading-relaxed" style={{ fontFamily: form.font_family }}>
-                {form.hero_subtitle}
+                {form.tagline_en}
               </p>
             </div>
           </div>

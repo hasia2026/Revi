@@ -20,7 +20,7 @@ export default async function TrainingPage() {
     .from("training_courses")
     .select("*, training_lessons(id)")
     .eq("business_id", businessId)
-    .order("order_index", { ascending: true });
+    .order("created_at", { ascending: true });
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
