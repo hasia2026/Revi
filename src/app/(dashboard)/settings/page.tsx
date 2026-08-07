@@ -18,9 +18,10 @@ export default async function SettingsPage() {
 
   const business = memberRes.data?.businesses as unknown as Record<string, unknown> | null;
 
-  const [servicesRes, membersRes] = await Promise.all([
+  const [servicesRes, membersRes, businessSettingsRes] = await Promise.all([
     supabase.from("services").select("*").eq("business_id", businessId).order("created_at", { ascending: false }),
     supabase.from("business_members").select("*, profiles(full_name, email, avatar_url)").eq("business_id", businessId),
+    supabase.from("business_settings").select("*").eq("business_id", businessId).maybeSingle(),
   ]);
 
   return (
@@ -34,6 +35,7 @@ export default async function SettingsPage() {
       <SettingsPanel
         profile={profileRes.data}
         business={business}
+        businessSettings={businessSettingsRes.data}
         businessId={businessId}
         role={memberRes.data?.role ?? "member"}
         services={servicesRes.data ?? []}
