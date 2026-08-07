@@ -32,6 +32,7 @@ interface Member {
 interface Props {
   profile: Profile | null;
   business: Record<string, unknown> | null;
+  businessSettings: Record<string, unknown> | null;
   businessId: string;
   role: string;
   services: Service[];
@@ -40,7 +41,7 @@ interface Props {
   userEmail: string;
 }
 
-export function SettingsPanel({ profile, business, businessId, role, services: initServices, members: initMembers, userId, userEmail }: Props) {
+export function SettingsPanel({ profile, business, businessSettings, businessId, role, services: initServices, members: initMembers, userId, userEmail }: Props) {
   const [tab, setTab] = useState("Profile");
   const [services, setServices] = useState(initServices);
   const [members, setMembers] = useState(initMembers);
@@ -51,9 +52,9 @@ export function SettingsPanel({ profile, business, businessId, role, services: i
     industry: (business?.industry as string) ?? "",
     phone: (business?.phone as string) ?? "",
     email: (business?.email as string) ?? "",
-    address: (business?.address as string) ?? "",
-    city: (business?.city as string) ?? "",
-    state: (business?.state as string) ?? "",
+    address: (businessSettings?.address as string) ?? "",
+    city: (businessSettings?.city as string) ?? "",
+    state: (businessSettings?.state as string) ?? "",
     website: (business?.website as string) ?? "",
   });
 
@@ -72,17 +73,30 @@ export function SettingsPanel({ profile, business, businessId, role, services: i
   async function saveBusiness() {
     setSaving(true);
     const supabase = createClient();
+
     const { error } = await supabase.from("businesses").update({
       name: bizForm.name,
       industry: bizForm.industry || null,
       phone: bizForm.phone || null,
       email: bizForm.email || null,
-      address: bizForm.address || null,
-      city: bizForm.city || null,
-      state: bizForm.state || null,
       website: bizForm.website || null,
     }).eq("id", businessId);
-    if (error) { toast.error(error.message); } else { toast.success("Business info updated"); }
+
+    if (error) { toast.error(error.message); setSaving(false); return; }
+
+    // Address fields live on business_settings, not businesses. Upsert
+    // since older businesses may predate this table getting seeded at setup.
+    const { error: settingsError } = await supabase.from("business_settings").upsert(
+      {
+        business_id: businessId,
+        address: bizForm.address || null,
+        city: bizForm.city || null,
+        state: bizForm.state || null,
+      },
+      { onConflict: "business_id" }
+    );
+
+    if (settingsError) { toast.error(settingsError.message); } else { toast.success("Business info updated"); }
     setSaving(false);
   }
 
@@ -208,13 +222,12 @@ export function SettingsPanel({ profile, business, businessId, role, services: i
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-medium text-charcoal-800">{svc.name}</p>
+                        <p className="font-medium text-charcoal-800">{svc.name_en}</p>
                         <Badge variant={svc.active ? "success" : "default"}>{svc.active ? "Active" : "Inactive"}</Badge>
                       </div>
                       <div className="flex items-center gap-3 mt-0.5 text-xs text-charcoal-400">
                         {svc.price != null && <span className="flex items-center gap-1"><DollarSign className="h-3 w-3" />{formatCurrency(svc.price)}</span>}
-                        {svc.duration && <span>{svc.duration} min</span>}
-                        {svc.description && <span className="truncate">{svc.description}</span>}
+                        {svc.description_en && <span className="truncate">{svc.description_en}</span>}
                       </div>
                     </div>
                     <button onClick={() => deleteService(svc.id)} className="p-1.5 rounded hover:bg-red-50 text-charcoal-400 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">

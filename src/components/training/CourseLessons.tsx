@@ -95,9 +95,9 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-charcoal-800 truncate">{lesson.title_en}</p>
-                  {lesson.duration && (
+                  {lesson.duration_minutes && (
                     <p className="text-xs text-charcoal-400 flex items-center gap-1 mt-0.5">
-                      <Play className="h-3 w-3" /> {lesson.duration} min
+                      <Play className="h-3 w-3" /> {lesson.duration_minutes} min
                     </p>
                   )}
                 </div>

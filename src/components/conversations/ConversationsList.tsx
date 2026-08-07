@@ -49,7 +49,7 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
   const [saving, setSaving] = useState(false);
 
   const filtered = convs.filter((c) => {
-    const name = c.leads?.name ?? c.subject ?? "";
+    const name = c.leads?.full_name ?? c.subject ?? "";
     const matchSearch = name.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter === "all" || c.status === statusFilter;
     return matchSearch && matchStatus;
@@ -61,7 +61,7 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
     const { data, error } = await supabase
       .from("conversations")
       .insert({ business_id: businessId, subject: form.subject || null, status: form.status })
-      .select("*, leads(name, email)")
+      .select("*, leads(full_name, email)")
       .single();
     if (error) { toast.error(error.message); setSaving(false); return; }
     setConvs((prev) => [data, ...prev]);

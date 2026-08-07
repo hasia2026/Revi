@@ -105,7 +105,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
 
   function openEdit(article: KnowledgeArticle) {
     setEditArticle(article);
-    setArtForm({ title: article.question_en, content: article.answer_en ?? "", category_id: article.category_id, is_published: article.status === "published" });
+    setArtForm({ title: article.question_en, content: article.answer_en ?? "", category_id: article.category_id ?? "", is_published: article.status === "published" });
   }
 
   return (
@@ -176,7 +176,6 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
                         <div className="flex items-center gap-3 text-xs text-charcoal-400">
                           {cat && <span className="flex items-center gap-1"><FolderOpen className="h-3 w-3" />{cat.name_en}</span>}
                           <span>{formatRelativeTime(article.created_at)}</span>
-                          <span className="flex items-center gap-1"><Eye className="h-3 w-3" />{article.view_count} views</span>
                         </div>
                         {article.answer_en && (
                           <p className="text-sm text-charcoal-500 mt-1.5 line-clamp-2">{article.answer_en}</p>

@@ -58,13 +58,13 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
     const supabase = createClient();
     const { data, error } = await supabase
       .from("training_courses")
-      .update({ is_published: !course.is_published })
+      .update({ active: !course.active })
       .eq("id", course.id)
       .select("*, training_lessons(id)")
       .single();
     if (error) { toast.error(error.message); return; }
     setCourses((prev) => prev.map((c) => c.id === course.id ? data : c));
-    toast.success(data.is_published ? "Course published" : "Course unpublished");
+    toast.success(data.active ? "Course published" : "Course unpublished");
   }
 
   return (
@@ -113,8 +113,8 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
                     <span>{course.training_lessons.length} lesson{course.training_lessons.length !== 1 ? "s" : ""}</span>
                   </div>
                   <div className="ml-auto">
-                    <Badge variant={course.is_published ? "success" : "default"}>
-                      {course.is_published ? "Published" : "Draft"}
+                    <Badge variant={course.active ? "success" : "default"}>
+                      {course.active ? "Published" : "Draft"}
                     </Badge>
                   </div>
                 </div>
@@ -128,7 +128,7 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
                   onClick={() => togglePublish(course)}
                   className="flex-1 text-center py-2.5 text-xs font-medium text-charcoal-600 hover:text-charcoal-900 hover:bg-charcoal-50 transition-colors rounded-br-xl"
                 >
-                  {course.is_published ? "Unpublish" : "Publish"}
+                  {course.active ? "Unpublish" : "Publish"}
                 </button>
               </div>
             </div>
