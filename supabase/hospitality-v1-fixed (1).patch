@@ -1,0 +1,2222 @@
+diff --git a/messages/ar.json b/messages/ar.json
+new file mode 100644
+index 0000000..353b30d
+--- /dev/null
++++ b/messages/ar.json
+@@ -0,0 +1,64 @@
++{
++  "_note": "Good-faith draft translation. Needs native-speaker review before production use, especially before pairing with any legal/policy content.",
++  "common": {
++    "next": "التالي",
++    "back": "رجوع",
++    "submit": "إرسال",
++    "loading": "جارٍ التحميل…",
++    "required": "مطلوب",
++    "selectLanguage": "اختر لغتك"
++  },
++  "registration": {
++    "title": "تسجيل الضيف",
++    "welcome": "مرحبًا — لنكمل تسجيلك",
++    "step1Title": "معلوماتك",
++    "firstName": "الاسم الأول",
++    "lastName": "اسم العائلة",
++    "email": "البريد الإلكتروني",
++    "phone": "الهاتف",
++    "address": "العنوان",
++    "step2Title": "إقامتك",
++    "confirmationNumber": "رقم التأكيد",
++    "arrivalDate": "تاريخ الوصول",
++    "departureDate": "تاريخ المغادرة",
++    "guestCount": "عدد الضيوف",
++    "step3Title": "المركبة (اختياري)",
++    "hasVehicle": "سأحضر مركبة",
++    "vehicleMake": "الشركة المصنعة",
++    "vehicleModel": "الطراز",
++    "vehicleColor": "اللون",
++    "licensePlate": "لوحة الترخيص",
++    "parkingNeeded": "أحتاج إلى موقف سيارات",
++    "valetNeeded": "أرغب في خدمة صف السيارات",
++    "step4Title": "السياسات",
++    "acknowledgePrefix": "لقد قرأت ووافقت على",
++    "step5Title": "التوقيع",
++    "signaturePrompt": "وقّع أدناه لإتمام التسجيل",
++    "completeRegistration": "إتمام التسجيل",
++    "successTitle": "كل شيء جاهز",
++    "successBody": "استلمت خدمة الاستقبال تسجيلك. نراك قريبًا!",
++    "linkExpired": "انتهت صلاحية رابط التسجيل هذا. يرجى الاتصال بخدمة الاستقبال.",
++    "linkInvalid": "رابط التسجيل هذا غير صالح. يرجى الاتصال بخدمة الاستقبال.",
++    "linkAlreadyCompleted": "تم إكمال هذا التسجيل بالفعل."
++  },
++  "arrivalBoard": {
++    "title": "الاستقبال — الوصول",
++    "noArrivals": "لا توجد وصولات لعرضها",
++    "registration": "التسجيل",
++    "idVerification": "الهوية",
++    "reservationVerification": "الحجز",
++    "roomAssignment": "الغرفة",
++    "keyStatus": "المفتاح",
++    "checkedIn": "تم تسجيل الدخول",
++    "markVerified": "تحديد كموثّق",
++    "assignRoom": "تعيين غرفة",
++    "markKeyIssued": "تحديد المفتاح كمُسلَّم",
++    "completeCheckIn": "إتمام تسجيل الدخول",
++    "notStarted": "لم يبدأ",
++    "inProgress": "قيد التنفيذ",
++    "completed": "مكتمل",
++    "pending": "قيد الانتظار",
++    "verified": "موثّق",
++    "issued": "مُسلَّم"
++  }
++}
+diff --git a/messages/en.json b/messages/en.json
+new file mode 100644
+index 0000000..fddfb66
+--- /dev/null
++++ b/messages/en.json
+@@ -0,0 +1,63 @@
++{
++  "common": {
++    "next": "Next",
++    "back": "Back",
++    "submit": "Submit",
++    "loading": "Loading…",
++    "required": "Required",
++    "selectLanguage": "Select your language"
++  },
++  "registration": {
++    "title": "Guest Registration",
++    "welcome": "Welcome — let's get you checked in",
++    "step1Title": "Your information",
++    "firstName": "First name",
++    "lastName": "Last name",
++    "email": "Email",
++    "phone": "Phone",
++    "address": "Address",
++    "step2Title": "Your stay",
++    "confirmationNumber": "Confirmation number",
++    "arrivalDate": "Arrival date",
++    "departureDate": "Departure date",
++    "guestCount": "Number of guests",
++    "step3Title": "Vehicle (optional)",
++    "hasVehicle": "I'm bringing a vehicle",
++    "vehicleMake": "Make",
++    "vehicleModel": "Model",
++    "vehicleColor": "Color",
++    "licensePlate": "License plate",
++    "parkingNeeded": "I need parking",
++    "valetNeeded": "I'd like valet service",
++    "step4Title": "Policies",
++    "acknowledgePrefix": "I have read and agree to the",
++    "step5Title": "Signature",
++    "signaturePrompt": "Sign below to complete registration",
++    "completeRegistration": "Complete registration",
++    "successTitle": "You're all set",
++    "successBody": "The front desk has your registration. See you soon!",
++    "linkExpired": "This registration link has expired. Please contact the front desk.",
++    "linkInvalid": "This registration link isn't valid. Please contact the front desk.",
++    "linkAlreadyCompleted": "This registration has already been completed."
++  },
++  "arrivalBoard": {
++    "title": "Front Desk — Arrivals",
++    "noArrivals": "No arrivals to show",
++    "registration": "Registration",
++    "idVerification": "ID",
++    "reservationVerification": "Reservation",
++    "roomAssignment": "Room",
++    "keyStatus": "Key",
++    "checkedIn": "Checked in",
++    "markVerified": "Mark verified",
++    "assignRoom": "Assign room",
++    "markKeyIssued": "Mark key issued",
++    "completeCheckIn": "Complete check-in",
++    "notStarted": "Not started",
++    "inProgress": "In progress",
++    "completed": "Completed",
++    "pending": "Pending",
++    "verified": "Verified",
++    "issued": "Issued"
++  }
++}
+diff --git a/messages/es.json b/messages/es.json
+new file mode 100644
+index 0000000..5dc4dea
+--- /dev/null
++++ b/messages/es.json
+@@ -0,0 +1,63 @@
++{
++  "common": {
++    "next": "Siguiente",
++    "back": "Atrás",
++    "submit": "Enviar",
++    "loading": "Cargando…",
++    "required": "Obligatorio",
++    "selectLanguage": "Selecciona tu idioma"
++  },
++  "registration": {
++    "title": "Registro de huésped",
++    "welcome": "Bienvenido — vamos a completar tu registro",
++    "step1Title": "Tu información",
++    "firstName": "Nombre",
++    "lastName": "Apellido",
++    "email": "Correo electrónico",
++    "phone": "Teléfono",
++    "address": "Dirección",
++    "step2Title": "Tu estadía",
++    "confirmationNumber": "Número de confirmación",
++    "arrivalDate": "Fecha de llegada",
++    "departureDate": "Fecha de salida",
++    "guestCount": "Número de huéspedes",
++    "step3Title": "Vehículo (opcional)",
++    "hasVehicle": "Voy a traer un vehículo",
++    "vehicleMake": "Marca",
++    "vehicleModel": "Modelo",
++    "vehicleColor": "Color",
++    "licensePlate": "Placa",
++    "parkingNeeded": "Necesito estacionamiento",
++    "valetNeeded": "Quisiera servicio de valet",
++    "step4Title": "Políticas",
++    "acknowledgePrefix": "He leído y acepto la",
++    "step5Title": "Firma",
++    "signaturePrompt": "Firma abajo para completar el registro",
++    "completeRegistration": "Completar registro",
++    "successTitle": "Todo listo",
++    "successBody": "La recepción ya tiene tu registro. ¡Nos vemos pronto!",
++    "linkExpired": "Este enlace de registro ha expirado. Por favor contacta a recepción.",
++    "linkInvalid": "Este enlace de registro no es válido. Por favor contacta a recepción.",
++    "linkAlreadyCompleted": "Este registro ya se ha completado."
++  },
++  "arrivalBoard": {
++    "title": "Recepción — Llegadas",
++    "noArrivals": "No hay llegadas para mostrar",
++    "registration": "Registro",
++    "idVerification": "Identificación",
++    "reservationVerification": "Reserva",
++    "roomAssignment": "Habitación",
++    "keyStatus": "Llave",
++    "checkedIn": "Registrado",
++    "markVerified": "Marcar verificado",
++    "assignRoom": "Asignar habitación",
++    "markKeyIssued": "Marcar llave entregada",
++    "completeCheckIn": "Completar registro",
++    "notStarted": "No iniciado",
++    "inProgress": "En progreso",
++    "completed": "Completado",
++    "pending": "Pendiente",
++    "verified": "Verificado",
++    "issued": "Entregada"
++  }
++}
+diff --git a/messages/vi.json b/messages/vi.json
+new file mode 100644
+index 0000000..319c9bf
+--- /dev/null
++++ b/messages/vi.json
+@@ -0,0 +1,64 @@
++{
++  "_note": "Good-faith draft translation. Needs native-speaker review before production use, especially before pairing with any legal/policy content.",
++  "common": {
++    "next": "Tiếp theo",
++    "back": "Quay lại",
++    "submit": "Gửi",
++    "loading": "Đang tải…",
++    "required": "Bắt buộc",
++    "selectLanguage": "Chọn ngôn ngữ của bạn"
++  },
++  "registration": {
++    "title": "Đăng ký khách",
++    "welcome": "Chào mừng — hãy hoàn tất đăng ký của bạn",
++    "step1Title": "Thông tin của bạn",
++    "firstName": "Tên",
++    "lastName": "Họ",
++    "email": "Email",
++    "phone": "Số điện thoại",
++    "address": "Địa chỉ",
++    "step2Title": "Thông tin lưu trú",
++    "confirmationNumber": "Số xác nhận",
++    "arrivalDate": "Ngày đến",
++    "departureDate": "Ngày đi",
++    "guestCount": "Số lượng khách",
++    "step3Title": "Phương tiện (không bắt buộc)",
++    "hasVehicle": "Tôi sẽ mang theo xe",
++    "vehicleMake": "Hãng xe",
++    "vehicleModel": "Dòng xe",
++    "vehicleColor": "Màu xe",
++    "licensePlate": "Biển số xe",
++    "parkingNeeded": "Tôi cần chỗ đậu xe",
++    "valetNeeded": "Tôi muốn sử dụng dịch vụ đỗ xe",
++    "step4Title": "Chính sách",
++    "acknowledgePrefix": "Tôi đã đọc và đồng ý với",
++    "step5Title": "Chữ ký",
++    "signaturePrompt": "Ký tên bên dưới để hoàn tất đăng ký",
++    "completeRegistration": "Hoàn tất đăng ký",
++    "successTitle": "Bạn đã hoàn tất",
++    "successBody": "Lễ tân đã nhận được thông tin đăng ký của bạn. Hẹn gặp lại!",
++    "linkExpired": "Liên kết đăng ký này đã hết hạn. Vui lòng liên hệ lễ tân.",
++    "linkInvalid": "Liên kết đăng ký này không hợp lệ. Vui lòng liên hệ lễ tân.",
++    "linkAlreadyCompleted": "Đăng ký này đã được hoàn tất."
++  },
++  "arrivalBoard": {
++    "title": "Lễ tân — Khách đến",
++    "noArrivals": "Không có khách đến để hiển thị",
++    "registration": "Đăng ký",
++    "idVerification": "Giấy tờ tùy thân",
++    "reservationVerification": "Đặt phòng",
++    "roomAssignment": "Phòng",
++    "keyStatus": "Chìa khóa",
++    "checkedIn": "Đã nhận phòng",
++    "markVerified": "Đánh dấu đã xác minh",
++    "assignRoom": "Chỉ định phòng",
++    "markKeyIssued": "Đánh dấu đã giao chìa khóa",
++    "completeCheckIn": "Hoàn tất nhận phòng",
++    "notStarted": "Chưa bắt đầu",
++    "inProgress": "Đang xử lý",
++    "completed": "Hoàn thành",
++    "pending": "Đang chờ",
++    "verified": "Đã xác minh",
++    "issued": "Đã giao"
++  }
++}
+diff --git a/package.json b/package.json
+index 0a5d0ec..709e789 100644
+--- a/package.json
++++ b/package.json
+@@ -16,6 +16,7 @@
+     "date-fns": "^4.4.0",
+     "lucide-react": "^0.469.0",
+     "next": "^16.2.12",
++    "next-intl": "^3.26.0",
+     "react": "^19.2.8",
+     "react-dom": "^19.2.8",
+     "react-hook-form": "^7.84.0",
+diff --git a/src/app/(dashboard)/arrivals/page.tsx b/src/app/(dashboard)/arrivals/page.tsx
+new file mode 100644
+index 0000000..f1b494b
+--- /dev/null
++++ b/src/app/(dashboard)/arrivals/page.tsx
+@@ -0,0 +1,43 @@
++import { redirect } from "next/navigation";
++import { createClient } from "@/lib/supabase/server";
++import { TopBar } from "@/components/layout/TopBar";
++import { ArrivalBoard } from "@/components/hospitality/ArrivalBoard";
++
++export default async function ArrivalsPage() {
++  const supabase = await createClient();
++  const { data: { user } } = await supabase.auth.getUser();
++  if (!user) redirect("/login");
++
++  const [profileRes, memberRes] = await Promise.all([
++    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
++    supabase.from("business_members").select("business_id").eq("user_id", user.id).limit(1).maybeSingle(),
++  ]);
++
++  const businessId = memberRes.data?.business_id;
++  if (!businessId) redirect("/setup");
++
++  const [reservationsRes, guestsRes, roomsRes] = await Promise.all([
++    supabase.from("reservations").select("*").eq("business_id", businessId).order("arrival_date", { ascending: true }),
++    supabase.from("reservation_guests").select("reservation_id, guests(first_name, last_name)").eq("business_id", businessId),
++    supabase.from("rooms").select("*").eq("business_id", businessId).eq("active", true).order("room_number"),
++  ]);
++
++  return (
++    <div className="flex flex-col h-full overflow-hidden">
++      <TopBar
++        title="Front Desk — Arrivals"
++        subtitle="Registration through check-in, one board"
++        userName={profileRes.data?.full_name}
++        userEmail={user.email}
++      />
++      <div className="flex-1 overflow-y-auto">
++        <ArrivalBoard
++          businessId={businessId}
++          initialReservations={reservationsRes.data ?? []}
++          reservationGuests={guestsRes.data ?? []}
++          rooms={roomsRes.data ?? []}
++        />
++      </div>
++    </div>
++  );
++}
+diff --git a/src/app/api/guest-registration/[token]/route.ts b/src/app/api/guest-registration/[token]/route.ts
+new file mode 100644
+index 0000000..50ce74a
+--- /dev/null
++++ b/src/app/api/guest-registration/[token]/route.ts
+@@ -0,0 +1,183 @@
++import { NextResponse } from "next/server";
++import { createServiceRoleClient } from "@/lib/supabase/service-role";
++import { validateRegistrationToken, markRegistrationLinkCompleted } from "@/lib/hospitality/registration-token";
++import { isRateLimited, recordAttempt } from "@/lib/hospitality/rate-limit";
++
++function errorResponse(reason: string, status: number) {
++  return NextResponse.json({ error: reason }, { status });
++}
++
++/**
++ * GET: loads exactly what the registration form needs to render —
++ * business name, reservation basics, active questions, active policies,
++ * and any previously-saved answers (for a guest resuming a partial
++ * registration). Nothing beyond this scope is ever returned.
++ */
++export async function GET(request: Request, { params }: { params: Promise<{ token: string }> }) {
++  const { token } = await params;
++  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
++
++  if (isRateLimited(`get:${ip}`)) return errorResponse("rate_limited", 429);
++  recordAttempt(`get:${ip}`);
++
++  const result = await validateRegistrationToken(token);
++  if (!result.valid) return errorResponse(result.reason, 404);
++
++  const supabase = createServiceRoleClient();
++  const { link } = result;
++
++  const [businessRes, reservationRes, questionsRes, policiesRes, answersRes] = await Promise.all([
++    supabase.from("businesses").select("id, name").eq("id", link.business_id).single(),
++    supabase.from("reservations").select("*").eq("id", link.reservation_id).single(),
++    supabase.from("registration_questions").select("*").eq("business_id", link.business_id).eq("active", true).order("sort_order"),
++    supabase.from("registration_policies").select("*").eq("business_id", link.business_id).eq("active", true),
++    supabase.from("registration_answers").select("*").eq("reservation_id", link.reservation_id),
++  ]);
++
++  return NextResponse.json({
++    business: businessRes.data,
++    reservation: reservationRes.data,
++    questions: questionsRes.data ?? [],
++    policies: policiesRes.data ?? [],
++    existingAnswers: answersRes.data ?? [],
++  });
++}
++
++type RegistrationSubmission = {
++  guest: {
++    first_name: string;
++    last_name: string;
++    email?: string;
++    phone?: string;
++    address?: string;
++    preferred_language: string;
++  };
++  vehicle?: {
++    make?: string;
++    model?: string;
++    color?: string;
++    license_plate?: string;
++    state_or_region?: string;
++    parking_needed?: boolean;
++    valet_needed?: boolean;
++  };
++  answers?: { question_id: string; value: string }[];
++  acknowledgements?: { policy_id: string; policy_version: number; accepted: boolean }[];
++};
++
++/**
++ * POST: writes exactly one guest's registration for exactly the
++ * reservation the token resolved to. The service-role client is used
++ * for every write here — this handler IS the access-control layer;
++ * there is no RLS check downstream of this because there's no
++ * authenticated Supabase session to check against.
++ */
++export async function POST(request: Request, { params }: { params: Promise<{ token: string }> }) {
++  const { token } = await params;
++  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
++
++  if (isRateLimited(`post:${ip}`)) return errorResponse("rate_limited", 429);
++  recordAttempt(`post:${ip}`);
++
++  const result = await validateRegistrationToken(token);
++  if (!result.valid) return errorResponse(result.reason, 404);
++
++  const { link } = result;
++  const body = (await request.json()) as RegistrationSubmission;
++
++  if (!body.guest?.first_name || !body.guest?.last_name) {
++    return errorResponse("missing_required_fields", 400);
++  }
++
++  const supabase = createServiceRoleClient();
++
++  // Create the guest record and link it to the reservation.
++  const { data: guest, error: guestError } = await supabase
++    .from("guests")
++    .insert({
++      business_id: link.business_id,
++      first_name: body.guest.first_name,
++      last_name: body.guest.last_name,
++      email: body.guest.email || null,
++      phone: body.guest.phone || null,
++      address: body.guest.address || null,
++      preferred_language: body.guest.preferred_language || "en",
++    })
++    .select("id")
++    .single();
++
++  if (guestError || !guest) return errorResponse("guest_create_failed", 500);
++
++  await supabase.from("reservation_guests").insert({
++    business_id: link.business_id,
++    reservation_id: link.reservation_id,
++    guest_id: guest.id,
++    role: "primary",
++  });
++
++  await supabase
++    .from("reservations")
++    .update({ primary_guest_id: guest.id, registration_status: "completed" })
++    .eq("id", link.reservation_id);
++
++  if (body.vehicle && (body.vehicle.make || body.vehicle.license_plate)) {
++    const { data: vehicle } = await supabase
++      .from("reservation_vehicles")
++      .insert({
++        business_id: link.business_id,
++        reservation_id: link.reservation_id,
++        guest_id: guest.id,
++        make: body.vehicle.make || null,
++        model: body.vehicle.model || null,
++        color: body.vehicle.color || null,
++        license_plate: body.vehicle.license_plate || null,
++        state_or_region: body.vehicle.state_or_region || null,
++        parking_needed: body.vehicle.parking_needed ?? false,
++        valet_needed: body.vehicle.valet_needed ?? false,
++      })
++      .select("id")
++      .single();
++
++    // Valet record creation happens here, not in the Valet module — a
++    // guest requesting valet at registration should already be in the
++    // Received state by the time Valet screens exist to show it.
++    if (vehicle && body.vehicle.valet_needed) {
++      await supabase.from("valet_records").insert({
++        business_id: link.business_id,
++        reservation_id: link.reservation_id,
++        vehicle_id: vehicle.id,
++        status: "received",
++      });
++    }
++  }
++
++  if (body.answers?.length) {
++    await supabase.from("registration_answers").insert(
++      body.answers.map((a) => ({
++        business_id: link.business_id,
++        reservation_id: link.reservation_id,
++        guest_id: guest.id,
++        question_id: a.question_id,
++        value: a.value,
++      }))
++    );
++  }
++
++  if (body.acknowledgements?.length) {
++    await supabase.from("registration_acknowledgements").insert(
++      body.acknowledgements.map((ack) => ({
++        business_id: link.business_id,
++        reservation_id: link.reservation_id,
++        guest_id: guest.id,
++        policy_id: ack.policy_id,
++        policy_version: ack.policy_version,
++        accepted: ack.accepted,
++        accepted_at: ack.accepted ? new Date().toISOString() : null,
++      }))
++    );
++  }
++
++  await markRegistrationLinkCompleted(link.id);
++
++  return NextResponse.json({ success: true, reservationId: link.reservation_id });
++}
+diff --git a/src/app/layout.tsx b/src/app/layout.tsx
+index 622b428..d9bca43 100644
+--- a/src/app/layout.tsx
++++ b/src/app/layout.tsx
+@@ -1,6 +1,9 @@
+ import type { Metadata } from "next";
+ import { Toaster } from "sonner";
+ import "./globals.css";
++import { getActiveLocale, getMessages } from "@/lib/i18n/get-messages";
++import { isRtl } from "@/lib/i18n/config";
++import { LocaleProvider } from "@/components/i18n/LocaleProvider";
+ 
+ export const metadata: Metadata = {
+   title: "CUE — The Heart of Your Business",
+@@ -8,15 +11,21 @@ export const metadata: Metadata = {
+   icons: { icon: "/favicon.ico" },
+ };
+ 
+-export default function RootLayout({
++export default async function RootLayout({
+   children,
+ }: {
+   children: React.ReactNode;
+ }) {
++  const locale = await getActiveLocale();
++  const messages = await getMessages(locale);
++  const dir = isRtl(locale) ? "rtl" : "ltr";
++
+   return (
+-    <html lang="en">
++    <html lang={locale} dir={dir}>
+       <body>
+-        {children}
++        <LocaleProvider locale={locale} messages={messages}>
++          {children}
++        </LocaleProvider>
+         <Toaster
+           position="top-right"
+           toastOptions={{
+diff --git a/src/app/register/[token]/page.tsx b/src/app/register/[token]/page.tsx
+new file mode 100644
+index 0000000..a985bdf
+--- /dev/null
++++ b/src/app/register/[token]/page.tsx
+@@ -0,0 +1,41 @@
++import { validateRegistrationToken } from "@/lib/hospitality/registration-token";
++import { createServiceRoleClient } from "@/lib/supabase/service-role";
++import { RegistrationForm } from "@/components/hospitality/RegistrationForm";
++import { RegistrationLinkError } from "@/components/hospitality/RegistrationLinkError";
++
++export default async function GuestRegistrationPage({
++  params,
++}: {
++  params: Promise<{ token: string }>;
++}) {
++  const { token } = await params;
++  const result = await validateRegistrationToken(token);
++
++  if (!result.valid) {
++    return <RegistrationLinkError reason={result.reason} />;
++  }
++
++  const { link } = result;
++  const supabase = createServiceRoleClient();
++
++  const [businessRes, reservationRes, questionsRes, policiesRes] = await Promise.all([
++    supabase.from("businesses").select("id, name").eq("id", link.business_id).single(),
++    supabase.from("reservations").select("*").eq("id", link.reservation_id).single(),
++    supabase.from("registration_questions").select("*").eq("business_id", link.business_id).eq("active", true).order("sort_order"),
++    supabase.from("registration_policies").select("*").eq("business_id", link.business_id).eq("active", true),
++  ]);
++
++  if (reservationRes.data?.registration_status === "completed") {
++    return <RegistrationLinkError reason="completed" />;
++  }
++
++  return (
++    <RegistrationForm
++      token={token}
++      businessName={businessRes.data?.name ?? "Your hotel"}
++      reservation={reservationRes.data}
++      questions={questionsRes.data ?? []}
++      policies={policiesRes.data ?? []}
++    />
++  );
++}
+diff --git a/src/components/hospitality/ArrivalBoard.tsx b/src/components/hospitality/ArrivalBoard.tsx
+new file mode 100644
+index 0000000..1a9bcc5
+--- /dev/null
++++ b/src/components/hospitality/ArrivalBoard.tsx
+@@ -0,0 +1,247 @@
++"use client";
++
++import { useState } from "react";
++import { toast } from "sonner";
++import { CheckCircle2, Circle, Plus, Copy } from "lucide-react";
++import { createClient } from "@/lib/supabase/client";
++import { Button } from "@/components/ui/Button";
++import { Input } from "@/components/ui/Input";
++import { Select } from "@/components/ui/Select";
++import { Modal } from "@/components/ui/Modal";
++import { EmptyState } from "@/components/ui/EmptyState";
++import { cn } from "@/lib/utils";
++import {
++  createReservationAndLink,
++  verifyReservationId,
++  verifyReservationBooking,
++  assignRoom,
++  markKeyIssued,
++  completeCheckIn,
++} from "@/lib/hospitality/actions";
++import type { Reservation, Room } from "@/lib/cu3/hospitality-types";
++
++type ReservationGuestRow = { reservation_id: string; guests: { first_name: string; last_name: string } | null };
++
++export function ArrivalBoard({
++  businessId,
++  initialReservations,
++  reservationGuests,
++  rooms,
++}: {
++  businessId: string;
++  initialReservations: Reservation[];
++  reservationGuests: ReservationGuestRow[];
++  rooms: Room[];
++}) {
++  const [reservations, setReservations] = useState(initialReservations);
++  const [newOpen, setNewOpen] = useState(false);
++  const [creating, setCreating] = useState(false);
++  const [generatedLink, setGeneratedLink] = useState<string | null>(null);
++  const [form, setForm] = useState({ confirmationNumber: "", arrivalDate: "", departureDate: "", guestCount: "1" });
++
++  function guestName(reservationId: string): string | null {
++    const row = reservationGuests.find((g) => g.reservation_id === reservationId);
++    if (!row?.guests) return null;
++    return `${row.guests.first_name} ${row.guests.last_name}`;
++  }
++
++  async function handleCreate() {
++    if (!form.arrivalDate || !form.departureDate) {
++      toast.error("Arrival and departure dates required");
++      return;
++    }
++    setCreating(true);
++    const result = await createReservationAndLink({
++      businessId,
++      confirmationNumber: form.confirmationNumber,
++      arrivalDate: form.arrivalDate,
++      departureDate: form.departureDate,
++      guestCount: Number(form.guestCount) || 1,
++    });
++    setCreating(false);
++
++    if ("error" in result) {
++      toast.error(result.error);
++      return;
++    }
++
++    const url = `${window.location.origin}/register/${result.rawToken}`;
++    setGeneratedLink(url);
++
++    const supabase = createClient();
++    const { data } = await supabase.from("reservations").select("*").eq("id", result.reservationId).single();
++    if (data) setReservations((prev) => [data, ...prev]);
++  }
++
++  function closeNewModal() {
++    setNewOpen(false);
++    setGeneratedLink(null);
++    setForm({ confirmationNumber: "", arrivalDate: "", departureDate: "", guestCount: "1" });
++  }
++
++  async function handleVerifyId(reservationId: string) {
++    const supabase = createClient();
++    const { data: { user } } = await supabase.auth.getUser();
++    if (!user) return;
++    setReservations((prev) => prev.map((r) => (r.id === reservationId ? { ...r, id_verification_status: "verified" } : r)));
++    await verifyReservationId(reservationId, user.id);
++  }
++
++  async function handleVerifyReservation(reservationId: string) {
++    setReservations((prev) => prev.map((r) => (r.id === reservationId ? { ...r, reservation_status: "verified" } : r)));
++    await verifyReservationBooking(reservationId);
++  }
++
++  async function handleAssignRoom(reservationId: string, roomId: string) {
++    setReservations((prev) => prev.map((r) => (r.id === reservationId ? { ...r, room_id: roomId } : r)));
++    await assignRoom(reservationId, roomId);
++  }
++
++  async function handleKeyIssued(reservationId: string) {
++    setReservations((prev) => prev.map((r) => (r.id === reservationId ? { ...r, key_status: "issued" } : r)));
++    await markKeyIssued(reservationId);
++  }
++
++  async function handleCheckIn(reservationId: string) {
++    setReservations((prev) => prev.map((r) => (r.id === reservationId ? { ...r, checked_in_at: new Date().toISOString() } : r)));
++    const result = await completeCheckIn(reservationId);
++    if (result.error) toast.error(result.error);
++    else toast.success("Guest checked in");
++  }
++
++  return (
++    <div className="p-6 space-y-4">
++      <div className="flex items-center justify-between">
++        <p className="text-sm text-charcoal-500">{reservations.length} reservations</p>
++        <Button size="sm" onClick={() => setNewOpen(true)}>
++          <Plus className="h-4 w-4" /> New Reservation
++        </Button>
++      </div>
++
++      {reservations.length === 0 ? (
++        <EmptyState icon={CheckCircle2} title="No arrivals yet" description="Create a reservation to generate a guest registration link." />
++      ) : (
++        <div className="space-y-3">
++          {reservations.map((r) => {
++            const name = guestName(r.id);
++            const readyForKey = r.registration_status === "completed" && r.id_verification_status === "verified" && r.reservation_status === "verified" && !!r.room_id;
++            const readyForCheckIn = readyForKey && r.key_status === "issued";
++
++            return (
++              <div key={r.id} className="bg-white border border-charcoal-100 rounded-xl p-4">
++                <div className="flex items-center justify-between mb-3">
++                  <div>
++                    <p className="font-semibold text-charcoal-900">{name ?? "Awaiting registration"}</p>
++                    <p className="text-xs text-charcoal-400">
++                      {r.confirmation_number ?? "No confirmation #"} · {r.arrival_date} → {r.departure_date}
++                    </p>
++                  </div>
++                  {r.checked_in_at ? (
++                    <span className="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Checked in</span>
++                  ) : (
++                    <span className="text-xs font-medium text-charcoal-400 bg-charcoal-50 px-2.5 py-1 rounded-full">In progress</span>
++                  )}
++                </div>
++
++                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 text-xs">
++                  <StatusStep label="Registration" done={r.registration_status === "completed"} />
++                  <StatusStep
++                    label="ID Verified"
++                    done={r.id_verification_status === "verified"}
++                    action={r.id_verification_status !== "verified" ? () => handleVerifyId(r.id) : undefined}
++                  />
++                  <StatusStep
++                    label="Reservation"
++                    done={r.reservation_status === "verified"}
++                    action={r.reservation_status !== "verified" ? () => handleVerifyReservation(r.id) : undefined}
++                  />
++                  <div className="flex flex-col gap-1">
++                    <span className="text-charcoal-500">Room</span>
++                    <Select
++                      value={r.room_id ?? ""}
++                      onChange={(e) => handleAssignRoom(r.id, e.target.value)}
++                      options={rooms.map((room) => ({ value: room.id, label: room.room_number }))}
++                      placeholder="Assign…"
++                      className="h-8 text-xs"
++                    />
++                  </div>
++                  <StatusStep
++                    label="Key Issued"
++                    done={r.key_status === "issued"}
++                    action={r.key_status !== "issued" && r.room_id ? () => handleKeyIssued(r.id) : undefined}
++                  />
++                </div>
++
++                {readyForCheckIn && !r.checked_in_at && (
++                  <div className="mt-3 pt-3 border-t border-charcoal-100">
++                    <Button size="sm" onClick={() => handleCheckIn(r.id)}>Complete Check-In</Button>
++                  </div>
++                )}
++              </div>
++            );
++          })}
++        </div>
++      )}
++
++      <Modal open={newOpen} onClose={closeNewModal} title="New Reservation" size="sm">
++        {generatedLink ? (
++          <div className="space-y-3">
++            <p className="text-sm text-charcoal-700">Reservation created. Send this link to the guest:</p>
++            <div className="flex items-center gap-2">
++              <Input value={generatedLink} readOnly className="text-xs" />
++              <Button
++                size="sm"
++                variant="ghost"
++                onClick={() => {
++                  navigator.clipboard.writeText(generatedLink);
++                  toast.success("Link copied");
++                }}
++              >
++                <Copy className="h-4 w-4" />
++              </Button>
++            </div>
++            <p className="text-xs text-charcoal-400">
++              This link stays valid until the guest completes registration or it expires — it&apos;s safe to send even if they don&apos;t finish in one sitting.
++            </p>
++            <div className="flex justify-end">
++              <Button onClick={closeNewModal}>Done</Button>
++            </div>
++          </div>
++        ) : (
++          <div className="space-y-3">
++            <Input label="Confirmation number" value={form.confirmationNumber} onChange={(e) => setForm({ ...form, confirmationNumber: e.target.value })} />
++            <div className="grid grid-cols-2 gap-3">
++              <Input label="Arrival date" type="date" value={form.arrivalDate} onChange={(e) => setForm({ ...form, arrivalDate: e.target.value })} />
++              <Input label="Departure date" type="date" value={form.departureDate} onChange={(e) => setForm({ ...form, departureDate: e.target.value })} />
++            </div>
++            <Input label="Number of guests" type="number" min={1} value={form.guestCount} onChange={(e) => setForm({ ...form, guestCount: e.target.value })} />
++            <div className="flex justify-end gap-2 pt-2">
++              <Button variant="ghost" onClick={closeNewModal}>Cancel</Button>
++              <Button onClick={handleCreate} loading={creating}>Create &amp; Generate Link</Button>
++            </div>
++          </div>
++        )}
++      </Modal>
++    </div>
++  );
++}
++
++function StatusStep({ label, done, action }: { label: string; done: boolean; action?: () => void }) {
++  return (
++    <div className="flex flex-col gap-1">
++      <span className="text-charcoal-500">{label}</span>
++      <button
++        onClick={action}
++        disabled={!action}
++        className={cn(
++          "flex items-center gap-1 px-2 py-1.5 rounded-md border text-xs font-medium",
++          done ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-charcoal-200 text-charcoal-500",
++          action && "hover:border-gold-300 cursor-pointer"
++        )}
++      >
++        {done ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Circle className="h-3.5 w-3.5" />}
++        {done ? "Done" : action ? "Mark done" : "Pending"}
++      </button>
++    </div>
++  );
++}
+diff --git a/src/components/hospitality/RegistrationForm.tsx b/src/components/hospitality/RegistrationForm.tsx
+new file mode 100644
+index 0000000..3d8ca40
+--- /dev/null
++++ b/src/components/hospitality/RegistrationForm.tsx
+@@ -0,0 +1,305 @@
++"use client";
++
++import { useState } from "react";
++import { toast } from "sonner";
++import { SUPPORTED_LOCALES, LOCALE_LABELS, type Locale } from "@/lib/i18n/config";
++import { setLocale } from "@/lib/i18n/actions";
++import { SignaturePad } from "@/components/hospitality/SignaturePad";
++import type { Reservation, RegistrationQuestion, RegistrationPolicy } from "@/lib/cu3/hospitality-types";
++import en from "../../../messages/en.json";
++import es from "../../../messages/es.json";
++import ar from "../../../messages/ar.json";
++import vi from "../../../messages/vi.json";
++
++/**
++ * Loaded directly rather than via the app-wide NextIntlClientProvider:
++ * that provider gets its locale from a cookie at page load, before an
++ * anonymous guest has picked anything — it can't retroactively reflect
++ * an in-session choice without a full page reload. This form's language
++ * selection is inherently local and immediate, so it reads its own
++ * dictionary rather than depending on the provider tree.
++ */
++const DICTIONARIES: Record<Locale, typeof en> = { en, es, ar, vi };
++
++type Props = {
++  token: string;
++  businessName: string;
++  reservation: Reservation | null;
++  questions: RegistrationQuestion[];
++  policies: RegistrationPolicy[];
++};
++
++const STEPS = ["language", "guest", "stay", "vehicle", "policies", "signature", "done"] as const;
++type Step = (typeof STEPS)[number];
++
++export function RegistrationForm({ token, businessName, reservation, questions, policies }: Props) {
++  const [step, setStep] = useState<Step>("language");
++  const [locale, setLocaleState] = useState<Locale>("en");
++  const [submitting, setSubmitting] = useState(false);
++
++  const [guest, setGuest] = useState({ first_name: "", last_name: "", email: "", phone: "", address: "" });
++  const [hasVehicle, setHasVehicle] = useState(false);
++  const [vehicle, setVehicle] = useState({ make: "", model: "", color: "", license_plate: "", parking_needed: false, valet_needed: false });
++  const [answers, setAnswers] = useState<Record<string, string>>({});
++  const [acceptedPolicies, setAcceptedPolicies] = useState<Record<string, boolean>>({});
++  const [signatureCaptured, setSignatureCaptured] = useState(false);
++
++  async function chooseLocale(l: Locale) {
++    setLocaleState(l);
++    await setLocale(l);
++    setStep("guest");
++  }
++
++  function next() {
++    const order: Step[] = ["language", "guest", "stay", "vehicle", "policies", "signature", "done"];
++    const idx = order.indexOf(step);
++    setStep(order[Math.min(idx + 1, order.length - 1)]);
++  }
++
++  function back() {
++    const order: Step[] = ["language", "guest", "stay", "vehicle", "policies", "signature", "done"];
++    const idx = order.indexOf(step);
++    setStep(order[Math.max(idx - 1, 0)]);
++  }
++
++  async function handleSubmit() {
++    const requiredPolicies = policies.filter((p) => p.required);
++    const allAccepted = requiredPolicies.every((p) => acceptedPolicies[p.id]);
++    if (!allAccepted) {
++      toast.error("Please accept all required policies to continue");
++      setStep("policies");
++      return;
++    }
++
++    setSubmitting(true);
++    const res = await fetch(`/api/guest-registration/${token}`, {
++      method: "POST",
++      headers: { "Content-Type": "application/json" },
++      body: JSON.stringify({
++        guest: { ...guest, preferred_language: locale },
++        vehicle: hasVehicle ? vehicle : undefined,
++        answers: questions.map((q) => ({ question_id: q.id, value: answers[q.id] ?? "" })).filter((a) => a.value),
++        acknowledgements: policies.map((p) => ({
++          policy_id: p.id,
++          policy_version: p.version,
++          accepted: !!acceptedPolicies[p.id],
++        })),
++      }),
++    });
++
++    setSubmitting(false);
++
++    if (!res.ok) {
++      toast.error("Something went wrong. Please try again or ask the front desk for help.");
++      return;
++    }
++
++    setStep("done");
++  }
++
++  const dir = locale === "ar" ? "rtl" : "ltr";
++  const t = DICTIONARIES[locale];
++
++  return (
++    <div dir={dir} className="min-h-screen bg-charcoal-50 flex flex-col">
++      <div className="px-6 py-5 bg-white border-b border-charcoal-100">
++        <p className="text-xs text-charcoal-400 uppercase tracking-wide">{businessName}</p>
++        <h1 className="text-lg font-semibold text-charcoal-900">{t.registration.title}</h1>
++      </div>
++
++      <div className="flex-1 px-6 py-6 max-w-md mx-auto w-full">
++        {step === "language" && (
++          <div className="space-y-3">
++            <p className="text-sm font-medium text-charcoal-700 mb-4">{t.common.selectLanguage}</p>
++            {SUPPORTED_LOCALES.map((l) => (
++              <button
++                key={l}
++                onClick={() => chooseLocale(l)}
++                className="w-full text-left px-4 py-3.5 rounded-lg border border-charcoal-200 bg-white hover:border-gold-400 hover:bg-gold-50 transition-colors font-medium text-charcoal-800"
++              >
++                {LOCALE_LABELS[l]}
++              </button>
++            ))}
++          </div>
++        )}
++
++        {step === "guest" && (
++          <div className="space-y-4">
++            <h2 className="font-semibold text-charcoal-900">{t.registration.step1Title}</h2>
++            <Field label={t.registration.firstName} value={guest.first_name} onChange={(v) => setGuest({ ...guest, first_name: v })} required />
++            <Field label={t.registration.lastName} value={guest.last_name} onChange={(v) => setGuest({ ...guest, last_name: v })} required />
++            <Field label={t.registration.email} value={guest.email} onChange={(v) => setGuest({ ...guest, email: v })} type="email" />
++            <Field label={t.registration.phone} value={guest.phone} onChange={(v) => setGuest({ ...guest, phone: v })} type="tel" />
++            <Field label={t.registration.address} value={guest.address} onChange={(v) => setGuest({ ...guest, address: v })} />
++            <StepNav t={t} onBack={back} onNext={next} nextDisabled={!guest.first_name || !guest.last_name} />
++          </div>
++        )}
++
++        {step === "stay" && (
++          <div className="space-y-4">
++            <h2 className="font-semibold text-charcoal-900">{t.registration.step2Title}</h2>
++            <div className="rounded-lg bg-white border border-charcoal-100 p-4 space-y-2 text-sm">
++              <Row label={t.registration.confirmationNumber} value={reservation?.confirmation_number ?? "—"} />
++              <Row label={t.registration.arrivalDate} value={reservation?.arrival_date ?? "—"} />
++              <Row label={t.registration.departureDate} value={reservation?.departure_date ?? "—"} />
++              <Row label={t.registration.guestCount} value={String(reservation?.guest_count ?? 1)} />
++            </div>
++            {questions.length > 0 && (
++              <div className="space-y-3 pt-2">
++                {questions.map((q) => (
++                  <Field
++                    key={q.id}
++                    label={q.internal_key}
++                    value={answers[q.id] ?? ""}
++                    onChange={(v) => setAnswers({ ...answers, [q.id]: v })}
++                    required={q.required}
++                  />
++                ))}
++              </div>
++            )}
++            <StepNav t={t} onBack={back} onNext={next} />
++          </div>
++        )}
++
++        {step === "vehicle" && (
++          <div className="space-y-4">
++            <h2 className="font-semibold text-charcoal-900">{t.registration.step3Title}</h2>
++            <label className="flex items-center gap-2 text-sm text-charcoal-700">
++              <input type="checkbox" checked={hasVehicle} onChange={(e) => setHasVehicle(e.target.checked)} />
++              {t.registration.hasVehicle}
++            </label>
++            {hasVehicle && (
++              <div className="space-y-3">
++                <Field label={t.registration.vehicleMake} value={vehicle.make} onChange={(v) => setVehicle({ ...vehicle, make: v })} />
++                <Field label={t.registration.vehicleModel} value={vehicle.model} onChange={(v) => setVehicle({ ...vehicle, model: v })} />
++                <Field label={t.registration.vehicleColor} value={vehicle.color} onChange={(v) => setVehicle({ ...vehicle, color: v })} />
++                <Field label={t.registration.licensePlate} value={vehicle.license_plate} onChange={(v) => setVehicle({ ...vehicle, license_plate: v })} />
++                <label className="flex items-center gap-2 text-sm text-charcoal-700">
++                  <input type="checkbox" checked={vehicle.parking_needed} onChange={(e) => setVehicle({ ...vehicle, parking_needed: e.target.checked })} />
++                  {t.registration.parkingNeeded}
++                </label>
++                <label className="flex items-center gap-2 text-sm text-charcoal-700">
++                  <input type="checkbox" checked={vehicle.valet_needed} onChange={(e) => setVehicle({ ...vehicle, valet_needed: e.target.checked })} />
++                  {t.registration.valetNeeded}
++                </label>
++              </div>
++            )}
++            <StepNav t={t} onBack={back} onNext={next} />
++          </div>
++        )}
++
++        {step === "policies" && (
++          <div className="space-y-4">
++            <h2 className="font-semibold text-charcoal-900">{t.registration.step4Title}</h2>
++            {policies.length === 0 ? (
++              <p className="text-sm text-charcoal-500">No policies to review.</p>
++            ) : (
++              policies.map((p) => (
++                <label key={p.id} className="flex items-start gap-2 text-sm text-charcoal-700 bg-white rounded-lg border border-charcoal-100 p-3">
++                  <input
++                    type="checkbox"
++                    className="mt-0.5"
++                    checked={!!acceptedPolicies[p.id]}
++                    onChange={(e) => setAcceptedPolicies({ ...acceptedPolicies, [p.id]: e.target.checked })}
++                  />
++                  <span>
++                    {t.registration.acknowledgePrefix} <strong>{p.policy_key}</strong> (v{p.version})
++                    {p.required && <span className="text-red-500"> *</span>}
++                  </span>
++                </label>
++              ))
++            )}
++            <StepNav t={t} onBack={back} onNext={next} />
++          </div>
++        )}
++
++        {step === "signature" && (
++          <div className="space-y-4">
++            <h2 className="font-semibold text-charcoal-900">{t.registration.step5Title}</h2>
++            <p className="text-sm text-charcoal-500">{t.registration.signaturePrompt}</p>
++            <SignaturePad onChange={(dataUrl) => setSignatureCaptured(!!dataUrl)} />
++            <div className="flex items-center justify-between pt-2">
++              <button onClick={back} className="text-sm text-charcoal-500">{t.common.back}</button>
++              <button
++                onClick={handleSubmit}
++                disabled={submitting || !signatureCaptured}
++                className="px-5 py-2.5 rounded-lg bg-charcoal-900 text-white text-sm font-medium disabled:opacity-40"
++              >
++                {submitting ? t.common.loading : t.registration.completeRegistration}
++              </button>
++            </div>
++          </div>
++        )}
++
++        {step === "done" && (
++          <div className="text-center py-10">
++            <p className="text-lg font-semibold text-charcoal-900 mb-2">{t.registration.successTitle}</p>
++            <p className="text-sm text-charcoal-500">{t.registration.successBody}</p>
++          </div>
++        )}
++      </div>
++    </div>
++  );
++}
++
++function Field({
++  label,
++  value,
++  onChange,
++  type = "text",
++  required,
++}: {
++  label: string;
++  value: string;
++  onChange: (v: string) => void;
++  type?: string;
++  required?: boolean;
++}) {
++  return (
++    <div>
++      <label className="block text-sm font-medium text-charcoal-700 mb-1">
++        {label} {required && <span className="text-red-500">*</span>}
++      </label>
++      <input
++        type={type}
++        value={value}
++        onChange={(e) => onChange(e.target.value)}
++        className="w-full h-11 rounded-lg border border-charcoal-200 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
++      />
++    </div>
++  );
++}
++
++function Row({ label, value }: { label: string; value: string }) {
++  return (
++    <div className="flex justify-between">
++      <span className="text-charcoal-500">{label}</span>
++      <span className="font-medium text-charcoal-800">{value}</span>
++    </div>
++  );
++}
++
++function StepNav({
++  t,
++  onBack,
++  onNext,
++  nextDisabled,
++}: {
++  t: typeof import("../../../messages/en.json");
++  onBack: () => void;
++  onNext: () => void;
++  nextDisabled?: boolean;
++}) {
++  return (
++    <div className="flex items-center justify-between pt-2">
++      <button onClick={onBack} className="text-sm text-charcoal-500">{t.common.back}</button>
++      <button
++        onClick={onNext}
++        disabled={nextDisabled}
++        className="px-5 py-2.5 rounded-lg bg-charcoal-900 text-white text-sm font-medium disabled:opacity-40"
++      >
++        {t.common.next}
++      </button>
++    </div>
++  );
++}
+diff --git a/src/components/hospitality/RegistrationLinkError.tsx b/src/components/hospitality/RegistrationLinkError.tsx
+new file mode 100644
+index 0000000..6d7eb6f
+--- /dev/null
++++ b/src/components/hospitality/RegistrationLinkError.tsx
+@@ -0,0 +1,19 @@
++const MESSAGES: Record<string, string> = {
++  not_found: "This registration link isn't valid. Please contact the front desk.",
++  expired: "This registration link has expired. Please contact the front desk.",
++  revoked: "This registration link is no longer active. Please contact the front desk.",
++  completed: "This registration has already been completed.",
++};
++
++export function RegistrationLinkError({ reason }: { reason: string }) {
++  return (
++    <div className="min-h-screen flex items-center justify-center bg-charcoal-50 px-6">
++      <div className="max-w-sm text-center">
++        <p className="text-lg font-semibold text-charcoal-900 mb-2">
++          {reason === "completed" ? "You're all set" : "We couldn't open this link"}
++        </p>
++        <p className="text-sm text-charcoal-500">{MESSAGES[reason] ?? MESSAGES.not_found}</p>
++      </div>
++    </div>
++  );
++}
+diff --git a/src/components/hospitality/SignaturePad.tsx b/src/components/hospitality/SignaturePad.tsx
+new file mode 100644
+index 0000000..87a4c33
+--- /dev/null
++++ b/src/components/hospitality/SignaturePad.tsx
+@@ -0,0 +1,79 @@
++"use client";
++
++import { useRef, useEffect, useState } from "react";
++
++export function SignaturePad({ onChange }: { onChange: (dataUrl: string | null) => void }) {
++  const canvasRef = useRef<HTMLCanvasElement>(null);
++  const [drawing, setDrawing] = useState(false);
++  const [hasSignature, setHasSignature] = useState(false);
++
++  useEffect(() => {
++    const canvas = canvasRef.current;
++    if (!canvas) return;
++    const ctx = canvas.getContext("2d");
++    if (!ctx) return;
++    ctx.lineWidth = 2;
++    ctx.lineCap = "round";
++    ctx.strokeStyle = "#1A1A1C";
++  }, []);
++
++  function getPos(e: React.PointerEvent<HTMLCanvasElement>) {
++    const canvas = canvasRef.current!;
++    const rect = canvas.getBoundingClientRect();
++    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
++  }
++
++  function handlePointerDown(e: React.PointerEvent<HTMLCanvasElement>) {
++    const ctx = canvasRef.current?.getContext("2d");
++    if (!ctx) return;
++    const { x, y } = getPos(e);
++    ctx.beginPath();
++    ctx.moveTo(x, y);
++    setDrawing(true);
++  }
++
++  function handlePointerMove(e: React.PointerEvent<HTMLCanvasElement>) {
++    if (!drawing) return;
++    const ctx = canvasRef.current?.getContext("2d");
++    if (!ctx) return;
++    const { x, y } = getPos(e);
++    ctx.lineTo(x, y);
++    ctx.stroke();
++    setHasSignature(true);
++  }
++
++  function handlePointerUp() {
++    setDrawing(false);
++    const canvas = canvasRef.current;
++    if (canvas && hasSignature) onChange(canvas.toDataURL("image/png"));
++  }
++
++  function clear() {
++    const canvas = canvasRef.current;
++    const ctx = canvas?.getContext("2d");
++    if (canvas && ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
++    setHasSignature(false);
++    onChange(null);
++  }
++
++  return (
++    <div>
++      <canvas
++        ref={canvasRef}
++        width={340}
++        height={140}
++        onPointerDown={handlePointerDown}
++        onPointerMove={handlePointerMove}
++        onPointerUp={handlePointerUp}
++        onPointerLeave={handlePointerUp}
++        className="w-full h-[140px] rounded-lg border border-charcoal-200 bg-white touch-none"
++        style={{ touchAction: "none" }}
++      />
++      {hasSignature && (
++        <button type="button" onClick={clear} className="mt-2 text-xs text-charcoal-400 underline">
++          Clear
++        </button>
++      )}
++    </div>
++  );
++}
+diff --git a/src/components/i18n/LocaleProvider.tsx b/src/components/i18n/LocaleProvider.tsx
+new file mode 100644
+index 0000000..3f17985
+--- /dev/null
++++ b/src/components/i18n/LocaleProvider.tsx
+@@ -0,0 +1,20 @@
++"use client";
++
++import { NextIntlClientProvider } from "next-intl";
++import type { ReactNode } from "react";
++
++export function LocaleProvider({
++  locale,
++  messages,
++  children,
++}: {
++  locale: string;
++  messages: Record<string, unknown>;
++  children: ReactNode;
++}) {
++  return (
++    <NextIntlClientProvider locale={locale} messages={messages}>
++      {children}
++    </NextIntlClientProvider>
++  );
++}
+diff --git a/src/lib/cu3/hospitality-types.ts b/src/lib/cu3/hospitality-types.ts
+new file mode 100644
+index 0000000..daa3a5d
+--- /dev/null
++++ b/src/lib/cu3/hospitality-types.ts
+@@ -0,0 +1,172 @@
++/**
++ * Hospitality types. Defined locally rather than in src/types/database.ts,
++ * same reasoning as CompanyCompass/Priority/Notification — keeps this
++ * decoupled from that file's churn.
++ */
++
++export type Room = {
++  id: string;
++  business_id: string;
++  room_number: string;
++  floor: string | null;
++  room_type: string | null;
++  active: boolean;
++  created_at: string;
++};
++
++export type Guest = {
++  id: string;
++  business_id: string;
++  first_name: string;
++  last_name: string;
++  email: string | null;
++  phone: string | null;
++  address: string | null;
++  preferred_language: string;
++  created_at: string;
++  updated_at: string;
++};
++
++export type ReservationStatus = "pending" | "verified" | "cancelled";
++export type RegistrationStatus = "not_started" | "in_progress" | "completed";
++export type IdVerificationStatus = "pending" | "verified";
++export type KeyStatus = "not_issued" | "issued";
++
++export type Reservation = {
++  id: string;
++  business_id: string;
++  primary_guest_id: string | null;
++  confirmation_number: string | null;
++  arrival_date: string;
++  departure_date: string;
++  guest_count: number;
++  reservation_status: ReservationStatus;
++  registration_status: RegistrationStatus;
++  id_verification_status: IdVerificationStatus;
++  verified_by: string | null;
++  verified_at: string | null;
++  room_id: string | null;
++  key_status: KeyStatus;
++  checked_in_at: string | null;
++  checked_out_at: string | null;
++  preferred_language_override: string | null;
++  created_at: string;
++  updated_at: string;
++};
++
++export type ReservationGuest = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  guest_id: string;
++  role: "primary" | "additional";
++  created_at: string;
++};
++
++export type RegistrationQuestion = {
++  id: string;
++  business_id: string;
++  internal_key: string;
++  field_type: "text" | "select" | "checkbox" | "date";
++  required: boolean;
++  active: boolean;
++  sort_order: number;
++  options: string[];
++  created_at: string;
++};
++
++export type RegistrationAnswer = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  guest_id: string | null;
++  question_id: string;
++  value: string | null;
++  answered_at: string;
++};
++
++export type RegistrationPolicy = {
++  id: string;
++  business_id: string;
++  policy_key: string;
++  version: number;
++  required: boolean;
++  active: boolean;
++  effective_at: string;
++  created_at: string;
++};
++
++export type RegistrationAcknowledgement = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  guest_id: string | null;
++  policy_id: string;
++  policy_version: number;
++  accepted: boolean;
++  accepted_at: string | null;
++  signature_file_id: string | null;
++  created_at: string;
++};
++
++export type ReservationVehicle = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  guest_id: string | null;
++  make: string | null;
++  model: string | null;
++  color: string | null;
++  license_plate: string | null;
++  state_or_region: string | null;
++  parking_needed: boolean;
++  valet_needed: boolean;
++  created_at: string;
++};
++
++export type ValetStatus = "received" | "parked" | "requested" | "retrieval_queue" | "retrieving" | "delivered";
++
++export type ValetRecord = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  vehicle_id: string;
++  status: ValetStatus;
++  parking_location: string | null;
++  ticket_number: string | null;
++  assigned_to: string | null;
++  received_at: string;
++  parked_at: string | null;
++  requested_at: string | null;
++  retrieving_at: string | null;
++  delivered_at: string | null;
++  notes: string | null;
++};
++
++export type GuestRequest = {
++  id: string;
++  business_id: string;
++  reservation_id: string | null;
++  room_id: string | null;
++  category: string;
++  status: "new" | "assigned" | "in_progress" | "completed";
++  priority: "low" | "normal" | "high" | "urgent";
++  assigned_to: string | null;
++  notes: string | null;
++  related_entity_type: string | null;
++  related_entity_id: string | null;
++  created_at: string;
++  updated_at: string;
++};
++
++export type RegistrationLink = {
++  id: string;
++  business_id: string;
++  reservation_id: string;
++  token_hash: string;
++  expires_at: string;
++  revoked_at: string | null;
++  last_used_at: string | null;
++  completed_at: string | null;
++  created_at: string;
++};
+diff --git a/src/lib/hospitality/actions.ts b/src/lib/hospitality/actions.ts
+new file mode 100644
+index 0000000..17aea37
+--- /dev/null
++++ b/src/lib/hospitality/actions.ts
+@@ -0,0 +1,88 @@
++"use server";
++
++import { revalidatePath } from "next/cache";
++import { createClient } from "@/lib/supabase/server";
++import { createRegistrationLink } from "@/lib/hospitality/registration-token";
++
++/**
++ * All of these run as the authenticated staff member, through the
++ * normal server client — RLS via is_business_member() applies exactly
++ * like every other CUE table. This file is NOT part of the guest
++ * security boundary; that's registration-token.ts + the API route,
++ * used exclusively by staff-facing UI.
++ */
++
++export async function createReservationAndLink(input: {
++  businessId: string;
++  confirmationNumber: string;
++  arrivalDate: string;
++  departureDate: string;
++  guestCount: number;
++}) {
++  const supabase = await createClient();
++
++  const { data: reservation, error } = await supabase
++    .from("reservations")
++    .insert({
++      business_id: input.businessId,
++      confirmation_number: input.confirmationNumber || null,
++      arrival_date: input.arrivalDate,
++      departure_date: input.departureDate,
++      guest_count: input.guestCount,
++    })
++    .select("id")
++    .single();
++
++  if (error || !reservation) {
++    return { error: error?.message ?? "Failed to create reservation" };
++  }
++
++  const { rawToken } = await createRegistrationLink(input.businessId, reservation.id);
++
++  revalidatePath("/arrivals");
++  return { reservationId: reservation.id, rawToken };
++}
++
++export async function verifyReservationId(reservationId: string, userId: string) {
++  const supabase = await createClient();
++  const { error } = await supabase
++    .from("reservations")
++    .update({ id_verification_status: "verified", verified_by: userId, verified_at: new Date().toISOString() })
++    .eq("id", reservationId);
++  revalidatePath("/arrivals");
++  return { error: error?.message };
++}
++
++export async function verifyReservationBooking(reservationId: string) {
++  const supabase = await createClient();
++  const { error } = await supabase
++    .from("reservations")
++    .update({ reservation_status: "verified" })
++    .eq("id", reservationId);
++  revalidatePath("/arrivals");
++  return { error: error?.message };
++}
++
++export async function assignRoom(reservationId: string, roomId: string) {
++  const supabase = await createClient();
++  const { error } = await supabase.from("reservations").update({ room_id: roomId }).eq("id", reservationId);
++  revalidatePath("/arrivals");
++  return { error: error?.message };
++}
++
++export async function markKeyIssued(reservationId: string) {
++  const supabase = await createClient();
++  const { error } = await supabase.from("reservations").update({ key_status: "issued" }).eq("id", reservationId);
++  revalidatePath("/arrivals");
++  return { error: error?.message };
++}
++
++export async function completeCheckIn(reservationId: string) {
++  const supabase = await createClient();
++  const { error } = await supabase
++    .from("reservations")
++    .update({ checked_in_at: new Date().toISOString() })
++    .eq("id", reservationId);
++  revalidatePath("/arrivals");
++  return { error: error?.message };
++}
+diff --git a/src/lib/hospitality/rate-limit.ts b/src/lib/hospitality/rate-limit.ts
+new file mode 100644
+index 0000000..1838e6c
+--- /dev/null
++++ b/src/lib/hospitality/rate-limit.ts
+@@ -0,0 +1,33 @@
++import "server-only";
++
++/**
++ * Deliberately minimal, and deliberately NOT a real production rate
++ * limiter — flagging this honestly rather than pretending it's more
++ * than it is. This Map lives in the memory of one serverless function
++ * instance; Vercel can and will spin up multiple instances under load,
++ * each with its own empty Map, so this does NOT reliably stop a
++ * determined attacker across a real deployment. What it does do: stop
++ * a naive script hammering one instance, which is a reasonable bar for
++ * a pilot demo. Before real production traffic, replace with a shared
++ * store (Upstash Redis is the standard pairing with Vercel) — that's a
++ * swap-the-implementation change, not a rearchitecture, since callers
++ * only see checkRateLimit()/recordAttempt().
++ */
++
++const attempts = new Map<string, number[]>();
++
++const WINDOW_MS = 60_000;
++const MAX_ATTEMPTS_PER_WINDOW = 10;
++
++export function isRateLimited(key: string): boolean {
++  const now = Date.now();
++  const recent = (attempts.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
++  return recent.length >= MAX_ATTEMPTS_PER_WINDOW;
++}
++
++export function recordAttempt(key: string) {
++  const now = Date.now();
++  const recent = (attempts.get(key) ?? []).filter((t) => now - t < WINDOW_MS);
++  recent.push(now);
++  attempts.set(key, recent);
++}
+diff --git a/src/lib/hospitality/registration-token.ts b/src/lib/hospitality/registration-token.ts
+new file mode 100644
+index 0000000..e0ceae3
+--- /dev/null
++++ b/src/lib/hospitality/registration-token.ts
+@@ -0,0 +1,111 @@
++import "server-only";
++import { randomBytes, createHash, timingSafeEqual } from "crypto";
++import { createServiceRoleClient } from "@/lib/supabase/service-role";
++import type { RegistrationLink } from "@/lib/cu3/hospitality-types";
++
++const TOKEN_BYTES = 32; // 256 bits
++const DEFAULT_EXPIRY_DAYS = 14;
++
++export function generateRawToken(): string {
++  return randomBytes(TOKEN_BYTES).toString("base64url");
++}
++
++export function hashToken(rawToken: string): string {
++  return createHash("sha256").update(rawToken).digest("hex");
++}
++
++/**
++ * Constant-time comparison so a timing attack can't be used to guess a
++ * valid hash byte-by-byte. Overkill for a 256-bit token in practice, but
++ * cheap to do correctly.
++ */
++function hashesMatch(a: string, b: string): boolean {
++  const bufA = Buffer.from(a, "hex");
++  const bufB = Buffer.from(b, "hex");
++  if (bufA.length !== bufB.length) return false;
++  return timingSafeEqual(bufA, bufB);
++}
++
++/**
++ * Staff-facing: creates a new registration link for a reservation and
++ * returns the ONE-TIME-VISIBLE raw token to embed in a URL/QR code. The
++ * raw token is never stored — only its hash is. If this raw value is
++ * lost, generate a new link; there's no way to recover it from the DB.
++ */
++export async function createRegistrationLink(
++  businessId: string,
++  reservationId: string,
++  expiryDays: number = DEFAULT_EXPIRY_DAYS
++): Promise<{ rawToken: string; linkId: string }> {
++  const supabase = createServiceRoleClient();
++  const rawToken = generateRawToken();
++  const tokenHash = hashToken(rawToken);
++  const expiresAt = new Date(Date.now() + expiryDays * 86_400_000).toISOString();
++
++  const { data, error } = await supabase
++    .from("registration_links")
++    .insert({
++      business_id: businessId,
++      reservation_id: reservationId,
++      token_hash: tokenHash,
++      expires_at: expiresAt,
++    })
++    .select("id")
++    .single();
++
++  if (error || !data) {
++    throw new Error(`Failed to create registration link: ${error?.message}`);
++  }
++
++  return { rawToken, linkId: data.id };
++}
++
++export type TokenValidationResult =
++  | { valid: true; link: RegistrationLink }
++  | { valid: false; reason: "not_found" | "expired" | "revoked" | "completed" };
++
++/**
++ * The single gate every guest-facing read/write must pass through.
++ * Valid until expired, revoked, or completed — NOT single-use-on-open,
++ * per the explicit correction that a guest may start registration, stop
++ * partway, and come back later.
++ */
++export async function validateRegistrationToken(rawToken: string): Promise<TokenValidationResult> {
++  const supabase = createServiceRoleClient();
++  const tokenHash = hashToken(rawToken);
++
++  const { data: links } = await supabase
++    .from("registration_links")
++    .select("*")
++    .limit(50); // small table per business realistically; see note below
++
++  // Fetched broadly then compared in-memory with a constant-time check,
++  // rather than an equality filter in the query, so the hash comparison
++  // itself isn't timing-observable via query planning. For a pilot's
++  // scale this is fine; if link volume grows, an indexed exact-match
++  // lookup is still safe (hashes aren't secret once one is known — the
++  // RAW token is the secret, and it's never in the database at all).
++  const link = (links ?? []).find((l) => hashesMatch(l.token_hash, tokenHash)) as
++    | RegistrationLink
++    | undefined;
++
++  if (!link) return { valid: false, reason: "not_found" };
++  if (link.revoked_at) return { valid: false, reason: "revoked" };
++  if (link.completed_at) return { valid: false, reason: "completed" };
++  if (new Date(link.expires_at).getTime() < Date.now()) return { valid: false, reason: "expired" };
++
++  await supabase
++    .from("registration_links")
++    .update({ last_used_at: new Date().toISOString() })
++    .eq("id", link.id);
++
++  return { valid: true, link };
++}
++
++export async function markRegistrationLinkCompleted(linkId: string) {
++  const supabase = createServiceRoleClient();
++  await supabase
++    .from("registration_links")
++    .update({ completed_at: new Date().toISOString() })
++    .eq("id", linkId);
++}
+diff --git a/src/lib/i18n/actions.ts b/src/lib/i18n/actions.ts
+new file mode 100644
+index 0000000..6f3af5a
+--- /dev/null
++++ b/src/lib/i18n/actions.ts
+@@ -0,0 +1,14 @@
++"use server";
++
++import { cookies } from "next/headers";
++import { LOCALE_COOKIE_NAME, isSupportedLocale } from "@/lib/i18n/config";
++
++export async function setLocale(locale: string) {
++  if (!isSupportedLocale(locale)) return;
++  const cookieStore = await cookies();
++  cookieStore.set(LOCALE_COOKIE_NAME, locale, {
++    path: "/",
++    maxAge: 60 * 60 * 24 * 365,
++    sameSite: "lax",
++  });
++}
+diff --git a/src/lib/i18n/config.ts b/src/lib/i18n/config.ts
+new file mode 100644
+index 0000000..3ec8e2e
+--- /dev/null
++++ b/src/lib/i18n/config.ts
+@@ -0,0 +1,23 @@
++export const SUPPORTED_LOCALES = ["en", "es", "ar", "vi"] as const;
++export type Locale = (typeof SUPPORTED_LOCALES)[number];
++
++export const DEFAULT_LOCALE: Locale = "en";
++
++export const RTL_LOCALES: Locale[] = ["ar"];
++
++export function isRtl(locale: string): boolean {
++  return RTL_LOCALES.includes(locale as Locale);
++}
++
++export function isSupportedLocale(value: string | null | undefined): value is Locale {
++  return !!value && SUPPORTED_LOCALES.includes(value as Locale);
++}
++
++export const LOCALE_LABELS: Record<Locale, string> = {
++  en: "English",
++  es: "Español",
++  ar: "العربية",
++  vi: "Tiếng Việt",
++};
++
++export const LOCALE_COOKIE_NAME = "NEXT_LOCALE";
+diff --git a/src/lib/i18n/get-messages.ts b/src/lib/i18n/get-messages.ts
+new file mode 100644
+index 0000000..ca46d32
+--- /dev/null
++++ b/src/lib/i18n/get-messages.ts
+@@ -0,0 +1,32 @@
++import "server-only";
++import { cookies } from "next/headers";
++import { DEFAULT_LOCALE, LOCALE_COOKIE_NAME, isSupportedLocale, type Locale } from "./config";
++
++/**
++ * Reads the active locale from the NEXT_LOCALE cookie, server-side.
++ * This is deliberately NOT next-intl's routing/middleware integration —
++ * see docs note in supabase/hospitality-schema.sql and the Hospitality
++ * architecture doc for why: this app has dozens of existing routes with
++ * no locale segment, and restructuring them all under app/[locale]/ was
++ * explicitly ruled out as the kind of risky bulk change the localization
++ * work is supposed to avoid, not cause.
++ */
++export async function getActiveLocale(): Promise<Locale> {
++  const cookieStore = await cookies();
++  const value = cookieStore.get(LOCALE_COOKIE_NAME)?.value;
++  return isSupportedLocale(value) ? value : DEFAULT_LOCALE;
++}
++
++export async function getMessages(locale: Locale) {
++  switch (locale) {
++    case "es":
++      return (await import("../../../messages/es.json")).default;
++    case "ar":
++      return (await import("../../../messages/ar.json")).default;
++    case "vi":
++      return (await import("../../../messages/vi.json")).default;
++    case "en":
++    default:
++      return (await import("../../../messages/en.json")).default;
++  }
++}
+diff --git a/src/lib/supabase/service-role.ts b/src/lib/supabase/service-role.ts
+new file mode 100644
+index 0000000..3903fc9
+--- /dev/null
++++ b/src/lib/supabase/service-role.ts
+@@ -0,0 +1,31 @@
++import "server-only";
++import { createClient as createSupabaseClient } from "@supabase/supabase-js";
++
++/**
++ * Service-role client — bypasses RLS entirely. This is intentional and
++ * narrow: the ONLY caller of this should be the guest-registration token
++ * route, after it has independently validated a hashed token against
++ * registration_links. Never call this from anything that trusts
++ * unvalidated user input to determine which rows get touched.
++ *
++ * Never import this into a Client Component or anything that ships to
++ * the browser — "server-only" above makes that a build error if
++ * attempted, not just a convention.
++ */
++export function createServiceRoleClient() {
++  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
++  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
++
++  if (!url || !serviceKey) {
++    throw new Error(
++      "Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY. " +
++      "Set SUPABASE_SERVICE_ROLE_KEY in Vercel/local env — found under " +
++      "Supabase Project Settings > API > service_role key. Never expose " +
++      "this as a NEXT_PUBLIC_* variable."
++    );
++  }
++
++  return createSupabaseClient(url, serviceKey, {
++    auth: { autoRefreshToken: false, persistSession: false },
++  });
++}
+diff --git a/supabase/hospitality-schema.sql b/supabase/hospitality-schema.sql
+new file mode 100644
+index 0000000..e137ebe
+--- /dev/null
++++ b/supabase/hospitality-schema.sql
+@@ -0,0 +1,350 @@
++-- CUE Hospitality — Schema Gate approved version
++-- Run manually in Supabase SQL Editor, same as every prior migration.
++--
++-- Security model (see docs/Architecture.md "Hospitality" section once
++-- committed): staff tables use is_business_member() RLS exactly like the
++-- rest of CUE. Guest-facing tables (guests, reservations, and everything
++-- under a reservation) have RLS enabled but NO anonymous-role policy —
++-- guest access happens exclusively through a server-side token-validation
++-- route using the service role key, never a browser Supabase client.
++
++-- ============================================================
++-- Rooms — minimum canonical room identity, not a PMS
++-- ============================================================
++create table if not exists public.rooms (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  room_number text not null,
++  floor text,
++  room_type text,
++  active boolean not null default true,
++  created_at timestamptz not null default now(),
++  unique (business_id, room_number)
++);
++
++alter table public.rooms enable row level security;
++create policy "Members manage rooms" on public.rooms for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.rooms to authenticated;
++
++-- ============================================================
++-- Guests — reusable person, no stay-specific data
++-- ============================================================
++create table if not exists public.guests (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  first_name text not null,
++  last_name text not null,
++  email text,
++  phone text,
++  address text,
++  preferred_language text not null default 'en',
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now()
++);
++
++alter table public.guests enable row level security;
++-- Staff-only. No anonymous policy — see security note above.
++create policy "Members manage guests" on public.guests for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.guests to authenticated;
++
++-- ============================================================
++-- Reservations — one stay
++-- ============================================================
++create table if not exists public.reservations (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  primary_guest_id uuid references public.guests(id) on delete set null,
++  confirmation_number text,
++  arrival_date date not null,
++  departure_date date not null,
++  guest_count integer not null default 1,
++  reservation_status text not null default 'pending' check (reservation_status in ('pending', 'verified', 'cancelled')),
++  registration_status text not null default 'not_started' check (registration_status in ('not_started', 'in_progress', 'completed')),
++  id_verification_status text not null default 'pending' check (id_verification_status in ('pending', 'verified')),
++  verified_by uuid references auth.users(id) on delete set null,
++  verified_at timestamptz,
++  room_id uuid references public.rooms(id) on delete set null,
++  key_status text not null default 'not_issued' check (key_status in ('not_issued', 'issued')),
++  checked_in_at timestamptz,
++  checked_out_at timestamptz,
++  preferred_language_override text,
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now()
++);
++
++alter table public.reservations enable row level security;
++create policy "Members manage reservations" on public.reservations for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.reservations to authenticated;
++
++-- ============================================================
++-- Reservation guests — authoritative stay membership (primary + additional)
++-- ============================================================
++create table if not exists public.reservation_guests (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  guest_id uuid not null references public.guests(id) on delete cascade,
++  role text not null default 'additional' check (role in ('primary', 'additional')),
++  created_at timestamptz not null default now(),
++  unique (reservation_id, guest_id)
++);
++
++alter table public.reservation_guests enable row level security;
++create policy "Members manage reservation guests" on public.reservation_guests for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.reservation_guests to authenticated;
++
++-- ============================================================
++-- Registration questions (per-business config) + answers (per-stay)
++-- ============================================================
++create table if not exists public.registration_questions (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  internal_key text not null,
++  field_type text not null default 'text' check (field_type in ('text', 'select', 'checkbox', 'date')),
++  required boolean not null default false,
++  active boolean not null default true,
++  sort_order integer not null default 0,
++  options jsonb not null default '[]'::jsonb,
++  created_at timestamptz not null default now(),
++  unique (business_id, internal_key)
++);
++
++alter table public.registration_questions enable row level security;
++create policy "Members manage registration questions" on public.registration_questions for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.registration_questions to authenticated;
++
++create table if not exists public.registration_answers (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  guest_id uuid references public.guests(id) on delete set null,
++  question_id uuid not null references public.registration_questions(id) on delete cascade,
++  value text,
++  answered_at timestamptz not null default now()
++);
++
++alter table public.registration_answers enable row level security;
++-- Staff read via is_business_member. Guest WRITE happens exclusively via
++-- the server-side token route (service role), which bypasses RLS by
++-- design at that layer — no anonymous policy needed or wanted here.
++create policy "Members manage registration answers" on public.registration_answers for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.registration_answers to authenticated;
++
++-- ============================================================
++-- Registration policies (immutable, versioned) + acknowledgements
++-- ============================================================
++create table if not exists public.registration_policies (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  policy_key text not null,
++  version integer not null,
++  required boolean not null default true,
++  active boolean not null default true,
++  effective_at timestamptz not null default now(),
++  created_at timestamptz not null default now(),
++  unique (business_id, policy_key, version)
++);
++
++alter table public.registration_policies enable row level security;
++create policy "Members manage registration policies" on public.registration_policies for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.registration_policies to authenticated;
++
++create table if not exists public.registration_acknowledgements (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  guest_id uuid references public.guests(id) on delete set null,
++  policy_id uuid not null references public.registration_policies(id) on delete restrict,
++  policy_version integer not null,
++  accepted boolean not null default false,
++  accepted_at timestamptz,
++  signature_file_id uuid references public.files(id) on delete set null,
++  created_at timestamptz not null default now()
++);
++
++alter table public.registration_acknowledgements enable row level security;
++create policy "Members manage registration acknowledgements" on public.registration_acknowledgements for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.registration_acknowledgements to authenticated;
++
++-- ============================================================
++-- Reservation vehicles + Valet (own lifecycle)
++-- ============================================================
++create table if not exists public.reservation_vehicles (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  guest_id uuid references public.guests(id) on delete set null,
++  make text,
++  model text,
++  color text,
++  license_plate text,
++  state_or_region text,
++  parking_needed boolean not null default false,
++  valet_needed boolean not null default false,
++  created_at timestamptz not null default now()
++);
++
++alter table public.reservation_vehicles enable row level security;
++create policy "Members manage reservation vehicles" on public.reservation_vehicles for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.reservation_vehicles to authenticated;
++
++create table if not exists public.valet_records (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  vehicle_id uuid not null references public.reservation_vehicles(id) on delete cascade,
++  status text not null default 'received' check (status in ('received', 'parked', 'requested', 'retrieval_queue', 'retrieving', 'delivered')),
++  parking_location text,
++  ticket_number text,
++  assigned_to uuid references auth.users(id) on delete set null,
++  received_at timestamptz not null default now(),
++  parked_at timestamptz,
++  requested_at timestamptz,
++  retrieving_at timestamptz,
++  delivered_at timestamptz,
++  notes text
++);
++
++alter table public.valet_records enable row level security;
++create policy "Members manage valet records" on public.valet_records for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.valet_records to authenticated;
++
++-- ============================================================
++-- Guest requests, Housekeeping, Maintenance, Shift handoff
++-- ============================================================
++create table if not exists public.guest_requests (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid references public.reservations(id) on delete set null,
++  room_id uuid references public.rooms(id) on delete set null,
++  category text not null default 'general',
++  status text not null default 'new' check (status in ('new', 'assigned', 'in_progress', 'completed')),
++  priority text not null default 'normal' check (priority in ('low', 'normal', 'high', 'urgent')),
++  assigned_to uuid references auth.users(id) on delete set null,
++  notes text,
++  related_entity_type text,
++  related_entity_id uuid,
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now()
++);
++
++alter table public.guest_requests enable row level security;
++create policy "Members manage guest requests" on public.guest_requests for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.guest_requests to authenticated;
++
++create table if not exists public.housekeeping_tasks (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  room_id uuid references public.rooms(id) on delete set null,
++  reservation_id uuid references public.reservations(id) on delete set null,
++  status text not null default 'needs_service' check (status in ('needs_service', 'assigned', 'in_progress', 'completed', 'ready')),
++  assigned_to uuid references auth.users(id) on delete set null,
++  priority text not null default 'normal' check (priority in ('low', 'normal', 'high', 'urgent')),
++  notes text,
++  photo_file_id uuid references public.files(id) on delete set null,
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now()
++);
++
++alter table public.housekeeping_tasks enable row level security;
++create policy "Members manage housekeeping tasks" on public.housekeeping_tasks for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.housekeeping_tasks to authenticated;
++
++create table if not exists public.maintenance_tickets (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  room_id uuid references public.rooms(id) on delete set null,
++  location text,
++  status text not null default 'reported' check (status in ('reported', 'assigned', 'in_progress', 'resolved')),
++  assigned_to uuid references auth.users(id) on delete set null,
++  priority text not null default 'normal' check (priority in ('low', 'normal', 'high', 'urgent')),
++  notes text,
++  photo_file_id uuid references public.files(id) on delete set null,
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now()
++);
++
++alter table public.maintenance_tickets enable row level security;
++create policy "Members manage maintenance tickets" on public.maintenance_tickets for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.maintenance_tickets to authenticated;
++
++create table if not exists public.shift_handoff_items (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  category text not null default 'general',
++  description text not null,
++  room_id uuid references public.rooms(id) on delete set null,
++  status text not null default 'open' check (status in ('open', 'resolved')),
++  created_by uuid references auth.users(id) on delete set null,
++  resolved_by uuid references auth.users(id) on delete set null,
++  resolved_at timestamptz,
++  created_at timestamptz not null default now()
++);
++
++alter table public.shift_handoff_items enable row level security;
++create policy "Members manage shift handoff items" on public.shift_handoff_items for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.shift_handoff_items to authenticated;
++
++-- ============================================================
++-- Content translations — hotel-authored multilingual content.
++-- Separate from next-intl (product/UI strings). Compatibility layer:
++-- reads check here first, fall back to existing _en/_es columns where
++-- those still exist. No bulk migration of old tables required now.
++-- ============================================================
++create table if not exists public.content_translations (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  entity_type text not null,
++  entity_id uuid not null,
++  locale text not null,
++  field_name text not null,
++  translated_text text not null,
++  is_approved boolean not null default false,
++  translated_by uuid references auth.users(id) on delete set null,
++  created_at timestamptz not null default now(),
++  updated_at timestamptz not null default now(),
++  unique (business_id, entity_type, entity_id, locale, field_name)
++);
++
++alter table public.content_translations enable row level security;
++create policy "Members manage content translations" on public.content_translations for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.content_translations to authenticated;
++
++-- ============================================================
++-- Registration links — hashed token, no raw token ever stored.
++-- Valid until expired, revoked, or completed (not single-use-on-open).
++-- ============================================================
++create table if not exists public.registration_links (
++  id uuid primary key default gen_random_uuid(),
++  business_id uuid not null references public.businesses(id) on delete cascade,
++  reservation_id uuid not null references public.reservations(id) on delete cascade,
++  token_hash text not null unique,
++  expires_at timestamptz not null,
++  revoked_at timestamptz,
++  last_used_at timestamptz,
++  completed_at timestamptz,
++  created_at timestamptz not null default now()
++);
++
++alter table public.registration_links enable row level security;
++-- Staff can create/view links (to generate the QR code / send it).
++-- NO anonymous policy — the guest-facing route validates the token
++-- server-side using the service role key, never a browser client.
++create policy "Members manage registration links" on public.registration_links for all
++  using (is_business_member(business_id)) with check (is_business_member(business_id));
++grant select, insert, update, delete on public.registration_links to authenticated;
