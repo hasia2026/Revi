@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
@@ -20,6 +20,10 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
   const router = useRouter();
   const [courses, setCourses] = useState(initial);
   const [addOpen, setAddOpen] = useState(false);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("new") === "1") setAddOpen(true);
+  }, [searchParams]);
   const [form, setForm] = useState({ title: "", description: "" });
   const [saving, setSaving] = useState(false);
 

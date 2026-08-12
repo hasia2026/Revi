@@ -1,7 +1,7 @@
 "use client";
 
-import { Bell, Search } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
+import { NotificationsBell } from "@/components/layout/NotificationsBell";
 
 interface TopBarProps {
   title: string;
@@ -20,9 +20,7 @@ export function TopBar({ title, subtitle, userName, userEmail, actions }: TopBar
       </div>
       <div className="flex items-center gap-2">
         {actions}
-        <button className="p-2 rounded-lg text-charcoal-400 hover:bg-charcoal-50 hover:text-charcoal-700 transition-colors">
-          <Bell className="h-5 w-5" />
-        </button>
+        <NotificationsBell />
         <Avatar name={userName || userEmail} size="sm" />
       </div>
     </header>

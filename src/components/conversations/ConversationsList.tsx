@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
@@ -45,6 +46,10 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [addOpen, setAddOpen] = useState(false);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("new") === "1") setAddOpen(true);
+  }, [searchParams]);
   const [form, setForm] = useState({ channel: "chat", subject: "", status: "open" });
   const [saving, setSaving] = useState(false);
 

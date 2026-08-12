@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
@@ -25,6 +25,10 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
 
   const [catOpen, setCatOpen] = useState(false);
   const [artOpen, setArtOpen] = useState(false);
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("new") === "1") setArtOpen(true);
+  }, [searchParams]);
   const [editArticle, setEditArticle] = useState<KnowledgeArticle | null>(null);
 
   const [catForm, setCatForm] = useState({ name: "", description: "" });
