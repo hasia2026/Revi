@@ -1,0 +1,171 @@
+diff --git a/src/components/cu3/ModuleFramework.tsx b/src/components/cu3/ModuleFramework.tsx
+index 8a019bc..9b17511 100644
+--- a/src/components/cu3/ModuleFramework.tsx
++++ b/src/components/cu3/ModuleFramework.tsx
+@@ -1,11 +1,8 @@
+-"use client";
+-
+-import { useState } from "react";
+-import type { ReactNode } from "react";
+ import type { ModuleConfig } from "@/lib/cu3/module-framework";
++import type { ReactNode } from "react";
+ import { ModuleHero } from "./sections/ModuleHero";
+ import { ModuleOverview } from "./sections/ModuleOverview";
+-import { ModuleAIAssistant } from "./sections/ModuleAIAssistant";
++import { ModuleAssistantController } from "./sections/ModuleAssistantController";
+ import { ModuleQuickActions } from "./sections/ModuleQuickActions";
+ import { ModuleWorkspace } from "./sections/ModuleWorkspace";
+ import { ModuleInsights } from "./sections/ModuleInsights";
+@@ -14,22 +11,28 @@ import { ModuleRelatedModules } from "./sections/ModuleRelatedModules";
+ import { ModuleActivity } from "./sections/ModuleActivity";
+ 
+ /**
+- * Renders the fixed CU³ section order: Hero, Overview, AI Assistant (entry
+- * point in hero + slide-over), Quick Actions, Workspace, Insights,
+- * Analytics, Related Modules, Activity.
++ * A Server Component on purpose. Renders the fixed CU³ section order:
++ * Hero, Overview, AI Assistant trigger, Quick Actions, Workspace,
++ * Insights, Analytics, Related Modules, Activity.
++ *
++ * ModuleConfig carries Lucide icon COMPONENTS (functions) in several
++ * fields - those are not serializable across a Server->Client Component
++ * prop boundary. Every section here except the assistant trigger is a
++ * plain Server Component for exactly that reason; the one genuinely
++ * interactive piece (opening/closing the assistant panel) is isolated
++ * into ModuleAssistantController, which only receives the serializable
++ * {name, tagline} persona object, not any part of `config` itself.
+  *
+  * A module page supplies a ModuleConfig plus its Workspace content as
+- * children. Everything else is guaranteed by this component — a new
+- * module cannot accidentally skip a section or reorder the framework,
+- * which is the whole point of it being a framework and not a convention
+- * every page has to remember to follow.
++ * children. Everything else is guaranteed by this component.
+  */
+ export function ModuleFramework({ config, children }: { config: ModuleConfig; children: ReactNode }) {
+-  const [assistantOpen, setAssistantOpen] = useState(false);
+-
+   return (
+     <div className="max-w-6xl mx-auto px-6 py-6 space-y-5">
+-      <ModuleHero config={config} onOpenAssistant={() => setAssistantOpen(true)} />
++      <ModuleHero
++        config={config}
++        assistantTrigger={<ModuleAssistantController persona={config.aiAssistant} />}
++      />
+       <ModuleOverview cards={config.overviewCards} />
+       <ModuleQuickActions actions={config.quickActions} />
+       <ModuleWorkspace>{children}</ModuleWorkspace>
+@@ -37,12 +40,6 @@ export function ModuleFramework({ config, children }: { config: ModuleConfig; ch
+       <ModuleAnalytics>{config.analytics}</ModuleAnalytics>
+       <ModuleRelatedModules modules={config.relatedModules} />
+       <ModuleActivity items={config.activity} />
+-
+-      <ModuleAIAssistant
+-        persona={config.aiAssistant}
+-        open={assistantOpen}
+-        onClose={() => setAssistantOpen(false)}
+-      />
+     </div>
+   );
+ }
+diff --git a/src/components/cu3/sections/ModuleAssistantController.tsx b/src/components/cu3/sections/ModuleAssistantController.tsx
+new file mode 100644
+index 0000000..bd6adc3
+--- /dev/null
++++ b/src/components/cu3/sections/ModuleAssistantController.tsx
+@@ -0,0 +1,36 @@
++"use client";
++
++import { useState } from "react";
++import { Sparkles } from "lucide-react";
++import { ModuleAIAssistant } from "./ModuleAIAssistant";
++import type { AIAssistantPersona } from "@/lib/cu3/module-framework";
++
++/**
++ * Isolates the ONLY real interactivity in the module framework (opening/
++ * closing the assistant panel) into its own client boundary. This exists
++ * specifically so ModuleFramework and ModuleHero can be Server Components
++ * — they render icon components (functions) from ModuleConfig directly,
++ * which Next.js cannot serialize across a server->client prop boundary.
++ * `persona` here is a plain {name, tagline} object, which is serializable,
++ * so this is the only place a client/server boundary needs to exist.
++ */
++export function ModuleAssistantController({ persona }: { persona: AIAssistantPersona }) {
++  const [open, setOpen] = useState(false);
++
++  return (
++    <>
++      <button
++        type="button"
++        onClick={() => setOpen(true)}
++        className="flex items-center gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-2.5 text-sm font-medium text-charcoal-800 hover:bg-gold-100 transition-colors flex-shrink-0"
++      >
++        <Sparkles className="h-4 w-4 text-gold-600" />
++        <span>
++          Ask <span className="font-semibold">{persona.name}</span>
++        </span>
++      </button>
++
++      <ModuleAIAssistant persona={persona} open={open} onClose={() => setOpen(false)} />
++    </>
++  );
++}
+diff --git a/src/components/cu3/sections/ModuleHero.tsx b/src/components/cu3/sections/ModuleHero.tsx
+index 65cb201..9d7b604 100644
+--- a/src/components/cu3/sections/ModuleHero.tsx
++++ b/src/components/cu3/sections/ModuleHero.tsx
+@@ -1,6 +1,6 @@
+-import { Sparkles } from "lucide-react";
+ import { Badge } from "@/components/ui/Badge";
+ import type { ModuleConfig } from "@/lib/cu3/module-framework";
++import type { ReactNode } from "react";
+ 
+ const STATUS_LABEL: Record<ModuleConfig["status"], string> = {
+   active: "Active",
+@@ -14,7 +14,7 @@ const STATUS_VARIANT: Record<ModuleConfig["status"], "success" | "gold" | "defau
+   "coming-soon": "default",
+ };
+ 
+-export function ModuleHero({ config, onOpenAssistant }: { config: ModuleConfig; onOpenAssistant?: () => void }) {
++export function ModuleHero({ config, assistantTrigger }: { config: ModuleConfig; assistantTrigger: ReactNode }) {
+   const Icon = config.icon;
+ 
+   return (
+@@ -36,16 +36,7 @@ export function ModuleHero({ config, onOpenAssistant }: { config: ModuleConfig;
+           </div>
+         </div>
+ 
+-        <button
+-          type="button"
+-          onClick={onOpenAssistant}
+-          className="flex items-center gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-2.5 text-sm font-medium text-charcoal-800 hover:bg-gold-100 transition-colors flex-shrink-0"
+-        >
+-          <Sparkles className="h-4 w-4 text-gold-600" />
+-          <span>
+-            Ask <span className="font-semibold">{config.aiAssistant.name}</span>
+-          </span>
+-        </button>
++        {assistantTrigger}
+       </div>
+     </section>
+   );
+diff --git a/src/lib/cu3/module-framework.ts b/src/lib/cu3/module-framework.ts
+index 3164c16..05e624c 100644
+--- a/src/lib/cu3/module-framework.ts
++++ b/src/lib/cu3/module-framework.ts
+@@ -36,6 +36,15 @@ export type QuickAction = {
+   label: string;
+   icon: LucideIcon;
+   href?: string;
++  /**
++   * Currently unused by any real page config (verified before this
++   * comment was written). If you add one: ModuleQuickActions is a
++   * Server Component today, which cannot attach a real onClick handler.
++   * Give it the same treatment as ModuleAssistantController - isolate
++   * the interactive button into its own small "use client" component
++   * that receives only serializable props, not the raw handler mixed
++   * in with icon components.
++   */
+   onClick?: () => void;
+ };
+ 

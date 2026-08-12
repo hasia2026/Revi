@@ -36,6 +36,15 @@ export type QuickAction = {
   label: string;
   icon: LucideIcon;
   href?: string;
+  /**
+   * Currently unused by any real page config (verified before this
+   * comment was written). If you add one: ModuleQuickActions is a
+   * Server Component today, which cannot attach a real onClick handler.
+   * Give it the same treatment as ModuleAssistantController - isolate
+   * the interactive button into its own small "use client" component
+   * that receives only serializable props, not the raw handler mixed
+   * in with icon components.
+   */
   onClick?: () => void;
 };
 

@@ -1,6 +1,6 @@
-import { Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import type { ModuleConfig } from "@/lib/cu3/module-framework";
+import type { ReactNode } from "react";
 
 const STATUS_LABEL: Record<ModuleConfig["status"], string> = {
   active: "Active",
@@ -14,7 +14,7 @@ const STATUS_VARIANT: Record<ModuleConfig["status"], "success" | "gold" | "defau
   "coming-soon": "default",
 };
 
-export function ModuleHero({ config, onOpenAssistant }: { config: ModuleConfig; onOpenAssistant?: () => void }) {
+export function ModuleHero({ config, assistantTrigger }: { config: ModuleConfig; assistantTrigger: ReactNode }) {
   const Icon = config.icon;
 
   return (
@@ -36,16 +36,7 @@ export function ModuleHero({ config, onOpenAssistant }: { config: ModuleConfig; 
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onOpenAssistant}
-          className="flex items-center gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-2.5 text-sm font-medium text-charcoal-800 hover:bg-gold-100 transition-colors flex-shrink-0"
-        >
-          <Sparkles className="h-4 w-4 text-gold-600" />
-          <span>
-            Ask <span className="font-semibold">{config.aiAssistant.name}</span>
-          </span>
-        </button>
+        {assistantTrigger}
       </div>
     </section>
   );
