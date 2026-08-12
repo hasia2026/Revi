@@ -13,7 +13,7 @@ import { Building2, MapPin, Phone, Globe, Check } from "lucide-react";
 const INDUSTRIES = [
   "Salon & Beauty", "Spa & Wellness", "Fitness & Gym", "Home Services",
   "Cleaning Services", "Auto Repair", "Pet Services", "Tutoring & Education",
-  "Photography", "Events & Catering", "Other",
+  "Photography", "Events & Catering", "Hospitality (Hotels)", "Other",
 ];
 
 const schema = z.object({
