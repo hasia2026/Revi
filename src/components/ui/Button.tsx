@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import type { ButtonHTMLAttributes } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost" | "danger" | "gold";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "gold" | "cue";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
 }
@@ -31,6 +31,8 @@ export function Button({
       "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
     gold:
       "gold-gradient text-white shadow-gold-glow hover:opacity-90 active:opacity-80",
+    cue:
+      "cue-gradient text-white shadow-cue-glow-sm hover:opacity-90 active:opacity-80",
   };
 
   const sizes = {

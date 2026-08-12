@@ -59,7 +59,7 @@ export default async function DashboardPage() {
         userName={userName}
         userEmail={user.email}
       />
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+      <div className="flex-1 overflow-y-auto cue-bg p-6 space-y-6">
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard label="Total Leads" value={totalLeads} sub={`${newLeads} new`} icon={Users} color="gold" />

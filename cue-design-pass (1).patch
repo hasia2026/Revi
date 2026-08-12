@@ -1,0 +1,668 @@
+diff --git a/src/app/(auth)/layout.tsx b/src/app/(auth)/layout.tsx
+index be4e7e2..5e9186c 100644
+--- a/src/app/(auth)/layout.tsx
++++ b/src/app/(auth)/layout.tsx
+@@ -1,13 +1,13 @@
+ export default function AuthLayout({ children }: { children: React.ReactNode }) {
+   return (
+-    <div className="min-h-screen bg-charcoal-950 flex items-center justify-center p-4">
++    <div className="min-h-screen cue-bg flex items-center justify-center p-4">
+       <div className="w-full max-w-md">
+         {/* Logo */}
+         <div className="text-center mb-8">
+-          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl gold-gradient shadow-gold-glow mb-4">
++          <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl cue-gradient shadow-cue-glow mb-4">
+             <span className="text-white font-bold text-2xl">C</span>
+           </div>
+-          <h1 className="text-2xl font-bold text-white">CUE</h1>
++          <h1 className="text-2xl font-bold cue-text">CUE</h1>
+           <p className="text-charcoal-400 text-sm mt-1">by HASI Technologies</p>
+         </div>
+         {children}
+diff --git a/src/app/(auth)/login/page.tsx b/src/app/(auth)/login/page.tsx
+index 62876d1..bbd0532 100644
+--- a/src/app/(auth)/login/page.tsx
++++ b/src/app/(auth)/login/page.tsx
+@@ -46,7 +46,7 @@ export default function LoginPage() {
+   }
+ 
+   return (
+-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
++    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
+       <h2 className="text-xl font-semibold text-white mb-1">Welcome back</h2>
+       <p className="text-charcoal-400 text-sm mb-7">Sign in to your CUE account</p>
+ 
+@@ -58,7 +58,7 @@ export default function LoginPage() {
+             type="email"
+             placeholder="you@example.com"
+             autoComplete="email"
+-            className="w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors"
++            className="w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors"
+           />
+           {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email.message}</p>}
+         </div>
+@@ -71,7 +71,7 @@ export default function LoginPage() {
+               type={showPassword ? "text" : "password"}
+               placeholder="••••••••"
+               autoComplete="current-password"
+-              className="w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors pr-10"
++              className="w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors pr-10"
+             />
+             <button
+               type="button"
+@@ -84,14 +84,14 @@ export default function LoginPage() {
+           {errors.password && <p className="mt-1.5 text-xs text-red-400">{errors.password.message}</p>}
+         </div>
+ 
+-        <Button type="submit" variant="gold" size="lg" loading={isSubmitting} className="w-full mt-2">
++        <Button type="submit" variant="cue" size="lg" loading={isSubmitting} className="w-full mt-2">
+           Sign in
+         </Button>
+       </form>
+ 
+       <p className="text-center text-sm text-charcoal-500 mt-6">
+         Don&apos;t have an account?{" "}
+-        <Link href="/signup" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">
++        <Link href="/signup" className="text-cue-blue-400 hover:text-cue-blue-300 font-medium transition-colors">
+           Create one
+         </Link>
+       </p>
+diff --git a/src/app/(dashboard)/dashboard/page.tsx b/src/app/(dashboard)/dashboard/page.tsx
+index 666fc78..50f57e2 100644
+--- a/src/app/(dashboard)/dashboard/page.tsx
++++ b/src/app/(dashboard)/dashboard/page.tsx
+@@ -59,7 +59,7 @@ export default async function DashboardPage() {
+         userName={userName}
+         userEmail={user.email}
+       />
+-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
++      <div className="flex-1 overflow-y-auto cue-bg p-6 space-y-6">
+         {/* Stats */}
+         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+           <StatCard label="Total Leads" value={totalLeads} sub={`${newLeads} new`} icon={Users} color="gold" />
+diff --git a/src/app/globals.css b/src/app/globals.css
+index 9c6e208..a79a055 100644
+--- a/src/app/globals.css
++++ b/src/app/globals.css
+@@ -63,4 +63,43 @@
+   .card-hover {
+     @apply card transition-shadow duration-200 hover:shadow-card-hover;
+   }
++
++  /* ============================================================
++     CU³ evolution — dark/glassmorphism treatment. Applied to Login,
++     Navigation, and Dashboard only (see tailwind.config.ts note).
++     Not the default theme for the rest of the app.
++     ============================================================ */
++
++  .cue-bg {
++    background: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(59,130,246,0.15), transparent),
++                radial-gradient(ellipse 60% 40% at 90% 90%, rgba(249,115,22,0.1), transparent),
++                #0A0A0C;
++  }
++
++  .cue-gradient {
++    background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #F97316 100%);
++  }
++
++  .cue-text {
++    background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 50%, #FB923C 100%);
++    -webkit-background-clip: text;
++    -webkit-text-fill-color: transparent;
++    background-clip: text;
++  }
++
++  .glass-panel {
++    background: rgba(255, 255, 255, 0.04);
++    backdrop-filter: blur(20px);
++    -webkit-backdrop-filter: blur(20px);
++    border: 1px solid rgba(255, 255, 255, 0.08);
++  }
++
++  .glass-panel-hover {
++    @apply glass-panel transition-colors duration-200;
++  }
++
++  .glass-panel-hover:hover {
++    background: rgba(255, 255, 255, 0.07);
++    border-color: rgba(255, 255, 255, 0.14);
++  }
+ }
+diff --git a/src/components/dashboard/HighestValueLeads.tsx b/src/components/dashboard/HighestValueLeads.tsx
+index d5289ad..65e5fb0 100644
+--- a/src/components/dashboard/HighestValueLeads.tsx
++++ b/src/components/dashboard/HighestValueLeads.tsx
+@@ -13,34 +13,34 @@ export function HighestValueLeads({ leads, newCount }: { leads: Lead[]; newCount
+     .slice(0, 5);
+ 
+   return (
+-    <div className="card">
+-      <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-100">
++    <div className="glass-panel rounded-xl">
++      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+         <div>
+-          <h3 className="font-semibold text-charcoal-900 text-sm">Highest-Value Leads</h3>
+-          <p className="text-xs text-charcoal-400 mt-0.5">{newCount} new · who to contact first</p>
++          <h3 className="font-semibold text-white text-sm">Highest-Value Leads</h3>
++          <p className="text-xs text-charcoal-500 mt-0.5">{newCount} new · who to contact first</p>
+         </div>
+-        <Link href="/leads" className="text-xs text-gold-600 hover:text-gold-700 font-medium flex items-center gap-1">
++        <Link href="/leads" className="text-xs text-cue-blue-400 hover:text-cue-blue-300 font-medium flex items-center gap-1">
+           View all <ArrowRight className="h-3 w-3" />
+         </Link>
+       </div>
+ 
+       {scored.length === 0 ? (
+-        <EmptyState icon={TrendingUp} title="No leads yet" description="Leads worth prioritizing will show up here." />
++        <EmptyState icon={TrendingUp} title="No leads yet" description="Leads worth prioritizing will show up here." dark />
+       ) : (
+-        <ul className="divide-y divide-charcoal-50">
++        <ul className="divide-y divide-white/5">
+           {scored.map(({ lead, score }) => {
+             const urgency = urgencyLabel(lead);
+             return (
+               <li key={lead.id}>
+-                <Link href={`/leads/${lead.id}`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-charcoal-50/50 transition-colors">
++                <Link href={`/leads/${lead.id}`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/[0.03] transition-colors">
+                   <Avatar name={lead.full_name} size="sm" />
+                   <div className="flex-1 min-w-0">
+-                    <p className="text-sm font-medium text-charcoal-800 truncate">{lead.full_name}</p>
+-                    <p className="text-xs text-charcoal-400 truncate">{lead.service_address || lead.notes || "No details yet"}</p>
++                    <p className="text-sm font-medium text-white truncate">{lead.full_name}</p>
++                    <p className="text-xs text-charcoal-500 truncate">{lead.service_address || lead.notes || "No details yet"}</p>
+                   </div>
+                   <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                     <Badge variant={urgency.tone}>{urgency.label}</Badge>
+-                    <span className="text-xs text-charcoal-400">{score}/100</span>
++                    <span className="text-xs text-charcoal-500">{score}/100</span>
+                   </div>
+                 </Link>
+               </li>
+diff --git a/src/components/dashboard/PrioritiesCard.tsx b/src/components/dashboard/PrioritiesCard.tsx
+index 768f6bf..dcb6f29 100644
+--- a/src/components/dashboard/PrioritiesCard.tsx
++++ b/src/components/dashboard/PrioritiesCard.tsx
+@@ -103,10 +103,10 @@ export function PrioritiesCard({
+   }
+ 
+   return (
+-    <div className="card">
+-      <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-100">
++    <div className="glass-panel rounded-xl">
++      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+         <div>
+-          <h3 className="font-semibold text-charcoal-900 text-sm">Today&apos;s Priorities</h3>
++          <h3 className="font-semibold text-white text-sm">Today&apos;s Priorities</h3>
+           <p className="text-xs text-charcoal-400 mt-0.5">{openItems.length} open</p>
+         </div>
+         <Button size="sm" onClick={() => setOpen(true)}>
+@@ -120,20 +120,21 @@ export function PrioritiesCard({
+           title="Nothing on your plate"
+           description="Add a priority manually, or check back once CUE can recommend some."
+           action={<Button size="sm" onClick={() => setOpen(true)}>Add a priority</Button>}
++          dark
+         />
+       ) : (
+-        <ul className="divide-y divide-charcoal-50">
++        <ul className="divide-y divide-white/5">
+           {openItems.map((priority) => (
+             <li key={priority.id} className="flex items-start gap-3 px-5 py-3.5 group">
+               <button
+                 onClick={() => toggleComplete(priority)}
+-                className="mt-0.5 h-5 w-5 rounded-full border-2 border-charcoal-300 hover:border-gold-500 flex-shrink-0 transition-colors"
++                className="mt-0.5 h-5 w-5 rounded-full border-2 border-white/20 hover:border-cue-blue-400 flex-shrink-0 transition-colors"
+                 aria-label="Mark complete"
+               />
+               <div className="flex-1 min-w-0">
+                 <div className="flex items-center gap-2 flex-wrap">
+-                  <p className="text-sm font-medium text-charcoal-800">{priority.title}</p>
+-                  <Badge variant={priority.source === "cue" ? "gold" : "default"} size="sm">
++                  <p className="text-sm font-medium text-white">{priority.title}</p>
++                  <Badge variant={priority.source === "cue" ? "cue" : "default"} size="sm">
+                     {priority.source === "cue" ? "Recommended by CUE" : "Added by you"}
+                   </Badge>
+                 </div>
+@@ -152,14 +153,14 @@ export function PrioritiesCard({
+               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+                 <button
+                   onClick={() => togglePin(priority)}
+-                  className={cn("p-1.5 rounded-md hover:bg-charcoal-100", priority.pinned ? "text-gold-500" : "text-charcoal-300")}
++                  className={cn("p-1.5 rounded-md hover:bg-white/10", priority.pinned ? "text-cue-orange-400" : "text-charcoal-500")}
+                   title="Pin"
+                 >
+                   <Pin className="h-3.5 w-3.5" />
+                 </button>
+                 <button
+                   onClick={() => handleDelete(priority.id)}
+-                  className="p-1.5 rounded-md text-charcoal-300 hover:bg-red-50 hover:text-red-500"
++                  className="p-1.5 rounded-md text-charcoal-500 hover:bg-red-500/10 hover:text-red-400"
+                   title="Delete"
+                 >
+                   <Trash2 className="h-3.5 w-3.5" />
+diff --git a/src/components/dashboard/QuickActions.tsx b/src/components/dashboard/QuickActions.tsx
+index 2f2930d..5dd6fd3 100644
+--- a/src/components/dashboard/QuickActions.tsx
++++ b/src/components/dashboard/QuickActions.tsx
+@@ -3,9 +3,9 @@ import { GENERIC_QUICK_ACTIONS, type QuickActionConfig } from "@/lib/cu3/quick-a
+ 
+ export function QuickActions({ actions = GENERIC_QUICK_ACTIONS }: { actions?: QuickActionConfig[] }) {
+   return (
+-    <div className="card">
+-      <div className="px-5 py-4 border-b border-charcoal-100">
+-        <h3 className="font-semibold text-charcoal-900 text-sm">Quick Actions</h3>
++    <div className="glass-panel rounded-xl">
++      <div className="px-5 py-4 border-b border-white/10">
++        <h3 className="font-semibold text-white text-sm">Quick Actions</h3>
+       </div>
+       <div className="p-4 grid grid-cols-2 sm:grid-cols-5 gap-2">
+         {actions.map((action) =>
+@@ -13,18 +13,18 @@ export function QuickActions({ actions = GENERIC_QUICK_ACTIONS }: { actions?: Qu
+             <Link
+               key={action.label}
+               href={action.href}
+-              className="flex flex-col items-center gap-2 rounded-lg border border-charcoal-100 px-3 py-4 text-center hover:border-gold-300 hover:bg-gold-50/50 transition-colors"
++              className="flex flex-col items-center gap-2 rounded-lg border border-white/10 bg-white/[0.02] px-3 py-4 text-center hover:border-cue-blue-400/40 hover:bg-white/5 transition-colors"
+             >
+-              <action.icon className="h-5 w-5 text-charcoal-500" />
+-              <span className="text-xs font-medium text-charcoal-700">{action.label}</span>
++              <action.icon className="h-5 w-5 text-cue-blue-400" />
++              <span className="text-xs font-medium text-charcoal-200">{action.label}</span>
+             </Link>
+           ) : (
+             <div
+               key={action.label}
+               title={action.disabledReason}
+-              className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-charcoal-200 px-3 py-4 text-center opacity-50 cursor-not-allowed"
++              className="flex flex-col items-center gap-2 rounded-lg border border-dashed border-white/10 px-3 py-4 text-center opacity-50 cursor-not-allowed"
+             >
+-              <action.icon className="h-5 w-5 text-charcoal-400" />
++              <action.icon className="h-5 w-5 text-charcoal-500" />
+               <span className="text-xs font-medium text-charcoal-500">{action.label}</span>
+             </div>
+           )
+diff --git a/src/components/dashboard/RecentConversations.tsx b/src/components/dashboard/RecentConversations.tsx
+index a615f79..4858298 100644
+--- a/src/components/dashboard/RecentConversations.tsx
++++ b/src/components/dashboard/RecentConversations.tsx
+@@ -14,25 +14,25 @@ interface ConvRow {
+ 
+ export function RecentConversations({ conversations }: { conversations: ConvRow[] }) {
+   return (
+-    <div className="card">
+-      <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-100">
+-        <h3 className="font-semibold text-charcoal-900 text-sm">Recent Conversations</h3>
+-        <Link href="/conversations" className="text-xs text-gold-600 hover:text-gold-700 font-medium flex items-center gap-1">
++    <div className="glass-panel rounded-xl">
++      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
++        <h3 className="font-semibold text-white text-sm">Recent Conversations</h3>
++        <Link href="/conversations" className="text-xs text-cue-blue-400 hover:text-cue-blue-300 font-medium flex items-center gap-1">
+           View all <ArrowRight className="h-3 w-3" />
+         </Link>
+       </div>
+       {conversations.length === 0 ? (
+-        <EmptyState icon={MessageSquare} title="No conversations yet" description="Conversations will appear here." />
++        <EmptyState icon={MessageSquare} title="No conversations yet" description="Conversations will appear here." dark />
+       ) : (
+-        <ul className="divide-y divide-charcoal-50">
++        <ul className="divide-y divide-white/5">
+           {conversations.map((conv) => (
+             <li key={conv.id}>
+-              <Link href={`/conversations/${conv.id}`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-charcoal-50/50 transition-colors">
+-                <div className="h-9 w-9 rounded-lg bg-charcoal-100 flex items-center justify-center text-base flex-shrink-0">
++              <Link href={`/conversations/${conv.id}`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-white/[0.03] transition-colors">
++                <div className="h-9 w-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-base flex-shrink-0">
+                   💬
+                 </div>
+                 <div className="flex-1 min-w-0">
+-                  <p className="text-sm font-medium text-charcoal-800 truncate">
++                  <p className="text-sm font-medium text-white truncate">
+                     {conv.leads?.full_name ?? conv.subject ?? "Unnamed"}
+                   </p>
+                 </div>
+@@ -40,7 +40,7 @@ export function RecentConversations({ conversations }: { conversations: ConvRow[
+                   <Badge variant={conv.status === "open" ? "info" : conv.status === "resolved" ? "success" : "default"}>
+                     {conv.status}
+                   </Badge>
+-                  <span className="text-xs text-charcoal-400">{formatRelativeTime(conv.updated_at)}</span>
++                  <span className="text-xs text-charcoal-500">{formatRelativeTime(conv.updated_at)}</span>
+                 </div>
+               </Link>
+             </li>
+diff --git a/src/components/dashboard/StatCard.tsx b/src/components/dashboard/StatCard.tsx
+index 34fedc7..c2328d1 100644
+--- a/src/components/dashboard/StatCard.tsx
++++ b/src/components/dashboard/StatCard.tsx
+@@ -10,24 +10,24 @@ interface StatCardProps {
+ }
+ 
+ const colors = {
+-  gold: { bg: "bg-gold-50", icon: "text-gold-500", border: "border-gold-100" },
+-  blue: { bg: "bg-blue-50", icon: "text-blue-500", border: "border-blue-100" },
+-  green: { bg: "bg-emerald-50", icon: "text-emerald-500", border: "border-emerald-100" },
+-  purple: { bg: "bg-purple-50", icon: "text-purple-500", border: "border-purple-100" },
++  gold: { icon: "text-cue-orange-400", glow: "shadow-cue-glow-sm" },
++  blue: { icon: "text-cue-blue-400", glow: "shadow-cue-glow-sm" },
++  green: { icon: "text-emerald-400", glow: "" },
++  purple: { icon: "text-cue-purple-400", glow: "" },
+ };
+ 
+ export function StatCard({ label, value, sub, icon: Icon, color = "gold" }: StatCardProps) {
+   const c = colors[color];
+   return (
+-    <div className="card p-5">
++    <div className="glass-panel-hover rounded-xl p-5">
+       <div className="flex items-center justify-between mb-4">
+-        <p className="text-sm font-medium text-charcoal-500">{label}</p>
+-        <div className={cn("h-9 w-9 rounded-lg flex items-center justify-center border", c.bg, c.border)}>
++        <p className="text-sm font-medium text-charcoal-400">{label}</p>
++        <div className={cn("h-9 w-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center", c.glow)}>
+           <Icon className={cn("h-4.5 w-4.5", c.icon)} style={{ height: "18px", width: "18px" }} />
+         </div>
+       </div>
+-      <p className="text-3xl font-bold text-charcoal-900">{value.toLocaleString()}</p>
+-      {sub && <p className="text-xs text-charcoal-400 mt-1">{sub}</p>}
++      <p className="text-3xl font-bold text-white">{value.toLocaleString()}</p>
++      {sub && <p className="text-xs text-charcoal-500 mt-1">{sub}</p>}
+     </div>
+   );
+ }
+diff --git a/src/components/layout/NotificationsBell.tsx b/src/components/layout/NotificationsBell.tsx
+index b6dbdf1..2f533e0 100644
+--- a/src/components/layout/NotificationsBell.tsx
++++ b/src/components/layout/NotificationsBell.tsx
+@@ -66,7 +66,7 @@ export function NotificationsBell() {
+     <div className="relative" ref={ref}>
+       <button
+         onClick={() => setOpen((o) => !o)}
+-        className="relative p-2 rounded-lg text-charcoal-400 hover:bg-charcoal-50 hover:text-charcoal-700 transition-colors"
++        className="relative p-2 rounded-lg text-charcoal-400 hover:bg-white/10 hover:text-white transition-colors"
+       >
+         <Bell className="h-5 w-5" />
+         {unreadCount > 0 && (
+@@ -75,9 +75,9 @@ export function NotificationsBell() {
+       </button>
+ 
+       {open && (
+-        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-xl border border-charcoal-100 shadow-raised z-50 overflow-hidden">
+-          <div className="px-4 py-3 border-b border-charcoal-100">
+-            <h3 className="text-sm font-semibold text-charcoal-900">Notifications</h3>
++        <div className="absolute right-0 top-full mt-2 w-80 glass-panel rounded-xl shadow-cue-glow z-50 overflow-hidden">
++          <div className="px-4 py-3 border-b border-white/10">
++            <h3 className="text-sm font-semibold text-white">Notifications</h3>
+           </div>
+           <div className="max-h-96 overflow-y-auto">
+             {notifications.length === 0 ? (
+@@ -86,23 +86,24 @@ export function NotificationsBell() {
+                 title="Nothing yet"
+                 description="Alerts, assignments, and deadlines will show up here as CUE's modules go live."
+                 className="py-10"
++                dark
+               />
+             ) : (
+-              <ul className="divide-y divide-charcoal-50">
++              <ul className="divide-y divide-white/5">
+                 {notifications.map((n) => (
+                   <li key={n.id}>
+                     <button
+                       onClick={() => markRead(n)}
+                       className={cn(
+-                        "w-full text-left px-4 py-3 hover:bg-charcoal-50/50 transition-colors flex gap-2",
+-                        !n.read && "bg-gold-50/40"
++                        "w-full text-left px-4 py-3 hover:bg-white/[0.03] transition-colors flex gap-2",
++                        !n.read && "bg-cue-blue-500/[0.06]"
+                       )}
+                     >
+-                      {!n.read && <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-gold-500 flex-shrink-0" />}
++                      {!n.read && <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-cue-orange-400 flex-shrink-0" />}
+                       <div className={cn("flex-1 min-w-0", n.read && "pl-3.5")}>
+-                        <p className="text-sm font-medium text-charcoal-800">{n.title}</p>
+-                        {n.body && <p className="text-xs text-charcoal-500 mt-0.5">{n.body}</p>}
+-                        <p className="text-xs text-charcoal-400 mt-1">{formatRelativeTime(n.created_at)}</p>
++                        <p className="text-sm font-medium text-white">{n.title}</p>
++                        {n.body && <p className="text-xs text-charcoal-400 mt-0.5">{n.body}</p>}
++                        <p className="text-xs text-charcoal-500 mt-1">{formatRelativeTime(n.created_at)}</p>
+                       </div>
+                     </button>
+                   </li>
+@@ -110,6 +111,7 @@ export function NotificationsBell() {
+               </ul>
+             )}
+           </div>
++        </div>
+       )}
+     </div>
+   );
+diff --git a/src/components/layout/Sidebar.tsx b/src/components/layout/Sidebar.tsx
+index b080b45..acdc207 100644
+--- a/src/components/layout/Sidebar.tsx
++++ b/src/components/layout/Sidebar.tsx
+@@ -111,16 +111,16 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+   return (
+     <aside
+       className={cn(
+-        "relative flex flex-col bg-charcoal-900 text-white transition-all duration-300 flex-shrink-0",
++        "relative flex flex-col cue-bg text-white transition-all duration-300 flex-shrink-0",
+         collapsed ? "w-16" : "w-64"
+       )}
+     >
+       {/* Logo */}
+       <div className={cn(
+-        "flex items-center gap-3 px-4 py-5 border-b border-charcoal-700",
++        "flex items-center gap-3 px-4 py-5 border-b border-white/10",
+         collapsed && "justify-center px-0"
+       )}>
+-        <div className="h-8 w-8 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
++        <div className="h-8 w-8 rounded-lg cue-gradient shadow-cue-glow-sm flex items-center justify-center flex-shrink-0">
+           <span className="text-white font-bold text-sm">C</span>
+         </div>
+         {!collapsed && (
+@@ -133,9 +133,9 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+ 
+       {/* Business indicator */}
+       {!collapsed && businessName && (
+-        <div className="mx-3 my-3 px-3 py-2 rounded-lg bg-charcoal-800 border border-charcoal-700">
++        <div className="mx-3 my-3 px-3 py-2 rounded-lg glass-panel">
+           <div className="flex items-center gap-2">
+-            <Building2 className="h-3.5 w-3.5 text-gold-400 flex-shrink-0" />
++            <Building2 className="h-3.5 w-3.5 text-cue-blue-400 flex-shrink-0" />
+             <span className="text-xs font-medium text-charcoal-200 truncate">{businessName}</span>
+           </div>
+         </div>
+@@ -157,14 +157,14 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+                   className={cn(
+                     "w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
+                     active
+-                      ? "text-gold-300"
++                      ? "cue-text font-semibold"
+                       : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
+                     collapsed && "justify-center px-0"
+                   )}
+                   title={collapsed ? entry.label : undefined}
+                 >
+                   <GroupIcon
+-                    className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")}
++                    className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-cue-orange-400" : "text-charcoal-400 group-hover:text-white")}
+                     style={{ height: "18px", width: "18px" }}
+                   />
+                   {!collapsed && (
+@@ -176,7 +176,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+                 </button>
+ 
+                 {!collapsed && open && (
+-                  <div className="mt-0.5 ml-4 pl-3 border-l border-charcoal-700 space-y-0.5">
++                  <div className="mt-0.5 ml-4 pl-3 border-l border-white/10 space-y-0.5">
+                     {entry.children.map((child) => {
+                       const childActive = pathname === child.href || pathname.startsWith(child.href + "/");
+                       return (
+@@ -186,7 +186,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+                           className={cn(
+                             "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                             childActive
+-                              ? "bg-gold-500/20 text-gold-300"
++                              ? "bg-white/5 text-cue-blue-300"
+                               : "text-charcoal-400 hover:bg-charcoal-800 hover:text-white"
+                           )}
+                         >
+@@ -209,16 +209,16 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+               className={cn(
+                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
+                 active
+-                  ? "bg-gold-500/20 text-gold-300 border border-gold-500/20"
++                  ? "glass-panel text-white shadow-cue-glow-sm"
+                   : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
+                 collapsed && "justify-center px-0"
+               )}
+               title={collapsed ? entry.label : undefined}
+             >
+-              <Icon className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")} style={{ height: "18px", width: "18px" }} />
++              <Icon className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-cue-orange-400" : "text-charcoal-400 group-hover:text-white")} style={{ height: "18px", width: "18px" }} />
+               {!collapsed && <span>{entry.label}</span>}
+               {active && !collapsed && (
+-                <div className="ml-auto h-1.5 w-1.5 rounded-full bg-gold-400" />
++                <div className="ml-auto h-1.5 w-1.5 rounded-full cue-gradient" />
+               )}
+             </Link>
+           );
+@@ -226,7 +226,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+       </nav>
+ 
+       {/* User footer */}
+-      <div className={cn("border-t border-charcoal-700 p-3", collapsed && "flex justify-center")}>
++      <div className={cn("border-t border-white/10 p-3", collapsed && "flex justify-center")}>
+         {!collapsed ? (
+           <div className="flex items-center gap-3">
+             <Avatar name={userName || userEmail} size="sm" />
+diff --git a/src/components/layout/TopBar.tsx b/src/components/layout/TopBar.tsx
+index ed45524..57dd080 100644
+--- a/src/components/layout/TopBar.tsx
++++ b/src/components/layout/TopBar.tsx
+@@ -13,10 +13,10 @@ interface TopBarProps {
+ 
+ export function TopBar({ title, subtitle, userName, userEmail, actions }: TopBarProps) {
+   return (
+-    <header className="flex items-center justify-between gap-4 px-6 py-4 border-b border-charcoal-100 bg-white flex-shrink-0">
++    <header className="flex items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-charcoal-950 flex-shrink-0">
+       <div>
+-        <h1 className="text-xl font-semibold text-charcoal-900">{title}</h1>
+-        {subtitle && <p className="text-sm text-charcoal-500 mt-0.5">{subtitle}</p>}
++        <h1 className="text-xl font-semibold text-white">{title}</h1>
++        {subtitle && <p className="text-sm text-charcoal-400 mt-0.5">{subtitle}</p>}
+       </div>
+       <div className="flex items-center gap-2">
+         {actions}
+diff --git a/src/components/ui/Badge.tsx b/src/components/ui/Badge.tsx
+index 8f2cd09..6e66372 100644
+--- a/src/components/ui/Badge.tsx
++++ b/src/components/ui/Badge.tsx
+@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
+ 
+ interface BadgeProps {
+   children: React.ReactNode;
+-  variant?: "default" | "success" | "warning" | "danger" | "gold" | "info";
++  variant?: "default" | "success" | "warning" | "danger" | "gold" | "info" | "cue";
+   size?: "sm" | "md";
+   className?: string;
+ }
+@@ -15,6 +15,7 @@ export function Badge({ children, variant = "default", size = "sm", className }:
+     danger: "bg-red-50 text-red-700 border border-red-200",
+     gold: "bg-gold-50 text-gold-700 border border-gold-200",
+     info: "bg-blue-50 text-blue-700 border border-blue-200",
++    cue: "bg-white/5 border border-white/10 cue-text font-semibold",
+   };
+ 
+   const sizes = {
+diff --git a/src/components/ui/Button.tsx b/src/components/ui/Button.tsx
+index e8578a6..c7bf7e8 100644
+--- a/src/components/ui/Button.tsx
++++ b/src/components/ui/Button.tsx
+@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
+ import type { ButtonHTMLAttributes } from "react";
+ 
+ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+-  variant?: "primary" | "secondary" | "ghost" | "danger" | "gold";
++  variant?: "primary" | "secondary" | "ghost" | "danger" | "gold" | "cue";
+   size?: "sm" | "md" | "lg";
+   loading?: boolean;
+ }
+@@ -31,6 +31,8 @@ export function Button({
+       "bg-red-600 text-white hover:bg-red-700 active:bg-red-800",
+     gold:
+       "gold-gradient text-white shadow-gold-glow hover:opacity-90 active:opacity-80",
++    cue:
++      "cue-gradient text-white shadow-cue-glow-sm hover:opacity-90 active:opacity-80",
+   };
+ 
+   const sizes = {
+diff --git a/src/components/ui/EmptyState.tsx b/src/components/ui/EmptyState.tsx
+index 0a704b0..5925545 100644
+--- a/src/components/ui/EmptyState.tsx
++++ b/src/components/ui/EmptyState.tsx
+@@ -7,17 +7,23 @@ interface EmptyStateProps {
+   description?: string;
+   action?: React.ReactNode;
+   className?: string;
++  dark?: boolean;
+ }
+ 
+-export function EmptyState({ icon: Icon, title, description, action, className }: EmptyStateProps) {
++export function EmptyState({ icon: Icon, title, description, action, className, dark = false }: EmptyStateProps) {
+   return (
+     <div className={cn("flex flex-col items-center justify-center py-16 px-6 text-center", className)}>
+-      <div className="h-14 w-14 rounded-2xl bg-charcoal-50 border border-charcoal-100 flex items-center justify-center mb-4">
+-        <Icon className="h-7 w-7 text-charcoal-400" />
++      <div
++        className={cn(
++          "h-14 w-14 rounded-2xl flex items-center justify-center mb-4 border",
++          dark ? "bg-white/5 border-white/10" : "bg-charcoal-50 border-charcoal-100"
++        )}
++      >
++        <Icon className={cn("h-7 w-7", dark ? "text-charcoal-400" : "text-charcoal-400")} />
+       </div>
+-      <h3 className="text-base font-semibold text-charcoal-800 mb-1">{title}</h3>
++      <h3 className={cn("text-base font-semibold mb-1", dark ? "text-white" : "text-charcoal-800")}>{title}</h3>
+       {description && (
+-        <p className="text-sm text-charcoal-500 max-w-xs leading-relaxed">{description}</p>
++        <p className={cn("text-sm max-w-xs leading-relaxed", dark ? "text-charcoal-400" : "text-charcoal-500")}>{description}</p>
+       )}
+       {action && <div className="mt-5">{action}</div>}
+     </div>
+diff --git a/tailwind.config.ts b/tailwind.config.ts
+index e6f2a34..0dc1ab1 100644
+--- a/tailwind.config.ts
++++ b/tailwind.config.ts
+@@ -34,6 +34,26 @@ const config: Config = {
+           100: "#F5E8C0",
+           50:  "#FBF5E4",
+         },
++        // CU³ evolution accents — blue + orange "energy" gradient, per
++        // the approved CU³ visual language. Applied module-by-module
++        // (Login, Navigation, Dashboard first), not a global theme swap.
++        // See docs/Roadmap.md.
++        cue: {
++          blue: {
++            600: "#2563EB",
++            500: "#3B82F6",
++            400: "#60A5FA",
++          },
++          purple: {
++            500: "#8B5CF6",
++            400: "#A78BFA",
++          },
++          orange: {
++            600: "#EA580C",
++            500: "#F97316",
++            400: "#FB923C",
++          },
++        },
+       },
+       fontFamily: {
+         sans: ["Inter", "system-ui", "sans-serif"],
+@@ -42,6 +62,8 @@ const config: Config = {
+         "gold-glow": "0 0 20px rgba(201,147,26,0.15)",
+         "card": "0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06)",
+         "card-hover": "0 4px 12px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08)",
++        "cue-glow": "0 0 40px rgba(59,130,246,0.2), 0 0 80px rgba(249,115,22,0.12)",
++        "cue-glow-sm": "0 0 16px rgba(59,130,246,0.25), 0 0 32px rgba(249,115,22,0.1)",
+       },
+     },
+   },

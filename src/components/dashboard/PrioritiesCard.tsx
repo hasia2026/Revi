@@ -103,10 +103,10 @@ export function PrioritiesCard({
   }
 
   return (
-    <div className="card">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-100">
+    <div className="glass-panel rounded-xl">
+      <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
         <div>
-          <h3 className="font-semibold text-charcoal-900 text-sm">Today&apos;s Priorities</h3>
+          <h3 className="font-semibold text-white text-sm">Today&apos;s Priorities</h3>
           <p className="text-xs text-charcoal-400 mt-0.5">{openItems.length} open</p>
         </div>
         <Button size="sm" onClick={() => setOpen(true)}>
@@ -120,20 +120,21 @@ export function PrioritiesCard({
           title="Nothing on your plate"
           description="Add a priority manually, or check back once CUE can recommend some."
           action={<Button size="sm" onClick={() => setOpen(true)}>Add a priority</Button>}
+          dark
         />
       ) : (
-        <ul className="divide-y divide-charcoal-50">
+        <ul className="divide-y divide-white/5">
           {openItems.map((priority) => (
             <li key={priority.id} className="flex items-start gap-3 px-5 py-3.5 group">
               <button
                 onClick={() => toggleComplete(priority)}
-                className="mt-0.5 h-5 w-5 rounded-full border-2 border-charcoal-300 hover:border-gold-500 flex-shrink-0 transition-colors"
+                className="mt-0.5 h-5 w-5 rounded-full border-2 border-white/20 hover:border-cue-blue-400 flex-shrink-0 transition-colors"
                 aria-label="Mark complete"
               />
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <p className="text-sm font-medium text-charcoal-800">{priority.title}</p>
-                  <Badge variant={priority.source === "cue" ? "gold" : "default"} size="sm">
+                  <p className="text-sm font-medium text-white">{priority.title}</p>
+                  <Badge variant={priority.source === "cue" ? "cue" : "default"} size="sm">
                     {priority.source === "cue" ? "Recommended by CUE" : "Added by you"}
                   </Badge>
                 </div>
@@ -152,14 +153,14 @@ export function PrioritiesCard({
               <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
                 <button
                   onClick={() => togglePin(priority)}
-                  className={cn("p-1.5 rounded-md hover:bg-charcoal-100", priority.pinned ? "text-gold-500" : "text-charcoal-300")}
+                  className={cn("p-1.5 rounded-md hover:bg-white/10", priority.pinned ? "text-cue-orange-400" : "text-charcoal-500")}
                   title="Pin"
                 >
                   <Pin className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={() => handleDelete(priority.id)}
-                  className="p-1.5 rounded-md text-charcoal-300 hover:bg-red-50 hover:text-red-500"
+                  className="p-1.5 rounded-md text-charcoal-500 hover:bg-red-500/10 hover:text-red-400"
                   title="Delete"
                 >
                   <Trash2 className="h-3.5 w-3.5" />

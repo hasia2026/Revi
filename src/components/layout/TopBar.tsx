@@ -13,10 +13,10 @@ interface TopBarProps {
 
 export function TopBar({ title, subtitle, userName, userEmail, actions }: TopBarProps) {
   return (
-    <header className="flex items-center justify-between gap-4 px-6 py-4 border-b border-charcoal-100 bg-white flex-shrink-0">
+    <header className="flex items-center justify-between gap-4 px-6 py-4 border-b border-white/10 bg-charcoal-950 flex-shrink-0">
       <div>
-        <h1 className="text-xl font-semibold text-charcoal-900">{title}</h1>
-        {subtitle && <p className="text-sm text-charcoal-500 mt-0.5">{subtitle}</p>}
+        <h1 className="text-xl font-semibold text-white">{title}</h1>
+        {subtitle && <p className="text-sm text-charcoal-400 mt-0.5">{subtitle}</p>}
       </div>
       <div className="flex items-center gap-2">
         {actions}

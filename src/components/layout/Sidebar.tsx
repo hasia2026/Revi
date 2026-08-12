@@ -111,16 +111,16 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "relative flex flex-col bg-charcoal-900 text-white transition-all duration-300 flex-shrink-0",
+        "relative flex flex-col cue-bg text-white transition-all duration-300 flex-shrink-0",
         collapsed ? "w-16" : "w-64"
       )}
     >
       {/* Logo */}
       <div className={cn(
-        "flex items-center gap-3 px-4 py-5 border-b border-charcoal-700",
+        "flex items-center gap-3 px-4 py-5 border-b border-white/10",
         collapsed && "justify-center px-0"
       )}>
-        <div className="h-8 w-8 rounded-lg gold-gradient flex items-center justify-center flex-shrink-0">
+        <div className="h-8 w-8 rounded-lg cue-gradient shadow-cue-glow-sm flex items-center justify-center flex-shrink-0">
           <span className="text-white font-bold text-sm">C</span>
         </div>
         {!collapsed && (
@@ -133,9 +133,9 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
 
       {/* Business indicator */}
       {!collapsed && businessName && (
-        <div className="mx-3 my-3 px-3 py-2 rounded-lg bg-charcoal-800 border border-charcoal-700">
+        <div className="mx-3 my-3 px-3 py-2 rounded-lg glass-panel">
           <div className="flex items-center gap-2">
-            <Building2 className="h-3.5 w-3.5 text-gold-400 flex-shrink-0" />
+            <Building2 className="h-3.5 w-3.5 text-cue-blue-400 flex-shrink-0" />
             <span className="text-xs font-medium text-charcoal-200 truncate">{businessName}</span>
           </div>
         </div>
@@ -157,14 +157,14 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
                   className={cn(
                     "w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
                     active
-                      ? "text-gold-300"
+                      ? "cue-text font-semibold"
                       : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
                     collapsed && "justify-center px-0"
                   )}
                   title={collapsed ? entry.label : undefined}
                 >
                   <GroupIcon
-                    className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")}
+                    className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-cue-orange-400" : "text-charcoal-400 group-hover:text-white")}
                     style={{ height: "18px", width: "18px" }}
                   />
                   {!collapsed && (
@@ -176,7 +176,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
                 </button>
 
                 {!collapsed && open && (
-                  <div className="mt-0.5 ml-4 pl-3 border-l border-charcoal-700 space-y-0.5">
+                  <div className="mt-0.5 ml-4 pl-3 border-l border-white/10 space-y-0.5">
                     {entry.children.map((child) => {
                       const childActive = pathname === child.href || pathname.startsWith(child.href + "/");
                       return (
@@ -186,7 +186,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
                           className={cn(
                             "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                             childActive
-                              ? "bg-gold-500/20 text-gold-300"
+                              ? "bg-white/5 text-cue-blue-300"
                               : "text-charcoal-400 hover:bg-charcoal-800 hover:text-white"
                           )}
                         >
@@ -209,16 +209,16 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-150 group",
                 active
-                  ? "bg-gold-500/20 text-gold-300 border border-gold-500/20"
+                  ? "glass-panel text-white shadow-cue-glow-sm"
                   : "text-charcoal-300 hover:bg-charcoal-800 hover:text-white",
                 collapsed && "justify-center px-0"
               )}
               title={collapsed ? entry.label : undefined}
             >
-              <Icon className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-gold-400" : "text-charcoal-400 group-hover:text-white")} style={{ height: "18px", width: "18px" }} />
+              <Icon className={cn("h-4.5 w-4.5 flex-shrink-0", active ? "text-cue-orange-400" : "text-charcoal-400 group-hover:text-white")} style={{ height: "18px", width: "18px" }} />
               {!collapsed && <span>{entry.label}</span>}
               {active && !collapsed && (
-                <div className="ml-auto h-1.5 w-1.5 rounded-full bg-gold-400" />
+                <div className="ml-auto h-1.5 w-1.5 rounded-full cue-gradient" />
               )}
             </Link>
           );
@@ -226,7 +226,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
       </nav>
 
       {/* User footer */}
-      <div className={cn("border-t border-charcoal-700 p-3", collapsed && "flex justify-center")}>
+      <div className={cn("border-t border-white/10 p-3", collapsed && "flex justify-center")}>
         {!collapsed ? (
           <div className="flex items-center gap-3">
             <Avatar name={userName || userEmail} size="sm" />

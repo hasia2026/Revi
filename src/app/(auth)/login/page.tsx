@@ -46,7 +46,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
+    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
       <h2 className="text-xl font-semibold text-white mb-1">Welcome back</h2>
       <p className="text-charcoal-400 text-sm mb-7">Sign in to your CUE account</p>
 
@@ -58,7 +58,7 @@ export default function LoginPage() {
             type="email"
             placeholder="you@example.com"
             autoComplete="email"
-            className="w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors"
+            className="w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors"
           />
           {errors.email && <p className="mt-1.5 text-xs text-red-400">{errors.email.message}</p>}
         </div>
@@ -71,7 +71,7 @@ export default function LoginPage() {
               type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
-              className="w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors pr-10"
+              className="w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors pr-10"
             />
             <button
               type="button"
@@ -84,14 +84,14 @@ export default function LoginPage() {
           {errors.password && <p className="mt-1.5 text-xs text-red-400">{errors.password.message}</p>}
         </div>
 
-        <Button type="submit" variant="gold" size="lg" loading={isSubmitting} className="w-full mt-2">
+        <Button type="submit" variant="cue" size="lg" loading={isSubmitting} className="w-full mt-2">
           Sign in
         </Button>
       </form>
 
       <p className="text-center text-sm text-charcoal-500 mt-6">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">
+        <Link href="/signup" className="text-cue-blue-400 hover:text-cue-blue-300 font-medium transition-colors">
           Create one
         </Link>
       </p>
