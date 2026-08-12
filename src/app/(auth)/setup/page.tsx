@@ -150,20 +150,20 @@ export default function SetupPage() {
     if (valid) setStep((s) => s + 1);
   }
 
-  const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";
+  const fieldClass = "w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors";
   const labelClass = "block text-sm font-medium text-charcoal-300 mb-1.5";
   const errorClass = "mt-1.5 text-xs text-red-400";
 
   if (checkingExisting) {
     return (
-      <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
+      <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
         <p className="text-charcoal-400 text-sm">Checking your account…</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
+    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
       <h2 className="text-xl font-semibold text-white mb-1">Set up your business</h2>
       <p className="text-charcoal-400 text-sm mb-6">Tell us about your business to get started</p>
 
@@ -173,16 +173,16 @@ export default function SetupPage() {
           <div key={s.id} className="flex items-center gap-2 flex-1">
             <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 transition-all ${
               step > s.id
-                ? "bg-gold-500 text-white"
+                ? "cue-gradient text-white"
                 : step === s.id
-                ? "bg-gold-500/20 border-2 border-gold-500 text-gold-400"
-                : "bg-charcoal-800 border border-charcoal-600 text-charcoal-500"
+                ? "bg-white/5 border-2 border-cue-blue-400 text-cue-blue-400"
+                : "bg-white/5 border border-white/10 text-charcoal-500"
             }`}>
               {step > s.id ? <Check className="h-3.5 w-3.5" /> : s.id}
             </div>
             <span className={`text-xs hidden sm:block ${step >= s.id ? "text-charcoal-300" : "text-charcoal-600"}`}>{s.title}</span>
             {i < STEPS.length - 1 && (
-              <div className={`flex-1 h-px ${step > s.id ? "bg-gold-500/40" : "bg-charcoal-700"}`} />
+              <div className={`flex-1 h-px ${step > s.id ? "cue-gradient" : "bg-white/10"}`} />
             )}
           </div>
         ))}
@@ -247,16 +247,16 @@ export default function SetupPage() {
 
         <div className="flex gap-3 mt-8">
           {step > 1 && (
-            <Button type="button" variant="secondary" onClick={() => setStep((s) => s - 1)} className="flex-1 bg-charcoal-800 border-charcoal-700 text-charcoal-300 hover:bg-charcoal-700 hover:text-white">
+            <Button type="button" variant="secondary" onClick={() => setStep((s) => s - 1)} className="flex-1 bg-white/5 border-white/10 text-charcoal-300 hover:bg-white/10 hover:text-white">
               Back
             </Button>
           )}
           {step < 3 ? (
-            <Button type="button" variant="gold" onClick={nextStep} className="flex-1">
+            <Button type="button" variant="cue" onClick={nextStep} className="flex-1">
               Continue
             </Button>
           ) : (
-            <Button type="submit" variant="gold" loading={isSubmitting} className="flex-1">
+            <Button type="submit" variant="cue" loading={isSubmitting} className="flex-1">
               Launch CUE
             </Button>
           )}

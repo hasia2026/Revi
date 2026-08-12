@@ -63,12 +63,12 @@ export default function SignupPage() {
     toast.success("Account created! Check your email to confirm, then sign in.");
   }
 
-  const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";
+  const fieldClass = "w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors";
   const labelClass = "block text-sm font-medium text-charcoal-300 mb-1.5";
   const errorClass = "mt-1.5 text-xs text-red-400";
 
   return (
-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
+    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
       <h2 className="text-xl font-semibold text-white mb-1">Create your account</h2>
       <p className="text-charcoal-400 text-sm mb-7">Start your CUE journey today</p>
 
@@ -114,14 +114,14 @@ export default function SignupPage() {
           {errors.confirmPassword && <p className={errorClass}>{errors.confirmPassword.message}</p>}
         </div>
 
-        <Button type="submit" variant="gold" size="lg" loading={isSubmitting} className="w-full mt-2">
+        <Button type="submit" variant="cue" size="lg" loading={isSubmitting} className="w-full mt-2">
           Create account
         </Button>
       </form>
 
       <p className="text-center text-sm text-charcoal-500 mt-6">
         Already have an account?{" "}
-        <Link href="/login" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">
+        <Link href="/login" className="text-cue-blue-400 hover:text-cue-blue-300 font-medium transition-colors">
           Sign in
         </Link>
       </p>
