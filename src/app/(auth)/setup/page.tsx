@@ -140,6 +140,8 @@ export default function SetupPage() {
   async function nextStep(e?: MouseEvent<HTMLButtonElement>) {
     // Prevent default in one central place so clicks can't fall through to the form
     e?.preventDefault();
+    // Diagnostic log to detect double invocations during user testing
+    console.log("nextStep called, current step:", step);
     if (advancingRef.current) return;
     advancingRef.current = true;
     try {
