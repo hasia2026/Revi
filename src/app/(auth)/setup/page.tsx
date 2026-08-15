@@ -25,7 +25,14 @@ const schema = z.object({
   address: z.string().optional(),
   city: z.string().optional(),
   state: z.string().optional(),
-  website: z.string().url("Enter a valid URL").optional().or(z.literal("")),
+  website: z.preprocess(
+    (v) => {
+      const s = typeof v === "string" ? v.trim() : "";
+      if (!s) return "";
+      return /^https?:\/\//i.test(s) ? s : `https://${s}`;
+    },
+    z.string().url("Enter a valid website").or(z.literal("")
+  ),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -247,7 +254,7 @@ export default function SetupPage() {
             </div>
             <div>
               <label className={labelClass}>Website</label>
-              <input {...register("website")} type="url" placeholder="https://yourbusiness.com" className={fieldClass} />
+              <input {...register("website")} type="text" placeholder="www.yourbusiness.com" className={fieldClass} />
               {errors.website && <p className={errorClass}>{errors.website.message}</p>}
             </div>
           </div>
