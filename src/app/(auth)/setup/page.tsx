@@ -31,7 +31,7 @@ const schema = z.object({
       if (!s) return "";
       return /^https?:\/\//i.test(s) ? s : `https://${s}`;
     },
-    z.string().url("Enter a valid website").or(z.literal("")
+    z.string().url("Enter a valid website").or(z.literal(""))
   ),
 });
 
@@ -147,8 +147,6 @@ export default function SetupPage() {
   async function nextStep(e?: MouseEvent<HTMLButtonElement>) {
     // Prevent default in one central place so clicks can't fall through to the form
     e?.preventDefault();
-    // Diagnostic log to detect double invocations during user testing
-    console.log("nextStep called, current step:", step);
     if (advancingRef.current) return;
     advancingRef.current = true;
     try {
@@ -249,7 +247,7 @@ export default function SetupPage() {
             </div>
             <div>
               <label className={labelClass}>Business email</label>
-              <input {...register("email")} type="email" placeholder="hello@yourbusiness.com" className={fieldClass} />
+             <input {...register("email")} type="email" placeholder="hello@yourbusiness.com" className={fieldClass} /> 
               {errors.email && <p className={errorClass}>{errors.email.message}</p>}
             </div>
             <div>
