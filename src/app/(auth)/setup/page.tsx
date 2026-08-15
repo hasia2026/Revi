@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import type { MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -134,13 +135,23 @@ export default function SetupPage() {
     router.push("/dashboard");
   }
 
-  async function nextStep() {
-    const fields: Record<number, (keyof FormData)[]> = {
-      1: ["businessName", "industry"],
-      2: ["address", "city", "state"],
-    };
-    const valid = await trigger(fields[step]);
-    if (valid) setStep((s) => s + 1);
+  const advancingRef = useRef(false);
+
+  async function nextStep(e?: MouseEvent<HTMLButtonElement>) {
+    // Prevent default in one central place so clicks can't fall through to the form
+    e?.preventDefault();
+    if (advancingRef.current) return;
+    advancingRef.current = true;
+    try {
+      const fields: Record<number, (keyof FormData)[]> = {
+        1: ["businessName", "industry"],
+        2: ["address", "city", "state"],
+      };
+      const valid = await trigger(fields[step]);
+      if (valid) setStep((s) => s + 1);
+    } finally {
+      advancingRef.current = false;
+    }
   }
 
   const fieldClass = "w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors";
@@ -247,7 +258,7 @@ export default function SetupPage() {
             </Button>
           )}
           {step < 3 ? (
-            <Button type="button" variant="cue" onClick={(e) => { e.preventDefault(); nextStep(); }} className="flex-1">
+            <Button type="button" variant="cue" onClick={nextStep} className="flex-1">
               Continue
             </Button>
           ) : (
