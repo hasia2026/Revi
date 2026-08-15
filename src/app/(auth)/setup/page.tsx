@@ -118,24 +118,17 @@ export default function SetupPage() {
 
     if (bizError) { toast.error(bizError.message); return; }
 
-    // Add owner as admin member
-    const { error: memberError } = await supabase.from("business_members").insert({
-      business_id: business.id,
-      user_id: user.id,
-      role: "admin",
-    });
-
-    if (memberError) { toast.error(memberError.message); return; }
-
     // Seed default website settings so /website never has to handle a
     // missing row for a brand-new business.
     const { error: websiteError } = await supabase.from("website_settings").insert({
       business_id: business.id,
-      hero_title: `Welcome to ${data.businessName}`,
-      hero_subtitle: "Your trusted local service provider",
+      site_title_en: data.businessName,
+      site_title_es: "",
+      tagline_en: "Your trusted local service provider",
+      tagline_es: "",
     });
 
-    if (websiteError) { toast.error(websiteError.message); return; }
+    if (websiteError) { console.error("Failed to seed website settings:", websiteError.message); }
 
     toast.success("Business set up successfully!");
     router.push("/dashboard");
@@ -198,9 +191,11 @@ export default function SetupPage() {
             </div>
             <div>
               <label className={labelClass}>Industry *</label>
-              <select {...register("industry")} className={fieldClass}>
-                <option value="">Select your industry</option>
-                {INDUSTRIES.map((i) => <option key={i} value={i}>{i}</option>)}
+             <select {...register("industry")} className={`${fieldClass} bg-charcoal-900`}>
+                <option value="" className="bg-charcoal-900 text-white">Select your industry</option>
+                {INDUSTRIES.map((i) => (
+                  <option key={i} value={i} className="bg-charcoal-900 text-white">{i}</option>
+                ))}
               </select>
               {errors.industry && <p className={errorClass}>{errors.industry.message}</p>}
             </div>
