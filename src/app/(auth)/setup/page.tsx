@@ -247,7 +247,7 @@ export default function SetupPage() {
             </Button>
           )}
           {step < 3 ? (
-            <Button type="button" variant="cue" onClick={nextStep} className="flex-1">
+            <Button type="button" variant="cue" onClick={(e) => { e.preventDefault(); nextStep(); }} className="flex-1">
               Continue
             </Button>
           ) : (
