@@ -14,14 +14,19 @@ export async function getModulePageContext() {
 
   const { data: member } = await supabase
     .from("business_members")
-    .select("business_id, businesses(name)")
+    .select("business_id, businesses(name, timezone)")
     .eq("user_id", user.id)
     .limit(1)
     .maybeSingle();
 
   if (!member?.business_id) redirect("/setup");
 
-  const businessName = (member.businesses as unknown as { name: string } | null)?.name;
+  // Normalize the joined relation: can be an object or a one-element array
+  const business = Array.isArray(member.businesses)
+    ? member.businesses[0]
+    : member.businesses;
+  const businessName = (business as unknown as { name: string } | null)?.name;
+  const timezone = (business as unknown as { timezone: string } | null)?.timezone || "UTC";
 
-  return { user, businessId: member.business_id, businessName };
+  return { user, businessId: member.business_id, businessName, timezone };
 }

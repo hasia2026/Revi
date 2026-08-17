@@ -117,6 +117,7 @@ export default function SetupPage() {
         owner_id: user.id,
         name: data.businessName,
         industry: data.industry,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC",
         phone: data.phone || null,
         email: data.email || null,
         website: data.website || null,
