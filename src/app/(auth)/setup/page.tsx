@@ -9,13 +9,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/client";
+import { INDUSTRIES } from "@/lib/industries";
 import { Building2, MapPin, Phone, Globe, Check } from "lucide-react";
-
-const INDUSTRIES = [
-  "Salon & Beauty", "Spa & Wellness", "Fitness & Gym", "Home Services",
-  "Cleaning Services", "Auto Repair", "Pet Services", "Tutoring & Education",
-  "Photography", "Events & Catering", "Hospitality (Hotels)", "Other",
-];
 
 const schema = z.object({
   businessName: z.string().min(2, "Business name required"),

@@ -13,14 +13,9 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Save, Plus, Trash2, Users, Briefcase, User, DollarSign } from "lucide-react";
 import type { Profile, Service } from "@/types/database";
 import { formatCurrency } from "@/lib/utils";
+import { INDUSTRIES } from "@/lib/industries";
 
 const TABS = ["Profile", "Business", "Services", "Team"];
-
-const INDUSTRIES = [
-  "Salon & Beauty", "Spa & Wellness", "Fitness & Gym", "Home Services",
-  "Cleaning Services", "Auto Repair", "Pet Services", "Tutoring & Education",
-  "Photography", "Events & Catering", "Other",
-];
 
 interface Member {
   id: string;

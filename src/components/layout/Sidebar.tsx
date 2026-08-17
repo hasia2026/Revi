@@ -15,6 +15,8 @@ import {
   ChevronRight,
   ChevronDown,
   Building2,
+  BedDouble,
+  CalendarDays,
   LogOut,
   Inbox,
   Palette,
@@ -27,6 +29,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { HOSPITALITY_INDUSTRY } from "@/lib/industries";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
@@ -73,17 +76,39 @@ const navEntries: NavEntry[] = [
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
+const HOSPITALITY_GROUP: NavGroup = {
+  label: "Hospitality",
+  icon: BedDouble,
+  children: [
+    { href: "/rooms", label: "Rooms", icon: BedDouble },
+    { href: "/reservations", label: "Reservations", icon: CalendarDays },
+  ],
+};
+
 interface SidebarProps {
   userEmail?: string | null;
   userName?: string | null;
   businessName?: string | null;
+  industry?: string | null;
 }
 
-export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
+export function Sidebar({ userEmail, userName, businessName, industry }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
+
+  // Single decision point. Do not scatter industry checks across nav items.
+  const showHospitality = industry === HOSPITALITY_INDUSTRY;
+
+  // Inserted before Settings so Settings stays last.
+  const entries: NavEntry[] = showHospitality
+    ? [
+        ...navEntries.slice(0, -1),
+        HOSPITALITY_GROUP,
+        navEntries[navEntries.length - 1],
+      ]
+    : navEntries;
 
   function groupIsActive(group: NavGroup) {
     return group.children.some((c) => pathname === c.href || pathname.startsWith(c.href + "/"));
@@ -91,7 +116,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
 
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
-    navEntries.filter(isGroup).forEach((g) => {
+    entries.filter(isGroup).forEach((g) => {
       initial[g.label] = groupIsActive(g);
     });
     return initial;
@@ -143,7 +168,7 @@ export function Sidebar({ userEmail, userName, businessName }: SidebarProps) {
 
       {/* Nav */}
       <nav className="flex-1 px-2 py-2 space-y-0.5 overflow-y-auto scrollbar-thin">
-        {navEntries.map((entry) => {
+        {entries.map((entry) => {
           if (isGroup(entry)) {
             const active = groupIsActive(entry);
             const open = collapsed ? active : (openGroups[entry.label] ?? active);

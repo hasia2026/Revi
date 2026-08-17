@@ -17,14 +17,14 @@ export default async function DashboardLayout({
     supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).maybeSingle(),
     supabase
       .from("business_members")
-      .select("businesses(id, name)")
+      .select("businesses(id, name, industry)")
       .eq("user_id", user.id)
       .limit(1)
       .single(),
   ]);
 
   const profile = profileRes.data;
-  const business = (businessRes.data?.businesses as unknown as { id: string; name: string } | null);
+  const business = (businessRes.data?.businesses as unknown as { id: string; name: string; industry: string | null } | null);
 
   return (
     <div className="flex h-screen overflow-hidden bg-charcoal-50">
@@ -32,6 +32,7 @@ export default async function DashboardLayout({
         userEmail={user.email}
         userName={profile?.full_name}
         businessName={business?.name}
+        industry={business?.industry}
       />
       <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {children}
