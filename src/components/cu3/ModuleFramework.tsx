@@ -28,18 +28,24 @@ import { ModuleActivity } from "./sections/ModuleActivity";
  */
 export function ModuleFramework({ config, children }: { config: ModuleConfig; children: ReactNode }) {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-6 space-y-5">
-      <ModuleHero
-        config={config}
-        assistantTrigger={<ModuleAssistantController persona={config.aiAssistant} />}
-      />
-      <ModuleOverview cards={config.overviewCards} />
-      <ModuleQuickActions actions={config.quickActions} />
-      <ModuleWorkspace>{children}</ModuleWorkspace>
-      <ModuleInsights insights={config.insights} />
-      <ModuleAnalytics>{config.analytics}</ModuleAnalytics>
-      <ModuleRelatedModules modules={config.relatedModules} />
-      <ModuleActivity items={config.activity} />
+    // The dashboard shell is h-screen/overflow-hidden, so it does not scroll.
+    // Every module page must establish its own scroll region or content below
+    // the fold is clipped and unreachable. Mirrors the pattern in
+    // (dashboard)/dashboard/page.tsx, which does this inline.
+    <div className="h-full overflow-y-auto">
+      <div className="max-w-6xl mx-auto px-6 py-6 space-y-5">
+        <ModuleHero
+          config={config}
+          assistantTrigger={<ModuleAssistantController persona={config.aiAssistant} />}
+        />
+        <ModuleOverview cards={config.overviewCards} />
+        <ModuleQuickActions actions={config.quickActions} />
+        <ModuleWorkspace>{children}</ModuleWorkspace>
+        <ModuleInsights insights={config.insights} />
+        <ModuleAnalytics>{config.analytics}</ModuleAnalytics>
+        <ModuleRelatedModules modules={config.relatedModules} />
+        <ModuleActivity items={config.activity} />
+      </div>
     </div>
   );
 }
