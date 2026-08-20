@@ -5,9 +5,9 @@
 --
 --   select id, name, timezone from businesses where timezone is null;
 --
--- NOT YET APPLIED as of 2026-08-17. Onboarding now seeds timezone from the
--- browser (src/app/(auth)/setup/page.tsx), but a fresh signup has not been
--- verified end to end. Run the check above before applying.
+-- APPLIED: 2026-08-20. Verified beforehand that onboarding seeds a real IANA
+-- timezone from the browser (src/app/(auth)/setup/page.tsx) via a fresh
+-- signup, and that zero rows had a null timezone.
 
 alter table businesses
   alter column timezone set not null;
