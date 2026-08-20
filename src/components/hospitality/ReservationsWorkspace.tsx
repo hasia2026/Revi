@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Select } from "@/components/ui/Select";
 import { Modal } from "@/components/ui/Modal";
 import { toast } from "sonner";
+import { createRegistrationLink } from "@/lib/registration/actions";
 
 type GuestRecord = {
   first_name?: string | null;
@@ -25,12 +26,54 @@ type ReservationRow = {
   reservation_status?: string | null;
   registration_status?: string | null;
   registration_review_required?: boolean | null;
+  registration_links?:
+    | {
+        id: string;
+        expires_at: string | null;
+        revoked_at: string | null;
+        completed_at: string | null;
+        created_at: string | null;
+      }[]
+    | null;
   room_id?: string | null;
   checked_in_at?: string | null;
   primary_guest_id?: string | null;
   guests?: GuestRecord | GuestRecord[] | null;
   rooms?: { room_number?: string | null } | null;
 };
+
+type LinkRecord = {
+  id: string;
+  expires_at: string | null;
+  revoked_at: string | null;
+  completed_at: string | null;
+  created_at: string | null;
+};
+
+type LinkState =
+  | { kind: "none" }
+  | { kind: "active"; expiresAt: string }
+  | { kind: "expired" }
+  | { kind: "completed" };
+
+/**
+ * A reservation accumulates a link row per reissue. Only the newest one
+ * matters — every earlier one was revoked when its replacement was created.
+ */
+function getLinkState(links: LinkRecord[] | null | undefined): LinkState {
+  if (!links || links.length === 0) return { kind: "none" };
+
+  const newest = [...links].sort((a, b) =>
+    String(b.created_at ?? "").localeCompare(String(a.created_at ?? "")),
+  )[0];
+
+  if (newest.completed_at) return { kind: "completed" };
+  if (newest.revoked_at) return { kind: "none" };
+  if (!newest.expires_at) return { kind: "none" };
+  if (new Date(newest.expires_at) <= new Date()) return { kind: "expired" };
+
+  return { kind: "active", expiresAt: newest.expires_at };
+}
 
 /**
  * RPC errors are raw Postgres exceptions. Known ones are front-desk
@@ -92,6 +135,9 @@ export default function ReservationsWorkspace({
   const [modalFace, setModalFace] = useState<"edit" | "confirm_cancel">("edit");
   const [submitting, setSubmitting] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
+  const [linkUrl, setLinkUrl] = useState<string | null>(null);
+  const [creatingLink, setCreatingLink] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [editForm, setEditForm] = useState({
     firstName: "", lastName: "", email: "", phone: "",
     arrivalDate: "", departureDate: "", guestCount: 1,
@@ -100,6 +146,34 @@ export default function ReservationsWorkspace({
   // Loaded values, kept so the review warning compares against what the
   // guest actually registered under rather than the last keystroke.
   const [originalDates, setOriginalDates] = useState({ arrival: "", departure: "" });
+
+  const linkState = editing ? getLinkState(editing.registration_links) : { kind: "none" as const };
+
+  const handleCreateLink = async () => {
+    if (!editing) return;
+    setCreatingLink(true);
+    setModalError(null);
+
+    const result = await createRegistrationLink(editing.id);
+
+    setCreatingLink(false);
+    if (!result.ok) {
+      setModalError(result.error);
+      return;
+    }
+
+    // The only time this URL exists. It is not stored and cannot be
+    // retrieved again — reissuing is the only way to get another.
+    setLinkUrl(result.url);
+    router.refresh();
+  };
+
+  const handleCopy = async () => {
+    if (!linkUrl) return;
+    await navigator.clipboard.writeText(linkUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const openEdit = (r: ReservationRow) => {
     const guestList = Array.isArray(r.guests) ? r.guests : r.guests ? [r.guests] : [];
@@ -121,6 +195,8 @@ export default function ReservationsWorkspace({
     setOriginalDates({ arrival, departure });
     setModalFace("edit");
     setModalError(null);
+    setLinkUrl(null);
+    setCopied(false);
     setEditing(r);
   };
 
@@ -129,6 +205,8 @@ export default function ReservationsWorkspace({
     if (submitting) return;
     setEditing(null);
     setModalError(null);
+    setLinkUrl(null);
+    setCopied(false);
   };
 
   const mode = editing ? getEditMode(editing) : "editable";
@@ -306,7 +384,7 @@ export default function ReservationsWorkspace({
         <Input label="Phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
         <Input label="Arrival date" type="date" value={arrivalDate} onChange={(e) => setArrivalDate(e.target.value)} required />
         <Input label="Departure date" type="date" value={departureDate} onChange={(e) => setDepartureDate(e.target.value)} required />
-        <Input label="Guest count" type="number" value={String(guestCount)} onChange={(e) => setGuestCount(Number(e.target.value || 1))} />
+        <Input label="Guest count" type="number" value={String(guestCount)} onFocus={(e) => e.target.select()} onChange={(e) => setGuestCount(Number(e.target.value || 1))} />
         <div>
           <Select
             label="Room"
@@ -421,6 +499,7 @@ export default function ReservationsWorkspace({
                 disabled={mode === "read_only"}
                 onChange={(e) => setEditForm({ ...editForm, departureDate: e.target.value })} />
               <Input label="Guest count" type="number" value={String(editForm.guestCount)}
+                onFocus={(e) => e.target.select()}
                 disabled={mode === "read_only"}
                 onChange={(e) => setEditForm({ ...editForm, guestCount: Number(e.target.value || 1) })} />
               <Select label="Room" placeholder="Assign later" value={editForm.roomId}
@@ -441,6 +520,57 @@ export default function ReservationsWorkspace({
                   The guest already completed registration using different stay dates.
                   Saving this change will flag the reservation for review at arrival.
                 </p>
+              </div>
+            )}
+
+            {mode !== "read_only" && (
+              <div className="pt-4 border-t border-charcoal-100">
+                <div className="text-sm font-medium text-charcoal-900 mb-2">
+                  Guest registration link
+                </div>
+
+                {linkUrl ? (
+                  <div className="space-y-2">
+                    <div className="p-3 rounded-md bg-emerald-50 border border-emerald-200">
+                      <p className="text-xs text-emerald-800 mb-2">
+                        Copy this now — it is shown only once and cannot be retrieved later.
+                      </p>
+                      <div className="flex gap-2">
+                        <input
+                          readOnly
+                          value={linkUrl}
+                          onFocus={(e) => e.target.select()}
+                          className="flex-1 text-xs px-2 py-1.5 rounded border border-emerald-300 bg-white font-mono"
+                        />
+                        <Button type="button" onClick={handleCopy}>
+                          {copied ? "Copied" : "Copy"}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <p className="text-sm text-charcoal-600">
+                      {linkState.kind === "active" &&
+                        `A link is active until ${new Date(linkState.expiresAt).toLocaleString()}.`}
+                      {linkState.kind === "expired" && "The previous link has expired."}
+                      {linkState.kind === "completed" && "The guest has completed registration."}
+                      {linkState.kind === "none" && "No registration link has been created yet."}
+                    </p>
+
+                    {linkState.kind === "active" && (
+                      <p className="text-xs text-amber-700">
+                        Creating a new link will invalidate the guest&apos;s existing link.
+                      </p>
+                    )}
+
+                    {linkState.kind !== "completed" && (
+                      <Button type="button" onClick={handleCreateLink} loading={creatingLink}>
+                        {linkState.kind === "none" ? "Create registration link" : "Create new link"}
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 

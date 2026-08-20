@@ -15,6 +15,15 @@ type ReservationRow = {
   reservation_status?: string | null;
   registration_status?: string | null;
   registration_review_required?: boolean | null;
+  registration_links?:
+    | {
+        id: string;
+        expires_at: string | null;
+        revoked_at: string | null;
+        completed_at: string | null;
+        created_at: string | null;
+      }[]
+    | null;
   room_id?: string | null;
   checked_in_at?: string | null;
   primary_guest_id?: string | null;
@@ -42,7 +51,7 @@ export default async function ReservationsPage() {
   const res = await supabase
     .from("reservations")
     .select(
-      "id, confirmation_number, arrival_date, departure_date, guest_count, reservation_status, registration_status, registration_review_required, room_id, checked_in_at, primary_guest_id, guests(first_name,last_name,email,phone), rooms(room_number)"
+      "id, confirmation_number, arrival_date, departure_date, guest_count, reservation_status, registration_status, registration_review_required, registration_links(id, expires_at, revoked_at, completed_at, created_at), room_id, checked_in_at, primary_guest_id, guests(first_name,last_name,email,phone), rooms(room_number)"
     )
     .eq("business_id", businessId)
     .order("arrival_date", { ascending: true });
