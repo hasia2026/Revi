@@ -40,11 +40,17 @@ export async function updateSession(request: NextRequest) {
   const isAuthRoute =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
 
+  const isRegistrationRoute =
+    pathname === "/register" || pathname.startsWith("/register/");
+
   // Public routes that anyone (authenticated or not) can access.
   // /auth/* must be public so the callback route can exchange the code BEFORE
   // a session exists — otherwise the proxy would redirect to /login first.
   const isPublicRoute =
-    pathname === "/" || isAuthRoute || pathname.startsWith("/auth/");
+    pathname === "/" ||
+    isAuthRoute ||
+    pathname.startsWith("/auth/") ||
+    isRegistrationRoute;
 
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
