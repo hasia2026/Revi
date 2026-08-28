@@ -41,9 +41,14 @@ begin
     raise exception 'Invalid token hash';
   end if;
 
-  select timezone into v_timezone
-  from public.businesses
-  where id = v_res.business_id;
+  select b.timezone
+    into v_timezone
+  from public.businesses b
+  where b.id = v_res.business_id;
+
+  if not found or v_timezone is null then
+    raise exception 'Property timezone is not configured';
+  end if;
 
   v_expiry_date := least(v_res.departure_date, v_res.arrival_date + 1);
   v_expires_at  := (v_expiry_date + 1)::timestamp at time zone v_timezone;
@@ -114,12 +119,27 @@ begin
     return;
   end if;
 
-  select name into v_property_name
-  from public.businesses
-  where id = v_res.business_id;
+  if v_link.expires_at <= now() then
+    return query
+      select
+        'expired'::text,
+        null::text,
+        null::text,
+        null::date,
+        null::date,
+        null::timestamptz;
+    return;
+  end if;
 
-  if not found then
-    return query select 'invalid'::text, null::text, null::text, null::date, null::date, null::timestamptz;
+  if v_link.completed_at is not null then
+    return query
+      select
+        'completed'::text,
+        null::text,
+        null::text,
+        null::date,
+        null::date,
+        null::timestamptz;
     return;
   end if;
 
@@ -133,13 +153,12 @@ begin
     return;
   end if;
 
-  if v_link.expires_at <= now() then
-    return query select 'expired'::text, null::text, null::text, null::date, null::date, v_link.expires_at;
-    return;
-  end if;
+  select name into v_property_name
+  from public.businesses
+  where id = v_res.business_id;
 
-  if v_link.completed_at is not null then
-    return query select 'completed'::text, null::text, null::text, null::date, null::date, v_link.expires_at;
+  if not found then
+    return query select 'invalid'::text, null::text, null::text, null::date, null::date, null::timestamptz;
     return;
   end if;
 

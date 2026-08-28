@@ -136,7 +136,7 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
             {SUPPORTED_LOCALES.map(({ code }) => (
               <a
                 key={code}
-                href={`/register/${encodeURIComponent(token)}?lang=${code}`}
+                href={`?lang=${code}`}
                 className={`rounded-md px-2 py-1.5 ${locale === code ? "bg-charcoal-900 text-white" : "text-charcoal-500 hover:bg-gold-50 hover:text-charcoal-900"}`}
               >
                 {code.toUpperCase()}
