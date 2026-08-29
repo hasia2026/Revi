@@ -86,6 +86,34 @@ export function getPropertyToday(timeZone: string): string {
   return toPropertyDate(new Date(), timeZone);
 }
 
+/**
+ * Format a property-local calendar date such as "2026-08-29" without
+ * converting it to an instant. The value is already a date-only string in the
+ * property's timezone, so rendering it through a timezone-aware Date() would
+ * incorrectly shift the day at UTC-midnight boundaries.
+ */
+export function formatPropertyDate(dateStr: string): string {
+  if (!dateStr) return "—";
+
+  const match = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/.exec(dateStr);
+  if (!match) return dateStr;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+
+  if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+    return dateStr;
+  }
+
+  const safeUtcDate = new Date(Date.UTC(year, month - 1, day, 12));
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    month: "short",
+    day: "numeric",
+  }).format(safeUtcDate);
+}
+
 /** The UTC offset in milliseconds in effect at `instant` for `timeZone`. */
 function getOffsetMs(instant: Date, timeZone: string): number {
   const wall = getWallClock(instant, timeZone);
