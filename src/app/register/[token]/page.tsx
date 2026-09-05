@@ -15,14 +15,12 @@ export const revalidate = 0;
 type RegistrationResolution = {
   status: "valid" | "expired" | "completed" | "invalid";
   guest_first_name: string | null;
-  guest_last_name: string | null;
-  guest_email: string | null;
-  guest_phone: string | null;
-  guest_address: string | null;
+  guest_last_initial: string | null;
   property_name: string | null;
   arrival_date: string | null;
   departure_date: string | null;
   expires_at: string | null;
+  preferred_language: string | null;
 };
 
 type PageProps = {
@@ -137,6 +135,23 @@ function isRegistrationToken(value: string): boolean {
   return /^[A-Za-z0-9_-]{43}$/.test(value);
 }
 
+/**
+ * First name plus last initial. The abbreviating period is a Latin
+ * convention, so Arabic omits it. Returns the empty string when there is no
+ * name, which the greeting template tolerates.
+ */
+function formatGuestName(
+  firstName: string | null,
+  lastInitial: string | null,
+  locale: SupportedLocale,
+): string {
+  const first = firstName?.trim() ?? "";
+  const initial = lastInitial?.trim() ?? "";
+  if (!first) return "";
+  if (!initial) return first;
+  return locale === "ar" ? `${first} ${initial}` : `${first} ${initial}.`;
+}
+
 function formatDate(value: string | null, locale: SupportedLocale): string {
   if (!value) return "";
   const [year, month, day] = value.slice(0, 10).split("-").map(Number);
@@ -147,30 +162,48 @@ function formatDate(value: string | null, locale: SupportedLocale): string {
   }).format(new Date(Date.UTC(year, month - 1, day)));
 }
 
-function selectLocale(value: string | string[] | undefined, acceptLanguage: string | null): SupportedLocale {
+/**
+ * Locked precedence: ?lang= -> reservation override -> guest preference ->
+ * Accept-Language -> en.
+ *
+ * The middle two arrive collapsed as one value from the resolver, which
+ * coalesces reservations.preferred_language_override over
+ * guests.preferred_language. Accept-Language sits below stored preference
+ * because a guest's recorded language is a stronger signal than the phone
+ * they happen to be holding; it sits above the hardcoded default because a
+ * browser hint beats guessing English.
+ *
+ * Every candidate is validated against LOCALES, so an unsupported value
+ * (including anything the database returns) falls through rather than
+ * rendering a locale that has no copy.
+ */
+function selectLocale(
+  value: string | string[] | undefined,
+  preferredLanguage: string | null,
+  acceptLanguage: string | null,
+): SupportedLocale {
   const explicit = Array.isArray(value) ? value[0] : value;
   if (isSupportedLocale(explicit)) return explicit.toLowerCase() as SupportedLocale;
+
+  const stored = preferredLanguage?.trim().toLowerCase().split("-")[0];
+  if (isSupportedLocale(stored)) return stored as SupportedLocale;
+
   return getBestSupportedLocale(acceptLanguage);
 }
 
 export default async function RegistrationPage({ params, searchParams }: PageProps) {
   const [{ token }, query] = await Promise.all([params, searchParams]);
   const requestHeaders = await headers();
-  const locale = selectLocale(query.lang, requestHeaders.get("accept-language"));
-  const direction = SUPPORTED_LOCALES.find((item) => item.code === locale)?.direction ?? "ltr";
-  const copy = COPY[locale];
 
   let resolution: RegistrationResolution = {
     status: "invalid",
     guest_first_name: null,
-    guest_last_name: null,
-    guest_email: null,
-    guest_phone: null,
-    guest_address: null,
+    guest_last_initial: null,
     property_name: null,
     arrival_date: null,
     departure_date: null,
     expires_at: null,
+    preferred_language: null,
   };
 
   if (isRegistrationToken(token)) {
@@ -183,6 +216,17 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
       resolution = result as RegistrationResolution;
     }
   }
+
+  // Resolution comes first: the guest's stored language is one of the locale
+  // candidates, so the token has to be resolved before the page can decide
+  // which language to render in.
+  const locale = selectLocale(
+    query.lang,
+    resolution.preferred_language,
+    requestHeaders.get("accept-language"),
+  );
+  const direction = SUPPORTED_LOCALES.find((item) => item.code === locale)?.direction ?? "ltr";
+  const copy = COPY[locale];
 
   return (
     <div lang={locale} dir={direction} className="min-h-screen bg-charcoal-50 text-charcoal-900">
@@ -210,7 +254,7 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
             <div className="border border-gold-200 bg-white p-6 shadow-card sm:p-10">
               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold-700">{copy.registrationReady}</p>
               <h1 className="mt-4 text-3xl font-semibold tracking-tight text-charcoal-900 sm:text-4xl">
-                {copy.greeting.replace("{name}", resolution.guest_first_name || "")}
+                {copy.greeting.replace("{name}", formatGuestName(resolution.guest_first_name, resolution.guest_last_initial, locale))}
               </h1>
               <p className="mt-3 text-lg text-charcoal-600">{resolution.property_name}</p>
               <p className="mt-6 text-charcoal-600">{copy.readyMessage}</p>
@@ -243,12 +287,16 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
                   success: copy.success,
                   error: copy.error,
                 }}
+                // Only the given name is pre-filled. Surname and contact details
+                // are typed by the guest: the resolver no longer returns them,
+                // because anyone holding a forwarded link would otherwise read
+                // the guest's home address, email and phone just by opening it.
                 initial={{
                   firstName: resolution.guest_first_name ?? "",
-                  lastName: resolution.guest_last_name ?? "",
-                  email: resolution.guest_email ?? "",
-                  phone: resolution.guest_phone ?? "",
-                  address: resolution.guest_address ?? "",
+                  lastName: "",
+                  email: "",
+                  phone: "",
+                  address: "",
                 }}
               />
             </div>
