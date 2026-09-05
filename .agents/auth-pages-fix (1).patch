@@ -1,0 +1,194 @@
+diff --git a/docs/Architecture.md b/docs/Architecture.md
+index 6a6215a..75e9d35 100644
+--- a/docs/Architecture.md
++++ b/docs/Architecture.md
+@@ -69,6 +69,30 @@ ever reads `.limit(1)` — it assumes one business per user in practice.
+ 
+ ## Design system
+ 
+-White / charcoal / gold. Components in `src/components/ui/`: `Button`,
+-`Input`, `Select`, `Textarea`, `Badge`, `Avatar`, `EmptyState`, `Spinner`,
+-`Modal`. Inter via Google Fonts.
++Hybrid as of the CU³ design pass: most of the app is white / charcoal /
++gold (Leads, Conversations, Knowledge, Training, Settings, Website
++Builder, Brand Studio, Hospitality). Login, Navigation (Sidebar/TopBar),
++and Dashboard use the newer CU³ treatment — dark background with a
++blue/orange radial glow (`cue-bg`), glassmorphism panels (`glass-panel`),
++gradient accents (`cue-gradient`/`cue-text`) replacing gold as primary.
++Applied module-by-module on purpose, not a global theme swap — see
++Roadmap.md. Components in `src/components/ui/`: `Button`, `Input`,
++`Select`, `Textarea`, `Badge`, `Avatar`, `EmptyState`, `Spinner`, `Modal`
++— several gained a `cue` variant or `dark` prop alongside their original
++light-theme behavior, additive, not a breaking change. Inter via Google
++Fonts.
++
++## Product principle: Compass → Revi → HASI → Execute
++
++Stated explicitly because it's easy to lose sight of once individual
++modules are being built one at a time: CUE is not trying to replace a
++business's existing CRM or operational software. It sits above those
++systems, combines their data with CUE-native data, interprets it, and
++turns that into decisions. Company Compass is where that interpretation
++surfaces (KPIs, goals, trends), Revi is what explains it to a person,
++HASI is the invisible layer that actually correlates the data across
++modules, and Execute is where an approved recommendation becomes a real
++action. Every module built against this app should be understood as
++feeding that chain eventually, not as a standalone feature competing for
++dashboard space. See Roadmap.md's Compass backlog entry for the concrete
++version of this that hasn't been scoped or built yet.
+diff --git a/docs/Roadmap.md b/docs/Roadmap.md
+index cd699af..6b9680c 100644
+--- a/docs/Roadmap.md
++++ b/docs/Roadmap.md
+@@ -33,6 +33,46 @@ decisions have been made for these yet — when work starts on any of them,
+ they should get their own Architecture.md-style documentation rather than
+ being bolted onto Revi's.
+ 
++## Backlog: Company Compass as the intelligence layer (not yet scoped)
++
++Captured from a product-direction conversation, deliberately NOT
++scheduled and NOT started — no tables, migrations, integrations, or UI
++exist for any of this. Recorded here so the idea doesn't get lost or
++get silently half-built as a side effect of some other task.
++
++**The vision:** Company Compass becomes a real-time business intelligence
++surface — KPIs (revenue, jobs, leads, estimates, conversions,
++cancellations, cash collected, industry-specific metrics), goals with
++progress tracking, team/employee performance where relevant, and
++optional bonus/milestone tiers with progress indicators and
++celebrations. Revi explains what the numbers mean and recommends a next
++action. HASI works invisibly in the background correlating data across
++CUE's modules to detect trends, risks, and opportunities. Execute
++eventually carries out approved actions that come out of those insights.
++
++**The architectural principle worth preserving, stated precisely:**
++CUE is not trying to replace a business's CRM or operational software.
++It sits above existing systems, pulls relevant data through
++integrations, combines it with CUE-native data, interprets it, and
++turns it into decisions/actions. The distinction:
++
++- **CRM** = records what happened
++- **Dashboard** = shows what is happening
++- **CUE** = understands what it means and helps decide what should
++  happen next
++
++This is the same shape as the already-approved Growth/Scal3 boundary
++(§7 of the locked CUE Architecture Audit) — CUE doesn't replace Scal3's
++revenue intelligence, it would eventually sit above it. This backlog
++item is that same pattern applied to Company Compass specifically:
++Compass → Revi (explains) → HASI (correlates, invisibly) → Execute
++(acts, with approval) — one coherent chain, not a new one-off feature.
++
++**Before any of this gets built:** needs its own scoped conversation
++(what integrations, which KPIs are actually available from where, what
++"approved action" means concretely for Execute) — exactly the kind of
++audit-before-migrate discipline used for Hospitality's schema gate.
++
+ ## How this doc should be maintained
+ 
+ Update it when direction actually changes, not on a schedule. If a
+diff --git a/src/app/(auth)/setup/page.tsx b/src/app/(auth)/setup/page.tsx
+index 5dd9ac8..c992464 100644
+--- a/src/app/(auth)/setup/page.tsx
++++ b/src/app/(auth)/setup/page.tsx
+@@ -160,20 +160,20 @@ export default function SetupPage() {
+     if (valid) setStep((s) => s + 1);
+   }
+ 
+-  const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";
++  const fieldClass = "w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors";
+   const labelClass = "block text-sm font-medium text-charcoal-300 mb-1.5";
+   const errorClass = "mt-1.5 text-xs text-red-400";
+ 
+   if (checkingExisting) {
+     return (
+-      <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
++      <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
+         <p className="text-charcoal-400 text-sm">Checking your account…</p>
+       </div>
+     );
+   }
+ 
+   return (
+-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
++    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
+       <h2 className="text-xl font-semibold text-white mb-1">Set up your business</h2>
+       <p className="text-charcoal-400 text-sm mb-6">Tell us about your business to get started</p>
+ 
+@@ -183,16 +183,16 @@ export default function SetupPage() {
+           <div key={s.id} className="flex items-center gap-2 flex-1">
+             <div className={`h-7 w-7 rounded-full flex items-center justify-center text-xs font-semibold flex-shrink-0 transition-all ${
+               step > s.id
+-                ? "bg-gold-500 text-white"
++                ? "cue-gradient text-white"
+                 : step === s.id
+-                ? "bg-gold-500/20 border-2 border-gold-500 text-gold-400"
+-                : "bg-charcoal-800 border border-charcoal-600 text-charcoal-500"
++                ? "bg-white/5 border-2 border-cue-blue-400 text-cue-blue-400"
++                : "bg-white/5 border border-white/10 text-charcoal-500"
+             }`}>
+               {step > s.id ? <Check className="h-3.5 w-3.5" /> : s.id}
+             </div>
+             <span className={`text-xs hidden sm:block ${step >= s.id ? "text-charcoal-300" : "text-charcoal-600"}`}>{s.title}</span>
+             {i < STEPS.length - 1 && (
+-              <div className={`flex-1 h-px ${step > s.id ? "bg-gold-500/40" : "bg-charcoal-700"}`} />
++              <div className={`flex-1 h-px ${step > s.id ? "cue-gradient" : "bg-white/10"}`} />
+             )}
+           </div>
+         ))}
+@@ -257,16 +257,16 @@ export default function SetupPage() {
+ 
+         <div className="flex gap-3 mt-8">
+           {step > 1 && (
+-            <Button type="button" variant="secondary" onClick={() => setStep((s) => s - 1)} className="flex-1 bg-charcoal-800 border-charcoal-700 text-charcoal-300 hover:bg-charcoal-700 hover:text-white">
++            <Button type="button" variant="secondary" onClick={() => setStep((s) => s - 1)} className="flex-1 bg-white/5 border-white/10 text-charcoal-300 hover:bg-white/10 hover:text-white">
+               Back
+             </Button>
+           )}
+           {step < 3 ? (
+-            <Button type="button" variant="gold" onClick={nextStep} className="flex-1">
++            <Button type="button" variant="cue" onClick={nextStep} className="flex-1">
+               Continue
+             </Button>
+           ) : (
+-            <Button type="submit" variant="gold" loading={isSubmitting} className="flex-1">
++            <Button type="submit" variant="cue" loading={isSubmitting} className="flex-1">
+               Launch CUE
+             </Button>
+           )}
+diff --git a/src/app/(auth)/signup/page.tsx b/src/app/(auth)/signup/page.tsx
+index aced6e0..cc37ea5 100644
+--- a/src/app/(auth)/signup/page.tsx
++++ b/src/app/(auth)/signup/page.tsx
+@@ -63,12 +63,12 @@ export default function SignupPage() {
+     toast.success("Account created! Check your email to confirm, then sign in.");
+   }
+ 
+-  const fieldClass = "w-full rounded-lg border border-charcoal-700 bg-charcoal-800 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors";
++  const fieldClass = "w-full rounded-lg border border-white/10 bg-white/5 px-3.5 py-2.5 text-sm text-white placeholder:text-charcoal-500 focus:outline-none focus:ring-2 focus:ring-cue-blue-400 focus:border-transparent transition-colors";
+   const labelClass = "block text-sm font-medium text-charcoal-300 mb-1.5";
+   const errorClass = "mt-1.5 text-xs text-red-400";
+ 
+   return (
+-    <div className="bg-charcoal-900 border border-charcoal-700 rounded-2xl p-8 shadow-2xl">
++    <div className="glass-panel rounded-2xl p-8 shadow-cue-glow">
+       <h2 className="text-xl font-semibold text-white mb-1">Create your account</h2>
+       <p className="text-charcoal-400 text-sm mb-7">Start your CUE journey today</p>
+ 
+@@ -114,14 +114,14 @@ export default function SignupPage() {
+           {errors.confirmPassword && <p className={errorClass}>{errors.confirmPassword.message}</p>}
+         </div>
+ 
+-        <Button type="submit" variant="gold" size="lg" loading={isSubmitting} className="w-full mt-2">
++        <Button type="submit" variant="cue" size="lg" loading={isSubmitting} className="w-full mt-2">
+           Create account
+         </Button>
+       </form>
+ 
+       <p className="text-center text-sm text-charcoal-500 mt-6">
+         Already have an account?{" "}
+-        <Link href="/login" className="text-gold-400 hover:text-gold-300 font-medium transition-colors">
++        <Link href="/login" className="text-cue-blue-400 hover:text-cue-blue-300 font-medium transition-colors">
+           Sign in
+         </Link>
+       </p>

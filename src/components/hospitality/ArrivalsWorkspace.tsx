@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { Modal } from "@/components/ui/Modal";
 import { createRegistrationLink } from "@/lib/registration/actions";
 import { formatPropertyDate } from "@/lib/time/property-time";
 import { AlertCircle, CalendarDays, CheckCircle2, ClipboardCheck, PlaneLanding, UserCheck } from "lucide-react";
@@ -156,21 +157,35 @@ function shouldShowRegistrationLinkButton(reservation: ReservationRow) {
   return true;
 }
 
+function canCheckIn(reservation: ReservationRow) {
+  if (!reservation || reservation.checked_in_at) return false;
+  if (reservation.reservation_status === "cancelled") return false;
+  if (reservation.registration_review_required) return false;
+  if (reservation.registration_status !== "completed") return false;
+
+  return true;
+}
+
 function formatDate(date: string | null | undefined) {
   return date ? formatPropertyDate(date) : "—";
 }
 
 export default function ArrivalsWorkspace({
   initialReservations,
+  rooms,
   today,
 }: {
   initialReservations: ReservationRow[];
+  rooms: { id: string; room_number: string }[];
   today: string;
 }) {
   const router = useRouter();
   const [generatedLinks, setGeneratedLinks] = useState<Record<string, string>>({});
   const [creatingIds, setCreatingIds] = useState<Record<string, boolean>>({});
   const [copiedIds, setCopiedIds] = useState<Record<string, boolean>>({});
+  const [checkInReservation, setCheckInReservation] = useState<ReservationRow | null>(null);
+  const [selectedRoomId, setSelectedRoomId] = useState<string>("");
+  const [checkingIn, setCheckingIn] = useState(false);
 
   const reservations = useMemo(() => initialReservations ?? [], [initialReservations]);
 
@@ -200,6 +215,54 @@ export default function ArrivalsWorkspace({
     setTimeout(() => {
       setCopiedIds((prev) => ({ ...prev, [reservationId]: false }));
     }, 2000);
+  }
+
+  function openCheckInModal(reservation: ReservationRow) {
+    if (!canCheckIn(reservation)) return;
+    setCheckInReservation(reservation);
+    setSelectedRoomId(reservation.room_id ?? "");
+  }
+
+  async function handleCheckIn() {
+    if (!checkInReservation) return;
+
+    setCheckingIn(true);
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      const roomId = selectedRoomId || checkInReservation.room_id || null;
+
+      const { error } = await supabase.rpc("check_in_reservation", {
+        p_reservation_id: checkInReservation.id,
+        p_room_id: roomId || null,
+      });
+
+      if (error) {
+        const known = new Map([
+          ["Reservation not found", "Reservation not found"],
+          ["Not authorized", "Not authorized"],
+          ["Cancelled reservation cannot be checked in", "Cancelled reservation cannot be checked in"],
+          ["Reservation is already checked in", "Reservation is already checked in"],
+          ["Registration must be completed before check-in", "Registration must be completed before check-in"],
+          ["Registration review is required before check-in", "Registration review is required before check-in"],
+          ["Reservation cannot be checked in before the arrival date", "Reservation cannot be checked in before the arrival date"],
+          ["Room is inactive or does not belong to this property", "Room is inactive or does not belong to this property"],
+        ]);
+
+        const message = known.get(error.message) || `Could not check in guest: ${error.message}`;
+        toast.error(message);
+        return;
+      }
+
+      toast.success("Guest checked in");
+      setCheckInReservation(null);
+      setSelectedRoomId("");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error?.message || "Could not check in guest.");
+    } finally {
+      setCheckingIn(false);
+    }
   }
 
   if (reservations.length === 0) {
@@ -267,7 +330,16 @@ export default function ArrivalsWorkspace({
                     <td className="px-4 py-3 align-top">
                       <div className="space-y-2">
                         <div className="font-medium text-charcoal-800">{nextAction}</div>
-                        {generatedUrl ? (
+                        {canCheckIn(reservation) ? (
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="primary"
+                            onClick={() => openCheckInModal(reservation)}
+                          >
+                            Check in
+                          </Button>
+                        ) : generatedUrl ? (
                           <div className="space-y-2">
                             <input
                               readOnly
@@ -345,7 +417,13 @@ export default function ArrivalsWorkspace({
                 <div className="mt-1 text-sm font-medium text-charcoal-800">{nextAction}</div>
               </div>
 
-              {generatedUrl ? (
+              {canCheckIn(reservation) ? (
+                <div className="mt-3">
+                  <Button type="button" size="sm" onClick={() => openCheckInModal(reservation)} className="w-full">
+                    Check in
+                  </Button>
+                </div>
+              ) : generatedUrl ? (
                 <div className="mt-3 space-y-2">
                   <input
                     readOnly
@@ -379,6 +457,66 @@ export default function ArrivalsWorkspace({
           );
         })}
       </div>
+
+      <Modal
+        open={!!checkInReservation}
+        onClose={() => { setCheckInReservation(null); setSelectedRoomId(""); }}
+        title="Complete check-in"
+        size="lg"
+      >
+        {checkInReservation && (
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <div className="text-sm text-charcoal-600">Guest</div>
+              <div className="text-lg font-semibold text-charcoal-900">{getGuestName(checkInReservation.guests)}</div>
+              <div className="text-sm text-charcoal-600">
+                {formatDate(checkInReservation.arrival_date)} → {formatDate(checkInReservation.departure_date)}
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-3 text-sm text-charcoal-700">
+              <div className="flex items-center justify-between gap-3">
+                <span>Registration</span>
+                <Badge variant="success">Complete</Badge>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-charcoal-700">Assigned room</label>
+              {checkInReservation.room_id ? (
+                <div className="rounded-lg border border-charcoal-200 bg-charcoal-50 px-3 py-2 text-sm text-charcoal-800">
+                  {getRoomNumber(checkInReservation)}
+                </div>
+              ) : (
+                <select
+                  value={selectedRoomId}
+                  onChange={(event) => setSelectedRoomId(event.target.value)}
+                  className="w-full rounded-lg border border-charcoal-200 bg-white px-3 py-2 text-sm text-charcoal-800 focus:border-charcoal-400 focus:outline-none"
+                >
+                  <option value="">Select an active room</option>
+                  {rooms.map((room) => (
+                    <option key={room.id} value={room.id}>{room.room_number}</option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-2 pt-2 border-t border-charcoal-100">
+              <Button type="button" variant="secondary" onClick={() => { setCheckInReservation(null); setSelectedRoomId(""); }}>
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                onClick={handleCheckIn}
+                loading={checkingIn}
+                disabled={Boolean(!checkInReservation.room_id && !selectedRoomId)}
+              >
+                Complete check-in
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

@@ -1,0 +1,8 @@
+[33m8123cb0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mslice-4-front-desk-check-in[m[33m, [m[1;32mslice-3-arrivals-board[m[33m)[m Complete Hospitality arrivals board
+[33m32695dc[m[33m ([m[1;32mslice-1-guest-registration[m[33m)[m Complete secure guest registration submission
+[33mbfbd92b[m[33m ([m[1;31morigin/slice-1-guest-registration[m[33m)[m Correct guest registration slice 1
+[33m0bbe5eb[m Build guest registration slice 1
+[33m9bd86a6[m Harden guest registration route
+[33m5894558[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m Track Next.js agent files and mark timezone migration applied
+[33m1c4ddf0[m Add Create Registration Link
+[33m8de76c3[m Add registration link RPCs

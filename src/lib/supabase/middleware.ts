@@ -5,6 +5,12 @@ import { NextResponse, type NextRequest } from "next/server";
 // NOTE: We intentionally do not pass the Database generic here.
 // See src/lib/supabase/client.ts for the full explanation.
 export async function updateSession(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  if (pathname === "/register" || pathname.startsWith("/register/")) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -33,8 +39,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
 
   // Auth routes: login / signup
   const isAuthRoute =

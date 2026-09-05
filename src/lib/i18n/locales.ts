@@ -17,6 +17,24 @@ export function isSupportedLocale(value: string | null | undefined): value is Su
   return value != null && supportedLocaleCodes.has(value.toLowerCase());
 }
 
+export function normalizeLocale(value: string | null | undefined): SupportedLocale | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed || trimmed.length > 35) return null;
+  const base = trimmed.toLowerCase().replace(/_/g, "-").split("-")[0];
+  return isSupportedLocale(base) ? base : null;
+}
+
+export function resolveLocale(
+  ...candidates: (string | null | undefined)[]
+): SupportedLocale {
+  for (const candidate of candidates) {
+    const normalized = normalizeLocale(candidate);
+    if (normalized) return normalized;
+  }
+  return DEFAULT_LOCALE;
+}
+
 export function getBestSupportedLocale(acceptLanguage: string | null | undefined): SupportedLocale {
   if (!acceptLanguage) return DEFAULT_LOCALE;
 

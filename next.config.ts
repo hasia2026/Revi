@@ -22,7 +22,10 @@ const nextConfig: NextConfig = {
       {
         source: "/register/:path*",
         headers: [
-          { key: "Cache-Control", value: "no-store" },
+          {
+            key: "Cache-Control",
+            value: "no-store, no-cache, must-revalidate, max-age=0",
+          },
           { key: "Referrer-Policy", value: "no-referrer" },
           { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
         ],

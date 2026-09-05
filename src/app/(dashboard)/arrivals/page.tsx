@@ -72,7 +72,15 @@ export default async function ArrivalsPage() {
     .neq("reservation_status", "cancelled")
     .order("arrival_date", { ascending: true });
 
+  const { data: roomsData } = await supabase
+    .from("rooms")
+    .select("id, room_number")
+    .eq("business_id", businessId)
+    .eq("active", true)
+    .order("room_number", { ascending: true });
+
   const reservations = (data ?? []) as ReservationRow[];
+  const rooms = (roomsData ?? []) as { id: string; room_number: string }[];
 
   const arrivingToday = reservations.length;
   const registrationNeeded = reservations.filter(
@@ -114,7 +122,7 @@ export default async function ArrivalsPage() {
 
   return (
     <ModuleFramework config={config}>
-      <ArrivalsWorkspace initialReservations={reservations} today={today} />
+      <ArrivalsWorkspace initialReservations={reservations} rooms={rooms} today={today} />
     </ModuleFramework>
   );
 }

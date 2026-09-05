@@ -1,16 +1,18 @@
-import { headers } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
-import { hashRegistrationToken } from "@/lib/registration/token";
+import type { Metadata } from "next";
+import { resolveRegistrationToken } from "@/lib/registration/resolve";
 import { GuestRegistrationForm } from "@/components/hospitality/GuestRegistrationForm";
 import {
-  getBestSupportedLocale,
-  isSupportedLocale,
+  resolveLocale,
   SUPPORTED_LOCALES,
   type SupportedLocale,
 } from "@/lib/i18n/locales";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const metadata: Metadata = {
+  title: "Guest Registration",
+  robots: { index: false, follow: false, nocache: true },
+};
 
 type RegistrationResolution = {
   status: "valid" | "expired" | "completed" | "invalid";
@@ -23,6 +25,7 @@ type RegistrationResolution = {
   arrival_date: string | null;
   departure_date: string | null;
   expires_at: string | null;
+  preferred_language: string | null;
 };
 
 type PageProps = {
@@ -133,10 +136,6 @@ const COPY = {
   },
 } satisfies Record<SupportedLocale, Record<string, string>>;
 
-function isRegistrationToken(value: string): boolean {
-  return /^[A-Za-z0-9_-]{43}$/.test(value);
-}
-
 function formatDate(value: string | null, locale: SupportedLocale): string {
   if (!value) return "";
   const [year, month, day] = value.slice(0, 10).split("-").map(Number);
@@ -147,42 +146,48 @@ function formatDate(value: string | null, locale: SupportedLocale): string {
   }).format(new Date(Date.UTC(year, month - 1, day)));
 }
 
-function selectLocale(value: string | string[] | undefined, acceptLanguage: string | null): SupportedLocale {
+function selectLocale(value: string | string[] | undefined, preferredLanguage: string | null): SupportedLocale {
   const explicit = Array.isArray(value) ? value[0] : value;
-  if (isSupportedLocale(explicit)) return explicit.toLowerCase() as SupportedLocale;
-  return getBestSupportedLocale(acceptLanguage);
+  return resolveLocale(explicit, preferredLanguage);
 }
 
 export default async function RegistrationPage({ params, searchParams }: PageProps) {
   const [{ token }, query] = await Promise.all([params, searchParams]);
-  const requestHeaders = await headers();
-  const locale = selectLocale(query.lang, requestHeaders.get("accept-language"));
+  const resolutionResult = await resolveRegistrationToken(token);
+  const locale = selectLocale(
+    query.lang,
+    resolutionResult.status === "valid" ? resolutionResult.preferredLanguage : null,
+  );
   const direction = SUPPORTED_LOCALES.find((item) => item.code === locale)?.direction ?? "ltr";
   const copy = COPY[locale];
 
-  let resolution: RegistrationResolution = {
-    status: "invalid",
-    guest_first_name: null,
-    guest_last_name: null,
-    guest_email: null,
-    guest_phone: null,
-    guest_address: null,
-    property_name: null,
-    arrival_date: null,
-    departure_date: null,
-    expires_at: null,
-  };
-
-  if (isRegistrationToken(token)) {
-    const supabase = await createClient();
-    const { data } = await supabase.rpc("resolve_registration_link", {
-      p_token_hash: hashRegistrationToken(token),
-    });
-    const result = Array.isArray(data) ? data[0] : data;
-    if (result && typeof result === "object" && "status" in result) {
-      resolution = result as RegistrationResolution;
-    }
-  }
+  const resolution: RegistrationResolution = resolutionResult.status === "valid"
+    ? {
+        status: "valid",
+        guest_first_name: resolutionResult.guestFirstName,
+        guest_last_name: resolutionResult.guestLastInitial,
+        guest_email: null,
+        guest_phone: null,
+        guest_address: null,
+        property_name: resolutionResult.propertyName,
+        arrival_date: resolutionResult.arrivalDate,
+        departure_date: resolutionResult.departureDate,
+        expires_at: resolutionResult.expiresAt,
+        preferred_language: resolutionResult.preferredLanguage,
+      }
+    : {
+        status: resolutionResult.status,
+        guest_first_name: null,
+        guest_last_name: null,
+        guest_email: null,
+        guest_phone: null,
+        guest_address: null,
+        property_name: null,
+        arrival_date: null,
+        departure_date: null,
+        expires_at: null,
+        preferred_language: null,
+      };
 
   return (
     <div lang={locale} dir={direction} className="min-h-screen bg-charcoal-50 text-charcoal-900">
