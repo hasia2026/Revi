@@ -79,7 +79,7 @@ Enhance is a real pillar. Brand Studio, Website Builder, and Mascot Studio live 
 | Feature | Status | Notes |
 | --- | --- | --- |
 | CU³ Module Framework | `PARTIALLY BUILT` | Module pages must stay Server Components. |
-| CU³ five-pillar navigation | `PARTIALLY BUILT` | Live sidebar reorganized around Company Compass + Capture → Understand → Enhance → Execute → Expand. `npm run build` passed 2026-09-10 and local browser navigation was visually verified. Vercel preview not yet verified. |
+| CU³ five-pillar navigation | `WORKING NOW` | Verified 2026-09-10: live sidebar reorganized around Company Compass + Capture → Understand → Enhance → Execute → Expand. `npm run build` passed; local browser navigation and the `revi-o72c` Vercel preview were both visually verified. |
 | Dashboard v1 | `PARTIALLY BUILT` | |
 | CU³ dark / glass design pass | `PARTIALLY BUILT` | Login, Nav, Dashboard only. |
 | AI calls of any kind | `PLANNED` | **Zero AI implementations in the repo.** |
