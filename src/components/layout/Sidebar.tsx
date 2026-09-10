@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { HOSPITALITY_INDUSTRY } from "@/lib/industries";
+import { PILLARS } from "@/lib/cu3/pillars";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar } from "@/components/ui/Avatar";
@@ -43,37 +44,74 @@ function isGroup(entry: NavEntry): entry is NavGroup {
   return "children" in entry;
 }
 
-// CUE navigation. Customers and Brand Studio are groups because they each
-// bundle multiple existing (or planned) pages under one umbrella concept —
-// same interaction pattern for both rather than inventing a one-off UI for
-// either.
+// CUE navigation.
+//
+// Company Compass is the center of the operating system. The five CU³
+// pillars organize the capabilities around it rather than exposing every
+// module as an unrelated top-level destination.
 const navEntries: NavEntry[] = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
+
+  { href: "/brand-studio/compass", label: "Company Compass", icon: Compass },
+
   {
-    label: "Customers",
-    icon: Users,
+    label: PILLARS.capture.label,
+    icon: PILLARS.capture.icon,
     children: [
+      { href: "/capture", label: "Overview", icon: Inbox },
       { href: "/leads", label: "Leads", icon: Users },
       { href: "/conversations", label: "Conversations", icon: MessageSquare },
     ],
   },
-  { href: "/capture", label: "Capture", icon: Inbox },
-  { href: "/knowledge", label: "Knowledge", icon: BookOpen },
-  { href: "/training", label: "Training", icon: GraduationCap },
+
   {
-    label: "Brand Studio",
-    icon: Palette,
+    label: PILLARS.understand.label,
+    icon: PILLARS.understand.icon,
     children: [
-      { href: "/brand-studio/compass", label: "Company Compass", icon: Compass },
+      { href: "/understand", label: "Overview", icon: PILLARS.understand.icon },
+      { href: "/knowledge", label: "Knowledge", icon: BookOpen },
+    ],
+  },
+
+  {
+    label: PILLARS.enhance.label,
+    icon: PILLARS.enhance.icon,
+    children: [
+      { href: "/enhance", label: "Overview", icon: Palette },
       { href: "/brand-studio/website", label: "Website Builder", icon: Globe },
       { href: "/brand-studio/marketing", label: "Marketing", icon: Megaphone },
       { href: "/brand-studio/library", label: "Executive Library", icon: LibraryBig },
       { href: "/brand-studio/mascot", label: "Mascot Studio", icon: Sparkles },
     ],
   },
-  { href: "/growth", label: "Growth", icon: TrendingUp },
-  { href: "/team", label: "Team", icon: Users },
-  { href: "/automations", label: "Automations", icon: Zap },
+
+  {
+    label: PILLARS.execute.label,
+    icon: PILLARS.execute.icon,
+    children: [
+      { href: "/execute", label: "Overview", icon: PILLARS.execute.icon },
+      { href: "/training", label: "Training", icon: GraduationCap },
+      { href: "/team", label: "Team", icon: Users },
+    ],
+  },
+
+  {
+    label: PILLARS.expand.label,
+    icon: PILLARS.expand.icon,
+    children: [
+      { href: "/expand", label: "Overview", icon: PILLARS.expand.icon },
+      { href: "/growth", label: "Growth", icon: TrendingUp },
+      { href: "/automations", label: "Automations", icon: Zap },
+      { href: "/connected-ecosystem", label: "Connected Ecosystem", icon: Globe },
+    ],
+  },
+
+  {
+    href: "/innovation-lab",
+    label: PILLARS["innovation-lab"].label,
+    icon: PILLARS["innovation-lab"].icon,
+  },
+
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 

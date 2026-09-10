@@ -11,13 +11,10 @@ import { Target, Brain, Wand2, PlayCircle, Rocket, FlaskConical, Compass } from 
  * customer thinking "I need to train my team" should land in Execute
  * without needing to know the module is internally called "Training."
  *
- * THIS FILE DOES NOT CHANGE LIVE NAVIGATION. It's the data layer that
- * makes the eventual migration a config change instead of a rewrite —
- * see docs/Roadmap.md for the migration itself, which is intentionally
- * not scheduled yet. The current Sidebar.tsx nav (Home, Customers,
- * Capture, Knowledge, Training, Brand Studio, Growth, Team, Automations,
- * Settings) remains authoritative for what actually renders until that
- * migration is deliberately performed.
+ * This file is the shared information-architecture source for the live
+ * CUE navigation. Sidebar.tsx uses these pillar definitions to organize
+ * existing capabilities under Capture, Understand, Enhance, Execute,
+ * and Expand while Company Compass remains the conceptual center.
  */
 
 export type PillarKey = "capture" | "understand" | "enhance" | "execute" | "expand" | "innovation-lab";
