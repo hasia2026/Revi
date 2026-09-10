@@ -36,9 +36,15 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Auth routes: login / signup
+  // Login/signup redirect authenticated users to the dashboard.
   const isAuthRoute =
     pathname.startsWith("/login") || pathname.startsWith("/signup");
+
+  // Password recovery routes must remain reachable before and after
+  // Supabase establishes the recovery session.
+  const isPasswordRecoveryRoute =
+    pathname.startsWith("/forgot-password") ||
+    pathname.startsWith("/reset-password");
 
   const isRegistrationRoute =
     pathname === "/register" || pathname.startsWith("/register/");
@@ -49,6 +55,7 @@ export async function updateSession(request: NextRequest) {
   const isPublicRoute =
     pathname === "/" ||
     isAuthRoute ||
+    isPasswordRecoveryRoute ||
     pathname.startsWith("/auth/") ||
     isRegistrationRoute;
 

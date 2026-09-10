@@ -85,7 +85,7 @@ Enhance is a real pillar. Brand Studio, Website Builder, and Mascot Studio live 
 | Secure AI gateway | `PLANNED` | |
 | Revi consolidation (Scal3 brain / Capture voice / ReviSystemV3 face) | `PLANNED` | Integration layer only; none of the three need rebuilding. |
 | Company Compass intelligence layer | `PLANNED` | **Explicitly backlogged.** No tables, migrations, or UI without permission. |
-| Password reset flow | `PLANNED` | **Required before pilot.** |
+| Password reset flow | `WORKING NOW` | Verified 2026-09-10 on Vercel preview: forgot password → real recovery email → reset link → new password update → sign in successfully with new password. `npm run build` also passed. |
 | Website publishing | `PLANNED` | Complete feature (validation, generation, AI activation, live URL). Never a boolean toggle. |
 
 ---

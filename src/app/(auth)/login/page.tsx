@@ -82,6 +82,15 @@ export default function LoginPage() {
             </button>
           </div>
           {errors.password && <p className="mt-1.5 text-xs text-red-400">{errors.password.message}</p>}
+
+          <div className="mt-2 text-right">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-cue-blue-400 hover:text-cue-blue-300 font-medium transition-colors"
+            >
+              Forgot password?
+            </Link>
+          </div>
         </div>
 
         <Button type="submit" variant="cue" size="lg" loading={isSubmitting} className="w-full mt-2">
