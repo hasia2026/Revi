@@ -26,6 +26,7 @@ import {
   Sparkles,
   TrendingUp,
   Zap,
+  PlaneLanding,
   type LucideIcon,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -80,6 +81,7 @@ const HOSPITALITY_GROUP: NavGroup = {
   label: "Hospitality",
   icon: BedDouble,
   children: [
+    { href: "/arrivals", label: "Arrivals", icon: PlaneLanding },
     { href: "/rooms", label: "Rooms", icon: BedDouble },
     { href: "/reservations", label: "Reservations", icon: CalendarDays },
   ],

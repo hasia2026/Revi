@@ -1,0 +1,576 @@
+diff --git a/src/app/register/[token]/page.tsx b/src/app/register/[token]/page.tsx
+index cb28569..36d03be 100644
+--- a/src/app/register/[token]/page.tsx
++++ b/src/app/register/[token]/page.tsx
+@@ -15,14 +15,12 @@ export const revalidate = 0;
+ type RegistrationResolution = {
+   status: "valid" | "expired" | "completed" | "invalid";
+   guest_first_name: string | null;
+-  guest_last_name: string | null;
+-  guest_email: string | null;
+-  guest_phone: string | null;
+-  guest_address: string | null;
++  guest_last_initial: string | null;
+   property_name: string | null;
+   arrival_date: string | null;
+   departure_date: string | null;
+   expires_at: string | null;
++  preferred_language: string | null;
+ };
+ 
+ type PageProps = {
+@@ -137,6 +135,23 @@ function isRegistrationToken(value: string): boolean {
+   return /^[A-Za-z0-9_-]{43}$/.test(value);
+ }
+ 
++/**
++ * First name plus last initial. The abbreviating period is a Latin
++ * convention, so Arabic omits it. Returns the empty string when there is no
++ * name, which the greeting template tolerates.
++ */
++function formatGuestName(
++  firstName: string | null,
++  lastInitial: string | null,
++  locale: SupportedLocale,
++): string {
++  const first = firstName?.trim() ?? "";
++  const initial = lastInitial?.trim() ?? "";
++  if (!first) return "";
++  if (!initial) return first;
++  return locale === "ar" ? `${first} ${initial}` : `${first} ${initial}.`;
++}
++
+ function formatDate(value: string | null, locale: SupportedLocale): string {
+   if (!value) return "";
+   const [year, month, day] = value.slice(0, 10).split("-").map(Number);
+@@ -147,30 +162,48 @@ function formatDate(value: string | null, locale: SupportedLocale): string {
+   }).format(new Date(Date.UTC(year, month - 1, day)));
+ }
+ 
+-function selectLocale(value: string | string[] | undefined, acceptLanguage: string | null): SupportedLocale {
++/**
++ * Locked precedence: ?lang= -> reservation override -> guest preference ->
++ * Accept-Language -> en.
++ *
++ * The middle two arrive collapsed as one value from the resolver, which
++ * coalesces reservations.preferred_language_override over
++ * guests.preferred_language. Accept-Language sits below stored preference
++ * because a guest's recorded language is a stronger signal than the phone
++ * they happen to be holding; it sits above the hardcoded default because a
++ * browser hint beats guessing English.
++ *
++ * Every candidate is validated against LOCALES, so an unsupported value
++ * (including anything the database returns) falls through rather than
++ * rendering a locale that has no copy.
++ */
++function selectLocale(
++  value: string | string[] | undefined,
++  preferredLanguage: string | null,
++  acceptLanguage: string | null,
++): SupportedLocale {
+   const explicit = Array.isArray(value) ? value[0] : value;
+   if (isSupportedLocale(explicit)) return explicit.toLowerCase() as SupportedLocale;
++
++  const stored = preferredLanguage?.trim().toLowerCase().split("-")[0];
++  if (isSupportedLocale(stored)) return stored as SupportedLocale;
++
+   return getBestSupportedLocale(acceptLanguage);
+ }
+ 
+ export default async function RegistrationPage({ params, searchParams }: PageProps) {
+   const [{ token }, query] = await Promise.all([params, searchParams]);
+   const requestHeaders = await headers();
+-  const locale = selectLocale(query.lang, requestHeaders.get("accept-language"));
+-  const direction = SUPPORTED_LOCALES.find((item) => item.code === locale)?.direction ?? "ltr";
+-  const copy = COPY[locale];
+ 
+   let resolution: RegistrationResolution = {
+     status: "invalid",
+     guest_first_name: null,
+-    guest_last_name: null,
+-    guest_email: null,
+-    guest_phone: null,
+-    guest_address: null,
++    guest_last_initial: null,
+     property_name: null,
+     arrival_date: null,
+     departure_date: null,
+     expires_at: null,
++    preferred_language: null,
+   };
+ 
+   if (isRegistrationToken(token)) {
+@@ -184,6 +217,17 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
+     }
+   }
+ 
++  // Resolution comes first: the guest's stored language is one of the locale
++  // candidates, so the token has to be resolved before the page can decide
++  // which language to render in.
++  const locale = selectLocale(
++    query.lang,
++    resolution.preferred_language,
++    requestHeaders.get("accept-language"),
++  );
++  const direction = SUPPORTED_LOCALES.find((item) => item.code === locale)?.direction ?? "ltr";
++  const copy = COPY[locale];
++
+   return (
+     <div lang={locale} dir={direction} className="min-h-screen bg-charcoal-50 text-charcoal-900">
+       <main className="mx-auto flex min-h-screen w-full max-w-2xl flex-col px-5 py-6 sm:px-8 sm:py-10">
+@@ -210,7 +254,7 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
+             <div className="border border-gold-200 bg-white p-6 shadow-card sm:p-10">
+               <p className="text-sm font-semibold uppercase tracking-[0.14em] text-gold-700">{copy.registrationReady}</p>
+               <h1 className="mt-4 text-3xl font-semibold tracking-tight text-charcoal-900 sm:text-4xl">
+-                {copy.greeting.replace("{name}", resolution.guest_first_name || "")}
++                {copy.greeting.replace("{name}", formatGuestName(resolution.guest_first_name, resolution.guest_last_initial, locale))}
+               </h1>
+               <p className="mt-3 text-lg text-charcoal-600">{resolution.property_name}</p>
+               <p className="mt-6 text-charcoal-600">{copy.readyMessage}</p>
+@@ -243,12 +287,16 @@ export default async function RegistrationPage({ params, searchParams }: PagePro
+                   success: copy.success,
+                   error: copy.error,
+                 }}
++                // Only the given name is pre-filled. Surname and contact details
++                // are typed by the guest: the resolver no longer returns them,
++                // because anyone holding a forwarded link would otherwise read
++                // the guest's home address, email and phone just by opening it.
+                 initial={{
+                   firstName: resolution.guest_first_name ?? "",
+-                  lastName: resolution.guest_last_name ?? "",
+-                  email: resolution.guest_email ?? "",
+-                  phone: resolution.guest_phone ?? "",
+-                  address: resolution.guest_address ?? "",
++                  lastName: "",
++                  email: "",
++                  phone: "",
++                  address: "",
+                 }}
+               />
+             </div>
+diff --git a/supabase/migrations/20260905_registration_hardening.sql b/supabase/migrations/20260905_registration_hardening.sql
+new file mode 100644
+index 0000000..82b1e70
+--- /dev/null
++++ b/supabase/migrations/20260905_registration_hardening.sql
+@@ -0,0 +1,420 @@
++-- Registration hardening: three related changes, applied together.
++--
++-- These are one migration on purpose. Sections 1 and 3 both replace
++-- submit_guest_registration, and section 2 changes the table it writes to.
++-- Splitting them would drop and recreate the same functions twice and leave
++-- an intermediate state where the resolver is minimal but submission still
++-- carries a hardcoded locale list.
++--
++--   Section 1 — minimal anonymous resolver payload
++--   Section 2 — versioned, append-only registration submissions
++--   Section 3 — locale validation: shape only, no allowlist
++--
++-- APPLIED: <pending>
++
++
++-- ===========================================================================
++-- SECTION 1 — resolve_registration_link: minimal anonymous payload
++-- ===========================================================================
++--
++-- 20260828 widened this to return guest_last_name, guest_email, guest_phone
++-- and guest_address to `anon`, so the Slice 2 form could pre-fill them.
++--
++-- The registration token is a bearer credential delivered by SMS. Anyone who
++-- receives, forwards, or intercepts that link would get the guest's full home
++-- address, email and phone by merely opening it. That is a materially larger
++-- exposure than name and stay dates, and pre-filling is not worth it: the
++-- form can ask the guest to enter or confirm their own details.
++--
++-- RETURNS:
++--   status              valid | expired | completed | invalid
++--   guest_first_name    given name only
++--   guest_last_initial  one character, never the full surname
++--   property_name
++--   arrival_date
++--   departure_date
++--   expires_at
++--   preferred_language  raw hint; the app validates it against LOCALES
++--
++-- Deliberately absent: full surname, email, phone, address, room number,
++-- reservation_id, business_id, confirmation number, any internal identifier.
++--
++-- guest_first_name and guest_last_initial are returned separately rather than
++-- as one preformatted display string because the abbreviating period is a
++-- Latin convention and name order is locale-dependent. Formatting belongs in
++-- the app, which knows the locale; the database does not.
++
++drop function if exists public.resolve_registration_link(text);
++
++create function public.resolve_registration_link(p_token_hash text)
++returns table (
++  status             text,
++  guest_first_name   text,
++  guest_last_initial text,
++  property_name      text,
++  arrival_date       date,
++  departure_date     date,
++  expires_at         timestamptz,
++  preferred_language text
++)
++language plpgsql
++security definer
++set search_path to ''
++as $$
++declare
++  v_link  public.registration_links;
++  v_res   public.reservations;
++  v_guest public.guests;
++begin
++  -- Every failure path returns a row of identical shape with only `status`
++  -- populated, so a caller cannot distinguish unknown from revoked from
++  -- cancelled by inspecting which fields came back null.
++
++  if p_token_hash is null or p_token_hash !~ '^[0-9a-f]{64}$' then
++    status := 'invalid'; return next; return;
++  end if;
++
++  select * into v_link
++  from public.registration_links
++  where token_hash = p_token_hash;
++
++  if not found or v_link.revoked_at is not null then
++    status := 'invalid'; return next; return;
++  end if;
++
++  select * into v_res
++  from public.reservations
++  where id = v_link.reservation_id;
++
++  if not found or v_res.reservation_status = 'cancelled' then
++    status := 'invalid'; return next; return;
++  end if;
++
++  if v_link.expires_at <= now() then
++    status := 'expired'; return next; return;
++  end if;
++
++  if v_link.completed_at is not null then
++    status := 'completed'; return next; return;
++  end if;
++
++  select * into v_guest
++  from public.guests
++  where id = v_res.primary_guest_id
++    and business_id = v_res.business_id;
++
++  if not found then
++    status := 'invalid'; return next; return;
++  end if;
++
++  update public.registration_links
++  set last_used_at = now()
++  where id = v_link.id;
++
++  status           := 'valid';
++  guest_first_name := v_guest.first_name;
++
++  -- Initial only. left() counts characters, not bytes, so this is correct for
++  -- Arabic and Vietnamese as well as Latin scripts. upper() is a no-op in
++  -- caseless scripts, which is the desired behaviour.
++  guest_last_initial := upper(
++    left(nullif(btrim(coalesce(v_guest.last_name, '')), ''), 1)
++  );
++
++  select b.name into property_name
++  from public.businesses b
++  where b.id = v_res.business_id;
++
++  arrival_date   := v_res.arrival_date;
++  departure_date := v_res.departure_date;
++  expires_at     := v_link.expires_at;
++
++  -- Reservation-level override wins over the guest's stored preference.
++  -- No 'en' fallback here: the app owns the final decision because it also
++  -- has to honour ?lang= and validate against the LOCALES registry.
++  preferred_language := coalesce(
++    nullif(btrim(coalesce(v_res.preferred_language_override, '')), ''),
++    nullif(btrim(coalesce(v_guest.preferred_language, '')), '')
++  );
++
++  return next;
++end;
++$$;
++
++revoke all on function public.resolve_registration_link(text)
++from public, anon, authenticated, service_role;
++
++grant execute on function public.resolve_registration_link(text)
++to anon, authenticated;
++
++
++-- ===========================================================================
++-- SECTION 2 — versioned, append-only registration submissions
++-- ===========================================================================
++--
++-- guest_registration_submissions carried `unique (reservation_id)`, which
++-- breaks the review-required flow:
++--
++--   guest registers -> reservation changes materially ->
++--   registration_review_required set -> front desk reissues the link ->
++--   guest resubmits -> unique violation
++--
++-- create_registration_link only revokes links where completed_at is null, so
++-- the completed link survives reissue and a second submission is a legitimate
++-- state, not an error.
++--
++-- An upsert would fix the crash by overwriting the first attestation. That is
++-- the wrong trade: this row records what a guest consented to and when, so it
++-- is an audit record. Prior consent is never destroyed. Each submission gets
++-- its own version; the highest version for a reservation is the current one.
++
++alter table public.guest_registration_submissions
++  drop constraint if exists guest_registration_submissions_reservation_id_key;
++
++alter table public.guest_registration_submissions
++  add column if not exists version integer not null default 1;
++
++-- Existing rows predate versioning and are all first submissions.
++update public.guest_registration_submissions
++set version = 1
++where version is null;
++
++-- One row per (reservation, version). Concurrent submissions for the same
++-- reservation cannot collide anyway — submit_guest_registration takes FOR
++-- UPDATE on the link and the reservation before computing the next version —
++-- but the constraint makes that guarantee structural rather than procedural.
++create unique index if not exists guest_registration_submissions_reservation_version_key
++  on public.guest_registration_submissions (reservation_id, version);
++
++-- Reading "the current registration" is now an ordered lookup rather than a
++-- point read, so support it.
++create index if not exists guest_registration_submissions_reservation_latest_idx
++  on public.guest_registration_submissions (reservation_id, version desc);
++
++
++-- Provenance: which token produced this attestation.
++--
++-- Derived inside submit_guest_registration from the link record it has
++-- already validated and locked. It is never a parameter and never reaches the
++-- browser — a value the client could supply would not be provenance.
++--
++-- ON DELETE SET NULL rather than CASCADE: deleting a link must not silently
++-- delete a consent record. Nothing deletes links independently today; when a
++-- reservation is deleted both tables cascade from it directly.
++alter table public.guest_registration_submissions
++  add column if not exists registration_link_id uuid
++  references public.registration_links(id) on delete set null;
++
++-- Nullable, deliberately. Rows written before this column existed have no
++-- recorded link, and inventing one would be a false provenance claim. New
++-- submissions always populate it. A follow-up migration can add NOT NULL once
++-- the backfill below is confirmed complete against live data — the same
++-- two-phase ordering used for businesses.timezone.
++--
++-- Backfills only the unambiguous case: exactly one completed link for the
++-- reservation. Where a reservation has several completed links, which one
++-- produced a given submission is not recoverable, so the column stays null
++-- rather than guessing.
++update public.guest_registration_submissions s
++set registration_link_id = l.id
++from public.registration_links l
++where l.reservation_id = s.reservation_id
++  and l.completed_at is not null
++  and s.registration_link_id is null
++  and (
++    select count(*)
++    from public.registration_links l2
++    where l2.reservation_id = s.reservation_id
++      and l2.completed_at is not null
++  ) = 1;
++
++
++-- What the guest agreed to.
++--
++-- Nullable and left null until the real policy-content model exists. No
++-- placeholder or synthetic version: a value here would imply a policy
++-- snapshot that was never captured, which is worse than an honest null in an
++-- audit record. Slice 3's policy work populates this.
++alter table public.guest_registration_submissions
++  add column if not exists policy_version text;
++
++
++-- ===========================================================================
++-- SECTION 3 — submit_guest_registration
++-- ===========================================================================
++--
++-- Three changes:
++--
++--   (a) Locale: the hardcoded ('en','es','ar','vi') allowlist is removed.
++--       LOCALES / isSupportedLocale() in the app is the single source of
++--       truth for which languages CUE supports; a database that keeps its own
++--       list means adding a locale silently fails at the RPC. The RPC still
++--       validates shape and length so a direct anonymous call cannot store an
++--       arbitrary or oversized string — structural integrity without a
++--       product opinion.
++--
++--   (b) Contact fields are no longer blindly overwritten. Now that the
++--       resolver does not pre-fill email/phone/address, a guest who leaves
++--       them blank would otherwise erase contact data the property already
++--       had from the booking. A blank field means "not provided", not
++--       "delete what you have".
++--
++--   (c) The insert computes the next version instead of relying on a unique
++--       constraint that no longer exists.
++
++create or replace function public.submit_guest_registration(
++  p_token_hash text,
++  p_first_name text,
++  p_last_name text,
++  p_email text,
++  p_phone text,
++  p_address text,
++  p_locale text,
++  p_signature_name text,
++  p_consent boolean
++)
++returns boolean
++language plpgsql
++security definer
++set search_path to ''
++as $$
++declare
++  v_link    public.registration_links;
++  v_res     public.reservations;
++  v_guest   public.guests;
++  v_version integer;
++begin
++  if p_token_hash is null or p_token_hash !~ '^[0-9a-f]{64}$' then
++    raise exception 'Registration link is invalid or no longer available';
++  end if;
++
++  if coalesce(btrim(p_first_name), '') = '' or coalesce(btrim(p_last_name), '') = '' then
++    raise exception 'Guest first and last name are required';
++  end if;
++
++  -- Shape only. Which locales CUE supports is an application decision.
++  -- Accepts 'en', 'es-MX', 'zh-Hant-TW'; rejects '', overlong values, and
++  -- anything that is not a plausible language tag.
++  if p_locale is null
++     or length(btrim(p_locale)) > 35
++     or btrim(p_locale) !~ '^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$' then
++    raise exception 'Unsupported registration locale';
++  end if;
++
++  if p_consent is not true or coalesce(btrim(p_signature_name), '') = '' then
++    raise exception 'Consent and signature are required';
++  end if;
++
++  select * into v_link
++  from public.registration_links
++  where token_hash = p_token_hash
++  for update;
++
++  if not found or v_link.revoked_at is not null then
++    raise exception 'Registration link is invalid or no longer available';
++  end if;
++
++  if v_link.expires_at <= now() then
++    raise exception 'Registration link has expired';
++  end if;
++
++  if v_link.completed_at is not null then
++    raise exception 'Registration has already been completed';
++  end if;
++
++  select * into v_res
++  from public.reservations
++  where id = v_link.reservation_id
++  for update;
++
++  if not found or v_res.reservation_status = 'cancelled' then
++    raise exception 'Registration link is invalid or no longer available';
++  end if;
++
++  select * into v_guest
++  from public.guests
++  where id = v_res.primary_guest_id
++    and business_id = v_res.business_id
++  for update;
++
++  if not found then
++    raise exception 'Guest record could not be found';
++  end if;
++
++  -- Names are required, so they always overwrite. Contact fields are
++  -- optional: a blank submission preserves whatever the property already had
++  -- rather than erasing it.
++  update public.guests
++  set
++    first_name = btrim(p_first_name),
++    last_name  = btrim(p_last_name),
++    email      = coalesce(nullif(btrim(coalesce(p_email, '')), ''), email),
++    phone      = coalesce(nullif(btrim(coalesce(p_phone, '')), ''), phone),
++    address    = coalesce(nullif(btrim(coalesce(p_address, '')), ''), address),
++    updated_at = now()
++  where id = v_guest.id;
++
++  -- Append, never replace.
++  --
++  -- CONCURRENCY — the FOR UPDATE on public.reservations above is load-bearing
++  -- and must not be removed. Row locks are held until the transaction ends,
++  -- so two simultaneous submissions for the same reservation serialize there:
++  -- the second blocks until the first commits, then reads the updated max and
++  -- computes a distinct version. Without that lock, both could read the same
++  -- max under READ COMMITTED and race.
++  --
++  -- The unique index on (reservation_id, version) is a backstop that turns a
++  -- regression into a failed insert rather than a duplicated version. It is
++  -- not the mechanism.
++  select coalesce(max(s.version), 0) + 1
++    into v_version
++  from public.guest_registration_submissions s
++  where s.reservation_id = v_res.id;
++
++  -- registration_link_id comes from v_link, the record this function already
++  -- validated and locked. policy_version is intentionally not set: no policy
++  -- content model exists yet, and a placeholder would assert a snapshot that
++  -- was never captured.
++  insert into public.guest_registration_submissions (
++    business_id,
++    reservation_id,
++    guest_id,
++    registration_link_id,
++    version,
++    locale,
++    signature_name,
++    consented_at,
++    submitted_at
++  )
++  values (
++    v_res.business_id,
++    v_res.id,
++    v_guest.id,
++    v_link.id,
++    v_version,
++    lower(btrim(p_locale)),
++    btrim(p_signature_name),
++    now(),
++    now()
++  );
++
++  update public.reservations
++  set
++    registration_status = 'completed',
++    registration_review_required = false,
++    updated_at = now()
++  where id = v_res.id;
++
++  update public.registration_links
++  set completed_at = now(), last_used_at = now()
++  where id = v_link.id;
++
++  return true;
++end;
++$$;
++
++revoke all on function public.submit_guest_registration(text, text, text, text, text, text, text, text, boolean)
++from public, anon, authenticated, service_role;
++
++grant execute on function public.submit_guest_registration(text, text, text, text, text, text, text, text, boolean)
++to anon, authenticated;
