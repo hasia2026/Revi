@@ -18,17 +18,60 @@ export default function ResetPasswordPage() {
   const [hasSession, setHasSession] = useState(false);
 
   useEffect(() => {
-    async function checkSession() {
-      const supabase = createClient();
+    const supabase = createClient();
+    let mounted = true;
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!mounted) return;
+
+      if (event === "PASSWORD_RECOVERY" || session) {
+        setHasSession(true);
+        setIsCheckingSession(false);
+        return;
+      }
+
+      if (event === "SIGNED_OUT") {
+        setHasSession(false);
+        setIsCheckingSession(false);
+      }
+    });
+
+    async function checkExistingSession() {
       const {
         data: { session },
       } = await supabase.auth.getSession();
 
-      setHasSession(Boolean(session));
-      setIsCheckingSession(false);
+      if (!mounted) return;
+
+      if (session) {
+        setHasSession(true);
+        setIsCheckingSession(false);
+        return;
+      }
+
+      // A PKCE recovery code may still be processing in the browser.
+      // Give Supabase a moment to emit PASSWORD_RECOVERY before showing
+      // the invalid/expired-link state.
+      window.setTimeout(async () => {
+        const {
+          data: { session: delayedSession },
+        } = await supabase.auth.getSession();
+
+        if (!mounted) return;
+
+        setHasSession(Boolean(delayedSession));
+        setIsCheckingSession(false);
+      }, 1500);
     }
 
-    void checkSession();
+    void checkExistingSession();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
