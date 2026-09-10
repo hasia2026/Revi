@@ -12,15 +12,15 @@ It graduates only after the real flow has been exercised end to end and the resu
 
 | Field | Value |
 | --- | --- |
-| Authoritative branch | `slice-4-front-desk-check-in` |
+| Authoritative branch | `main` |
 | Last verified commit | `2871f9981b694e430b10539723c9f43b7ab203d8` — Complete front desk check-in flow |
 | Commit date | 2026-09-08 |
-| `main` last updated | 2026-08-20 — **STALE, do not treat as current** |
-| Merged to `main`? | No |
+| `main` last updated | 2026-09-10 — merge commit `ba7a9558a26980639a15824cbb4628296e34463c` |
+| Merged to `main`? | Yes — 2026-09-10 |
 | Last verified through full E2E chain | **NEVER** (see §8) |
-| Verification method for this revision | Static repo audit + live database inspection via `pg_get_functiondef()` + registration migration preflight against live Supabase + `npm run build` + one manual check-in performed against production data |
+| Verification method for this revision | Static repo audit + live database inspection via `pg_get_functiondef()` + registration migration preflight against live Supabase + `npm run build` + one manual check-in performed against production data. Repository synchronization rechecked after merge: `main` contains the former authoritative branch with no code differences. |
 
-> `main` is stale. Do not read state, review code, or generate patches against `main`.
+> `main` is now authoritative. Read state, review code, and base new work on `main` unless a newer explicitly designated working branch is recorded here.
 
 **Quarantined branch:** `wip-copilot-snapshot` — contains unreviewed Copilot work.
 **Never merge it.** Recover only individually reviewed paths from it, for example with
