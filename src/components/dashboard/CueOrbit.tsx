@@ -7,17 +7,10 @@ import {
 
 type OrbitKey = Exclude<PillarKey, "innovation-lab">;
 
-type Capability = {
-  label: string;
-  href: string;
-};
-
 type OrbitPillar = {
   key: OrbitKey;
   nodeClass: string;
   glowClass: string;
-  capabilityClass: string;
-  capabilities: Capability[];
 };
 
 const orbitPillars: OrbitPillar[] = [
@@ -26,62 +19,30 @@ const orbitPillars: OrbitPillar[] = [
     nodeClass: "lg:left-1/2 lg:top-3 lg:-translate-x-1/2",
     glowClass:
       "border-cue-blue-400/80 shadow-[0_0_38px_rgba(59,130,246,0.38)]",
-    capabilityClass:
-      "lg:left-[calc(50%+78px)] lg:top-8 lg:items-start",
-    capabilities: [
-      { label: "Leads", href: "/leads" },
-      { label: "Conversations", href: "/conversations" },
-    ],
   },
   {
     key: "understand",
     nodeClass: "lg:right-[13%] lg:top-[34%]",
     glowClass:
       "border-cue-purple-400/80 shadow-[0_0_38px_rgba(139,92,246,0.4)]",
-    capabilityClass:
-      "lg:right-2 lg:top-[34%] lg:translate-y-28 lg:items-start",
-    capabilities: [{ label: "Knowledge", href: "/knowledge" }],
   },
   {
     key: "enhance",
     nodeClass: "lg:right-[19%] lg:bottom-4",
     glowClass:
       "border-fuchsia-400/80 shadow-[0_0_38px_rgba(217,70,239,0.38)]",
-    capabilityClass:
-      "lg:right-1 lg:bottom-3 lg:items-start",
-    capabilities: [
-      { label: "Brand Studio", href: "/brand-studio" },
-      { label: "Website Builder", href: "/brand-studio/website" },
-      { label: "Mascot Studio", href: "/brand-studio/mascot" },
-      { label: "Marketing", href: "/brand-studio/marketing" },
-      { label: "Executive Library", href: "/brand-studio/library" },
-    ],
   },
   {
     key: "execute",
     nodeClass: "lg:left-[19%] lg:bottom-4",
     glowClass:
       "border-cue-orange-400/80 shadow-[0_0_38px_rgba(249,115,22,0.38)]",
-    capabilityClass:
-      "lg:left-1 lg:bottom-4 lg:items-end lg:text-right",
-    capabilities: [
-      { label: "Training", href: "/training" },
-      { label: "Team", href: "/team" },
-      { label: "People", href: "/people" },
-    ],
   },
   {
     key: "expand",
     nodeClass: "lg:left-[13%] lg:top-[34%]",
     glowClass:
       "border-cyan-400/80 shadow-[0_0_38px_rgba(34,211,238,0.34)]",
-    capabilityClass:
-      "lg:left-1 lg:top-[34%] lg:translate-y-28 lg:items-end lg:text-right",
-    capabilities: [
-      { label: "Growth", href: "/growth" },
-      { label: "Automations", href: "/automations" },
-      { label: "Connected Ecosystem", href: "/connected-ecosystem" },
-    ],
   },
 ];
 
@@ -100,12 +61,9 @@ export function CueOrbit() {
           </h2>
         </div>
 
-        <Link
-          href="/brand-studio/compass"
-          className="hidden rounded-full border border-cue-blue-400/40 bg-cue-blue-500/10 px-4 py-2 text-xs font-medium text-cue-blue-300 transition hover:border-cue-blue-300 hover:bg-cue-blue-500/20 sm:inline-flex"
-        >
-          Open Company Compass →
-        </Link>
+        <div className="hidden rounded-full border border-cue-blue-400/30 bg-cue-blue-500/10 px-4 py-2 text-xs font-medium text-cue-blue-300 sm:inline-flex">
+          One connected operating system
+        </div>
       </div>
 
       <div className="relative z-10 px-4 pb-5">
@@ -145,7 +103,7 @@ export function CueOrbit() {
           </svg>
 
           <Link
-            href="/brand-studio/compass"
+            href="/company-compass"
             className="relative z-20 mx-auto mb-5 flex h-44 w-44 flex-col items-center justify-center rounded-full border border-cue-purple-400/60 bg-[#091426] text-center shadow-[0_0_55px_rgba(139,92,246,0.28)] transition hover:border-cue-purple-300 lg:absolute lg:left-1/2 lg:top-[52%] lg:mb-0 lg:-translate-x-1/2 lg:-translate-y-1/2"
           >
             <div className="absolute -inset-4 rounded-full border border-cue-blue-400/20" />
@@ -185,20 +143,6 @@ export function CueOrbit() {
                     </p>
                   </Link>
 
-                  <div
-                    className={`relative z-10 mt-2 flex flex-col gap-1.5 lg:absolute lg:mt-0 ${item.capabilityClass}`}
-                  >
-                    {item.capabilities.map((capability) => (
-                      <Link
-                        key={capability.label}
-                        href={capability.href}
-                        className="group flex items-center gap-2 text-[11px] text-charcoal-300 transition hover:text-white"
-                      >
-                        <span className="h-1.5 w-1.5 rounded-full cue-gradient opacity-80 transition group-hover:opacity-100" />
-                        <span>{capability.label}</span>
-                      </Link>
-                    ))}
-                  </div>
                 </div>
               );
             })}

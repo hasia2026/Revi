@@ -52,7 +52,7 @@ function isGroup(entry: NavEntry): entry is NavGroup {
 const navEntries: NavEntry[] = [
   { href: "/dashboard", label: "Home", icon: LayoutDashboard },
 
-  { href: "/brand-studio/compass", label: "Company Compass", icon: Compass },
+  { href: "/company-compass", label: "Company Compass", icon: Compass },
 
   {
     label: PILLARS.capture.label,
@@ -78,6 +78,8 @@ const navEntries: NavEntry[] = [
     icon: PILLARS.enhance.icon,
     children: [
       { href: "/enhance", label: "Overview", icon: Palette },
+      { href: "/brand-studio", label: "Brand Studio", icon: Palette },
+      { href: "/brand-studio/compass", label: "Business Identity", icon: Compass },
       { href: "/brand-studio/website", label: "Website Builder", icon: Globe },
       { href: "/brand-studio/marketing", label: "Marketing", icon: Megaphone },
       { href: "/brand-studio/library", label: "Executive Library", icon: LibraryBig },

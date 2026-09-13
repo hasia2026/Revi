@@ -4,7 +4,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { CompassEditor } from "@/components/brand-studio/CompassEditor";
 import { getCompanyCompass } from "@/lib/supabase/compass";
 
-export default async function CompanyCompassPage() {
+export default async function BusinessIdentityPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
@@ -22,8 +22,8 @@ export default async function CompanyCompassPage() {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <TopBar
-        title="Company Compass"
-        subtitle="The identity every other module builds from"
+        title="Business Identity"
+        subtitle="The mission, values, promises, and voice your brand builds from"
         userName={profileRes.data?.full_name}
         userEmail={user.email}
       />
