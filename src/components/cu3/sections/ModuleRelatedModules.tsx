@@ -25,7 +25,7 @@ export function ModuleRelatedModules({ modules }: { modules: RelatedModuleLink[]
             <li key={mod.href}>
               <Link href={mod.href} className="flex items-center justify-between px-5 py-3 hover:bg-charcoal-50/50 transition-colors">
                 <div className="flex items-center gap-2.5">
-                  <Icon className={`h-4 w-4 ${mod.relation === "compass" ? "text-gold-500" : "text-charcoal-400"}`} />
+                  <Icon className={`h-4 w-4 ${mod.relation === "compass" ? "text-cue-orange-500" : "text-charcoal-400"}`} />
                   <span className="text-sm font-medium text-charcoal-800">{mod.label}</span>
                 </div>
                 <span className="text-xs text-charcoal-400">{meta.label}</span>

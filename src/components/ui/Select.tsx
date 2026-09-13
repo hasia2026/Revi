@@ -24,7 +24,7 @@ export function Select({ label, error, options, placeholder, className, id, ...p
           className={cn(
             "w-full appearance-none rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm text-charcoal-900 pr-10",
             "transition-colors duration-150",
-            "focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-cue-purple-400 focus:border-transparent",
             "disabled:cursor-not-allowed disabled:opacity-50 disabled:bg-charcoal-50",
             error && "border-red-400 focus:ring-red-400",
             className

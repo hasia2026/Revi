@@ -3,7 +3,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import type { Insight, InsightType } from "@/lib/cu3/module-framework";
 
 const TYPE_META: Record<InsightType, { icon: typeof Lightbulb; color: string; bg: string; label: string }> = {
-  recommendation: { icon: Lightbulb, color: "text-gold-600", bg: "bg-gold-50", label: "Recommendation" },
+  recommendation: { icon: Lightbulb, color: "text-cue-orange-600", bg: "bg-cue-orange-500/10", label: "Recommendation" },
   warning: { icon: AlertTriangle, color: "text-red-500", bg: "bg-red-50", label: "Warning" },
   opportunity: { icon: TrendingUp, color: "text-emerald-600", bg: "bg-emerald-50", label: "Opportunity" },
   pattern: { icon: Repeat, color: "text-charcoal-600", bg: "bg-charcoal-100", label: "Pattern" },

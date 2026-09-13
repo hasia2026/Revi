@@ -24,7 +24,7 @@ export function ModuleAIAssistant({
         <div className="flex items-center justify-between px-5 py-4 border-b border-charcoal-100">
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-lg bg-charcoal-900 flex items-center justify-center">
-              <Sparkles className="h-4 w-4 text-gold-400" />
+              <Sparkles className="h-4 w-4 text-cue-purple-400" />
             </div>
             <div>
               <p className="text-sm font-semibold text-charcoal-900">{persona.name}</p>

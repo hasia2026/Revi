@@ -188,8 +188,8 @@ export default function RoomsWorkspace({
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-3">
-        <Button variant={mode === "single" ? "gold" : "secondary"} onClick={() => setMode("single")}>Add one</Button>
-        <Button variant={mode === "range" ? "gold" : "secondary"} onClick={() => setMode("range")}>Add a range</Button>
+        <Button variant={mode === "single" ? "cue" : "secondary"} onClick={() => setMode("single")}>Add one</Button>
+        <Button variant={mode === "range" ? "cue" : "secondary"} onClick={() => setMode("range")}>Add a range</Button>
       </div>
 
       <form onSubmit={mode === "single" ? addSingle : addRange} className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">

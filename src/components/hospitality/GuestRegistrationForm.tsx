@@ -111,7 +111,7 @@ export function GuestRegistrationForm({ token, locale, copy, initial }: Props) {
           onChange={(event) => setSignatureName(event.target.value)}
           autoComplete="name"
           required
-          className="mt-1 w-full rounded-lg border border-charcoal-200 bg-white px-3 py-2.5 text-charcoal-900 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-100"
+          className="mt-1 w-full rounded-lg border border-charcoal-200 bg-white px-3 py-2.5 text-charcoal-900 outline-none focus:border-cue-purple-500 focus:ring-2 focus:ring-cue-purple-400/20"
         />
         <p className="mt-1.5 text-xs text-charcoal-500">{copy.signatureHelp}</p>
       </div>
@@ -157,7 +157,7 @@ function Field({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         required={required}
-        className="mt-1 w-full rounded-lg border border-charcoal-200 bg-white px-3 py-2.5 text-charcoal-900 outline-none focus:border-gold-500 focus:ring-2 focus:ring-gold-100"
+        className="mt-1 w-full rounded-lg border border-charcoal-200 bg-white px-3 py-2.5 text-charcoal-900 outline-none focus:border-cue-purple-500 focus:ring-2 focus:ring-cue-purple-400/20"
       />
     </div>
   );

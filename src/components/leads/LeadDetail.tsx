@@ -88,7 +88,7 @@ export function LeadDetail({ lead: initial }: { lead: Lead }) {
               {editing ? (
                 <>
                   <Button variant="secondary" size="sm" onClick={() => setEditing(false)}>Cancel</Button>
-                  <Button variant="gold" size="sm" loading={saving} onClick={handleSave}>
+                  <Button variant="cue" size="sm" loading={saving} onClick={handleSave}>
                     <Save className="h-4 w-4" /> Save
                   </Button>
                 </>

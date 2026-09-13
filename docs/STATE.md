@@ -80,8 +80,8 @@ Enhance is a real pillar. Brand Studio, Website Builder, and Mascot Studio live 
 | --- | --- | --- |
 | CU³ Module Framework | `PARTIALLY BUILT` | Module pages must stay Server Components. |
 | CU³ five-pillar navigation | `WORKING NOW` | Verified 2026-09-10: live sidebar reorganized around Company Compass + Capture → Understand → Enhance → Execute → Expand. `npm run build` passed; local browser navigation and the `revi-o72c` Vercel preview were both visually verified. |
-| Dashboard v1 | `PARTIALLY BUILT` | |
-| CU³ dark / glass design pass | `PARTIALLY BUILT` | Login, Nav, Dashboard only. |
+| Dashboard / CUE Orbit | `PARTIALLY BUILT` | Verified locally 2026-09-11: dark CUE Orbit home with Company Compass at the center and clickable Capture → Understand → Enhance → Execute → Expand pillars; existing operational dashboard retained below. Production build passes. Awaiting pushed Vercel preview verification before promotion to `WORKING NOW`. |
+| CUE visual design system | `PARTIALLY BUILT` | Updated 2026-09-11: dark command-center Home, white operational module workspaces, CUE blue-purple-orange gradients, purple focus states, and legacy gold app controls migrated to CUE styling. Production build passes; final Vercel visual verification still pending. |
 | AI calls of any kind | `PLANNED` | **Zero AI implementations in the repo.** |
 | Secure AI gateway | `PLANNED` | |
 | Revi consolidation (Scal3 brain / Capture voice / ReviSystemV3 face) | `PLANNED` | Integration layer only; none of the three need rebuilding. |

@@ -70,7 +70,7 @@ export function NotificationsBell() {
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-gold-500" />
+          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-cue-orange-500" />
         )}
       </button>
 

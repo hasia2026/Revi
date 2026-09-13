@@ -137,7 +137,7 @@ export function CompassEditor({ compass: initial, businessId }: Props) {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           <div className="h-10 w-10 rounded-lg bg-charcoal-900 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Compass className="h-5 w-5 text-gold-400" />
+            <Compass className="h-5 w-5 text-cue-purple-400" />
           </div>
           <div>
             <h1 className="text-lg font-semibold text-charcoal-900">Company Compass</h1>

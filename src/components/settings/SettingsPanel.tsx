@@ -136,7 +136,7 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
               onClick={() => setTab(t)}
               className={`px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors ${
                 tab === t
-                  ? "text-gold-600 border-b-2 border-gold-500 bg-gold-50/50"
+                  ? "text-cue-purple-500 border-b-2 border-cue-purple-500 bg-cue-purple-500/10"
                   : "text-charcoal-500 hover:text-charcoal-800 hover:bg-charcoal-50"
               }`}
             >
@@ -153,7 +153,7 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
               <div>
                 <p className="font-semibold text-charcoal-900">{profile?.full_name || "—"}</p>
                 <p className="text-sm text-charcoal-500">{userEmail}</p>
-                <Badge variant="gold" className="mt-1">{role}</Badge>
+                <Badge variant="cue" className="mt-1">{role}</Badge>
               </div>
             </div>
             <Input label="Full name" value={profileForm.full_name} onChange={(e) => setProfileForm({ full_name: e.target.value })} placeholder="Your full name" />
@@ -162,7 +162,7 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
               <input disabled value={userEmail} className="w-full rounded-lg border border-charcoal-200 bg-charcoal-50 px-3.5 py-2.5 text-sm text-charcoal-500 cursor-not-allowed" />
               <p className="mt-1.5 text-xs text-charcoal-400">Email cannot be changed here</p>
             </div>
-            <Button variant="gold" onClick={saveProfile} loading={saving}>
+            <Button variant="cue" onClick={saveProfile} loading={saving}>
               <Save className="h-4 w-4" /> Save Profile
             </Button>
           </div>
@@ -189,7 +189,7 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
               <Input label="City" value={bizForm.city} onChange={(e) => setBizForm({ ...bizForm, city: e.target.value })} />
               <Input label="State" value={bizForm.state} onChange={(e) => setBizForm({ ...bizForm, state: e.target.value })} />
             </div>
-            <Button variant="gold" onClick={saveBusiness} loading={saving}>
+            <Button variant="cue" onClick={saveBusiness} loading={saving}>
               <Save className="h-4 w-4" /> Save Business Info
             </Button>
           </div>
@@ -200,20 +200,20 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <p className="text-sm text-charcoal-500">{services.length} service{services.length !== 1 ? "s" : ""}</p>
-              <Button variant="gold" size="sm" onClick={() => setSvcOpen(true)}>
+              <Button variant="cue" size="sm" onClick={() => setSvcOpen(true)}>
                 <Plus className="h-4 w-4" /> Add Service
               </Button>
             </div>
             {services.length === 0 ? (
               <div className="card">
-                <EmptyState icon={Briefcase} title="No services yet" description="Add the services your business offers." action={<Button variant="gold" size="sm" onClick={() => setSvcOpen(true)}><Plus className="h-4 w-4" /> Add Service</Button>} />
+                <EmptyState icon={Briefcase} title="No services yet" description="Add the services your business offers." action={<Button variant="cue" size="sm" onClick={() => setSvcOpen(true)}><Plus className="h-4 w-4" /> Add Service</Button>} />
               </div>
             ) : (
               <div className="space-y-3">
                 {services.map((svc) => (
                   <div key={svc.id} className="card p-4 flex items-center gap-4 group">
-                    <div className="h-9 w-9 rounded-lg bg-gold-50 border border-gold-100 flex items-center justify-center flex-shrink-0">
-                      <Briefcase className="h-4 w-4 text-gold-500" />
+                    <div className="h-9 w-9 rounded-lg bg-cue-purple-500/10 border border-cue-purple-400/20 flex items-center justify-center flex-shrink-0">
+                      <Briefcase className="h-4 w-4 text-cue-purple-500" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
@@ -272,7 +272,7 @@ export function SettingsPanel({ profile, business, businessSettings, businessId,
           </div>
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setSvcOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={createService} loading={saving} className="flex-1">Add Service</Button>
+            <Button variant="cue" onClick={createService} loading={saving} className="flex-1">Add Service</Button>
           </div>
         </div>
       </Modal>

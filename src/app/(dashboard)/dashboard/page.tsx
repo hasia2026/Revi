@@ -6,6 +6,7 @@ import { HighestValueLeads } from "@/components/dashboard/HighestValueLeads";
 import { RecentConversations } from "@/components/dashboard/RecentConversations";
 import { PrioritiesCard } from "@/components/dashboard/PrioritiesCard";
 import { QuickActions } from "@/components/dashboard/QuickActions";
+import { CueOrbit } from "@/components/dashboard/CueOrbit";
 import { Users, MessageSquare, BookOpen, TrendingUp } from "lucide-react";
 import type { Lead } from "@/types/database";
 
@@ -16,11 +17,16 @@ export default async function DashboardPage() {
 
   const [profileRes, memberRes] = await Promise.all([
     supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle(),
-    supabase.from("business_members").select("business_id, businesses(name)").eq("user_id", user.id).limit(1).maybeSingle(),
+    supabase.from("business_members").select("business_id, businesses(name, timezone)").eq("user_id", user.id).limit(1).maybeSingle(),
   ]);
 
   const businessId = memberRes.data?.business_id;
-  const businessName = (memberRes.data?.businesses as unknown as { name: string } | null)?.name;
+  const business = memberRes.data?.businesses as unknown as {
+    name: string;
+    timezone: string;
+  } | null;
+  const businessName = business?.name;
+  const businessTimezone = business?.timezone ?? "UTC";
 
   if (!businessId) redirect("/setup");
 
@@ -54,12 +60,23 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col h-full overflow-hidden">
       <TopBar
-        title={`Good ${getGreeting()}, ${userName?.split(" ")[0] || "there"} 👋`}
+        title={`Good ${getGreeting(businessTimezone)}, ${userName?.split(" ")[0] || "there"} 👋`}
         subtitle={businessName ? `Managing ${businessName}` : undefined}
         userName={userName}
         userEmail={user.email}
       />
       <div className="flex-1 overflow-y-auto cue-bg p-6 space-y-6">
+        <CueOrbit />
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-charcoal-300">
+            Operational snapshot
+          </p>
+          <h2 className="mt-1 text-lg font-semibold text-white">
+            What&apos;s happening right now
+          </h2>
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard label="Total Leads" value={totalLeads} sub={`${newLeads} new`} icon={Users} color="gold" />
@@ -87,8 +104,17 @@ export default async function DashboardPage() {
   );
 }
 
-function getGreeting() {
-  const h = new Date().getHours();
+function getGreeting(timeZone: string) {
+  const hourPart = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    hourCycle: "h23",
+    timeZone,
+  })
+    .formatToParts(new Date())
+    .find((part) => part.type === "hour");
+
+  const h = Number(hourPart?.value ?? 12);
+
   if (h < 12) return "morning";
   if (h < 17) return "afternoon";
   return "evening";

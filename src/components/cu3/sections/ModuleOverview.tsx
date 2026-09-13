@@ -20,7 +20,7 @@ export function ModuleOverview({ cards }: { cards: OverviewCard[] }) {
           <div key={card.label} className="bg-white border border-charcoal-100 rounded-xl p-4">
             <div className="flex items-center justify-between">
               <p className="text-xs font-medium text-charcoal-500">{card.label}</p>
-              <Icon className="h-4 w-4 text-gold-500" />
+              <Icon className="h-4 w-4 text-cue-purple-500" />
             </div>
             <p className="mt-2 text-2xl font-semibold text-charcoal-900">{card.value}</p>
             {card.trend && TrendIcon && (

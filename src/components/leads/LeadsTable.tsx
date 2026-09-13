@@ -112,7 +112,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search leads..."
-            className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent bg-white"
+            className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cue-purple-400 focus:border-transparent bg-white"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="text-sm border border-charcoal-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-charcoal-700"
+            className="text-sm border border-charcoal-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cue-purple-400 bg-white text-charcoal-700"
           >
             <option value="all">All statuses</option>
             {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
@@ -128,7 +128,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
         </div>
         <div className="flex items-center gap-2 ml-auto">
           <span className="text-sm text-charcoal-500">{filtered.length} lead{filtered.length !== 1 ? "s" : ""}</span>
-          <Button variant="gold" size="md" onClick={() => setAddOpen(true)}>
+          <Button variant="cue" size="md" onClick={() => setAddOpen(true)}>
             <Plus className="h-4 w-4" /> Add Lead
           </Button>
         </div>
@@ -141,7 +141,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
             icon={Users}
             title="No leads found"
             description={search ? "Try a different search term." : "Add your first lead to get started."}
-            action={!search ? <Button variant="gold" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> Add Lead</Button> : undefined}
+            action={!search ? <Button variant="cue" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> Add Lead</Button> : undefined}
           />
         </div>
       ) : (
@@ -221,7 +221,7 @@ export function LeadsTable({ leads: initialLeads, businessId }: LeadsTableProps)
           <Textarea label="Notes" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="Any additional notes…" rows={3} />
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setAddOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={handleCreate} loading={saving} className="flex-1">Add Lead</Button>
+            <Button variant="cue" onClick={handleCreate} loading={saving} className="flex-1">Add Lead</Button>
           </div>
         </div>
       </Modal>

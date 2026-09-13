@@ -125,7 +125,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
         <div className="flex-1 overflow-y-auto p-2 space-y-0.5">
           <button
             onClick={() => setSelectedCat(null)}
-            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${!selectedCat ? "bg-gold-50 text-gold-700 font-medium" : "text-charcoal-600 hover:bg-charcoal-50"}`}
+            className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${!selectedCat ? "bg-cue-purple-500/10 text-cue-purple-500 font-medium" : "text-charcoal-600 hover:bg-charcoal-50"}`}
           >
             <BookOpen className="h-3.5 w-3.5" />
             All articles
@@ -137,7 +137,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
               <button
                 key={cat.id}
                 onClick={() => setSelectedCat(cat.id)}
-                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${selectedCat === cat.id ? "bg-gold-50 text-gold-700 font-medium" : "text-charcoal-600 hover:bg-charcoal-50"}`}
+                className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${selectedCat === cat.id ? "bg-cue-purple-500/10 text-cue-purple-500 font-medium" : "text-charcoal-600 hover:bg-charcoal-50"}`}
               >
                 <FolderOpen className="h-3.5 w-3.5 flex-shrink-0" />
                 <span className="truncate">{cat.name_en}</span>
@@ -153,16 +153,16 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
         <div className="flex items-center gap-3 p-4 border-b border-charcoal-100 bg-white">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-charcoal-400" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search articles..." className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400" />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search articles..." className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cue-purple-400" />
           </div>
-          <Button variant="gold" size="sm" onClick={() => setArtOpen(true)}>
+          <Button variant="cue" size="sm" onClick={() => setArtOpen(true)}>
             <Plus className="h-4 w-4" /> New Article
           </Button>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5">
           {filtered.length === 0 ? (
-            <EmptyState icon={BookOpen} title="No articles found" description="Create your first article to build the knowledge base." action={<Button variant="gold" size="sm" onClick={() => setArtOpen(true)}><Plus className="h-4 w-4" /> New Article</Button>} />
+            <EmptyState icon={BookOpen} title="No articles found" description="Create your first article to build the knowledge base." action={<Button variant="cue" size="sm" onClick={() => setArtOpen(true)}><Plus className="h-4 w-4" /> New Article</Button>} />
           ) : (
             <div className="space-y-3">
               {filtered.map((article) => {
@@ -209,7 +209,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
           <Input label="Description" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })} placeholder="Optional description" />
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setCatOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={createCategory} loading={saving} className="flex-1">Create</Button>
+            <Button variant="cue" onClick={createCategory} loading={saving} className="flex-1">Create</Button>
           </div>
         </div>
       </Modal>
@@ -221,7 +221,7 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
           {categories.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Category</label>
-              <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+              <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cue-purple-400">
                 <option value="">Select category</option>
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name_en}</option>)}
               </select>
@@ -229,12 +229,12 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
           )}
           <Textarea label="Content" value={artForm.content} onChange={(e) => setArtForm({ ...artForm, content: e.target.value })} rows={6} placeholder="Write your article content here…" />
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={artForm.is_published} onChange={(e) => setArtForm({ ...artForm, is_published: e.target.checked })} className="rounded accent-gold-500" />
+            <input type="checkbox" checked={artForm.is_published} onChange={(e) => setArtForm({ ...artForm, is_published: e.target.checked })} className="rounded accent-cue-purple-500" />
             <span className="text-sm text-charcoal-700">Publish immediately</span>
           </label>
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setArtOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={createArticle} loading={saving} className="flex-1">Create Article</Button>
+            <Button variant="cue" onClick={createArticle} loading={saving} className="flex-1">Create Article</Button>
           </div>
         </div>
       </Modal>
@@ -246,19 +246,19 @@ export function KnowledgeBase({ categories: initCats, articles: initArts, busine
           {categories.length > 0 && (
             <div>
               <label className="block text-sm font-medium text-charcoal-700 mb-1.5">Category</label>
-              <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400">
+              <select value={artForm.category_id} onChange={(e) => setArtForm({ ...artForm, category_id: e.target.value })} className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cue-purple-400">
                 {categories.map((c) => <option key={c.id} value={c.id}>{c.name_en}</option>)}
               </select>
             </div>
           )}
           <Textarea label="Content" value={artForm.content} onChange={(e) => setArtForm({ ...artForm, content: e.target.value })} rows={6} />
           <label className="flex items-center gap-2 cursor-pointer">
-            <input type="checkbox" checked={artForm.is_published} onChange={(e) => setArtForm({ ...artForm, is_published: e.target.checked })} className="rounded accent-gold-500" />
+            <input type="checkbox" checked={artForm.is_published} onChange={(e) => setArtForm({ ...artForm, is_published: e.target.checked })} className="rounded accent-cue-purple-500" />
             <span className="text-sm text-charcoal-700">Published</span>
           </label>
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setEditArticle(null)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={updateArticle} loading={saving} className="flex-1">Save Changes</Button>
+            <Button variant="cue" onClick={updateArticle} loading={saving} className="flex-1">Save Changes</Button>
           </div>
         </div>
       </Modal>

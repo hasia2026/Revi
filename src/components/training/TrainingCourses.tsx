@@ -75,7 +75,7 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
     <div className="flex-1 overflow-y-auto p-6">
       <div className="flex items-center justify-between mb-6">
         <p className="text-sm text-charcoal-500">{courses.length} course{courses.length !== 1 ? "s" : ""}</p>
-        <Button variant="gold" onClick={() => setAddOpen(true)}>
+        <Button variant="cue" onClick={() => setAddOpen(true)}>
           <Plus className="h-4 w-4" /> New Course
         </Button>
       </div>
@@ -86,7 +86,7 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
             icon={GraduationCap}
             title="No training courses yet"
             description="Create your first course to start training your team."
-            action={<Button variant="gold" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> New Course</Button>}
+            action={<Button variant="cue" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> New Course</Button>}
           />
         </div>
       ) : (
@@ -95,8 +95,8 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
             <div key={course.id} className="card-hover group">
               <div className="p-5">
                 <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="h-11 w-11 rounded-xl bg-gold-50 border border-gold-100 flex items-center justify-center flex-shrink-0">
-                    <GraduationCap className="h-5 w-5 text-gold-500" />
+                  <div className="h-11 w-11 rounded-xl cue-gradient shadow-cue-glow-sm flex items-center justify-center flex-shrink-0">
+                    <GraduationCap className="h-5 w-5 text-white" />
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
@@ -146,7 +146,7 @@ export function TrainingCourses({ courses: initial, businessId }: { courses: Cou
           <Textarea label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} placeholder="What will employees learn?" rows={3} />
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setAddOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={handleCreate} loading={saving} className="flex-1">Create Course</Button>
+            <Button variant="cue" onClick={handleCreate} loading={saving} className="flex-1">Create Course</Button>
           </div>
         </div>
       </Modal>

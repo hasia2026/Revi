@@ -21,8 +21,8 @@ export function ModuleHero({ config, assistantTrigger }: { config: ModuleConfig;
     <section className="bg-white border border-charcoal-100 rounded-xl p-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-start gap-4">
-          <div className="h-12 w-12 rounded-xl bg-charcoal-900 flex items-center justify-center flex-shrink-0">
-            <Icon className="h-6 w-6 text-gold-400" />
+          <div className="h-12 w-12 rounded-xl cue-gradient shadow-cue-glow-sm flex items-center justify-center flex-shrink-0">
+            <Icon className="h-6 w-6 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">

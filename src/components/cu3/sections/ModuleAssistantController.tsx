@@ -22,9 +22,9 @@ export function ModuleAssistantController({ persona }: { persona: AIAssistantPer
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-lg border border-gold-200 bg-gold-50 px-4 py-2.5 text-sm font-medium text-charcoal-800 hover:bg-gold-100 transition-colors flex-shrink-0"
+        className="flex items-center gap-2 rounded-lg border border-cue-purple-400/30 bg-cue-purple-500/10 px-4 py-2.5 text-sm font-medium text-charcoal-800 hover:bg-cue-purple-500/15 transition-colors flex-shrink-0"
       >
-        <Sparkles className="h-4 w-4 text-gold-600" />
+        <Sparkles className="h-4 w-4 text-cue-purple-500" />
         <span>
           Ask <span className="font-semibold">{persona.name}</span>
         </span>

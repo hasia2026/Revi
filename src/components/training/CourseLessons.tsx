@@ -69,7 +69,7 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
 
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-charcoal-800">Lessons</h2>
-          <Button variant="gold" size="sm" onClick={() => setAddOpen(true)}>
+          <Button variant="cue" size="sm" onClick={() => setAddOpen(true)}>
             <Plus className="h-4 w-4" /> Add Lesson
           </Button>
         </div>
@@ -80,7 +80,7 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
               icon={BookOpen}
               title="No lessons yet"
               description="Add lessons to build out this course."
-              action={<Button variant="gold" size="sm" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> Add Lesson</Button>}
+              action={<Button variant="cue" size="sm" onClick={() => setAddOpen(true)}><Plus className="h-4 w-4" /> Add Lesson</Button>}
             />
           </div>
         ) : (
@@ -123,7 +123,7 @@ export function CourseLessons({ course, lessons: initial }: { course: TrainingCo
           <Textarea label="Content / Notes" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={4} placeholder="Lesson notes or transcript…" />
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setAddOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={handleCreate} loading={saving} className="flex-1">Add Lesson</Button>
+            <Button variant="cue" onClick={handleCreate} loading={saving} className="flex-1">Add Lesson</Button>
           </div>
         </div>
       </Modal>

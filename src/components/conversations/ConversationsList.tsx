@@ -89,14 +89,14 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search conversations..."
-              className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-400"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-charcoal-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-cue-purple-400"
             />
           </div>
           <div className="flex items-center gap-2">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="flex-1 text-sm border border-charcoal-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-charcoal-700"
+              className="flex-1 text-sm border border-charcoal-200 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-cue-purple-400 bg-white text-charcoal-700"
             >
               <option value="all">All</option>
               <option value="open">Open</option>
@@ -104,7 +104,7 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
               <option value="resolved">Resolved</option>
               <option value="closed">Closed</option>
             </select>
-            <Button variant="gold" size="sm" onClick={() => setAddOpen(true)}>
+            <Button variant="cue" size="sm" onClick={() => setAddOpen(true)}>
               <Plus className="h-3.5 w-3.5" /> New
             </Button>
           </div>
@@ -173,7 +173,7 @@ export function ConversationsList({ conversations: initial, businessId }: { conv
           />
           <div className="flex gap-3 pt-2">
             <Button variant="secondary" onClick={() => setAddOpen(false)} className="flex-1">Cancel</Button>
-            <Button variant="gold" onClick={handleCreate} loading={saving} className="flex-1">Create</Button>
+            <Button variant="cue" onClick={handleCreate} loading={saving} className="flex-1">Create</Button>
           </div>
         </div>
       </Modal>

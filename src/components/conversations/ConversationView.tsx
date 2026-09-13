@@ -94,7 +94,7 @@ export function ConversationView({
           const isUser = msg.sender === "business";
           return (
             <div key={msg.id} className={cn("flex gap-3", isUser && "flex-row-reverse")}>
-              <Avatar name={isUser ? "Me" : contactName} size="xs" className={isUser ? "bg-gold-500" : ""} />
+              <Avatar name={isUser ? "Me" : contactName} size="xs" className={isUser ? "cue-gradient text-white" : ""} />
               <div className={cn("max-w-[70%]", isUser && "items-end flex flex-col")}>
                 <div className={cn(
                   "rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
@@ -121,10 +121,10 @@ export function ConversationView({
             onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
             placeholder="Type a message... (Enter to send)"
             rows={1}
-            className="flex-1 resize-none rounded-xl border border-charcoal-200 px-4 py-2.5 text-sm text-charcoal-900 placeholder:text-charcoal-400 focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent transition-colors"
+            className="flex-1 resize-none rounded-xl border border-charcoal-200 px-4 py-2.5 text-sm text-charcoal-900 placeholder:text-charcoal-400 focus:outline-none focus:ring-2 focus:ring-cue-purple-400 focus:border-transparent transition-colors"
             style={{ minHeight: "42px", maxHeight: "120px" }}
           />
-          <Button variant="gold" size="md" onClick={sendMessage} loading={sending} className="flex-shrink-0">
+          <Button variant="cue" size="md" onClick={sendMessage} loading={sending} className="flex-shrink-0">
             <Send className="h-4 w-4" />
           </Button>
         </div>

@@ -67,7 +67,7 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
         <div className="lg:col-span-2 space-y-5">
           <div className="card p-5">
             <h3 className="font-semibold text-charcoal-800 mb-4 flex items-center gap-2">
-              <Globe className="h-4 w-4 text-gold-500" />
+              <Globe className="h-4 w-4 text-cue-purple-500" />
               Hero Section
             </h3>
             <div className="space-y-4">
@@ -119,7 +119,7 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
               <select
                 value={form.font_family}
                 onChange={(e) => setForm({ ...form, font_family: e.target.value })}
-                className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400"
+                className="w-full rounded-lg border border-charcoal-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cue-purple-400"
               >
                 {["Inter", "Roboto", "Poppins", "Lato", "Montserrat", "Playfair Display"].map((f) => (
                   <option key={f} value={f}>{f}</option>
@@ -139,7 +139,7 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
             />
           </div>
 
-          <Button variant="gold" size="lg" onClick={handleSave} loading={saving} className="w-full">
+          <Button variant="cue" size="lg" onClick={handleSave} loading={saving} className="w-full">
             <Save className="h-4 w-4" /> Save Website Settings
           </Button>
         </div>
@@ -155,7 +155,7 @@ export function WebsiteEditor({ settings: initial, businessId, businessName }: P
               </Badge>
             </div>
             <Button
-              variant={form.published ? "secondary" : "gold"}
+              variant={form.published ? "secondary" : "cue"}
               size="sm"
               className="w-full"
               onClick={() => setForm({ ...form, published: !form.published })}
