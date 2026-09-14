@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, Clock3, Compass, FileSearch, History, LockKeyhole, ShieldCheck, Sparkles, XCircle } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp, CircleDollarSign, Clock3, Compass, FileSearch, History, LockKeyhole, ShieldCheck, Sparkles, TrendingDown, TrendingUp, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/client";
@@ -61,15 +61,15 @@ export function CompanyCompassDemo({ recommendations, versions, evidence, compas
 
   return <div className="space-y-5">
     {demoMode && <section className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" /><div><p className="text-sm font-semibold text-blue-900">Housecall Pro partner demo</p><p className="mt-0.5 text-xs leading-5 text-blue-800">Illustrative scenario only. No customer data is shown, and demo decisions are never written to Supabase.</p></div></section>}
-    <section className="rounded-2xl border border-charcoal-200 bg-white p-6 shadow-sm">
+    {demoMode ? <DemoOverview /> : <section className="rounded-2xl border border-charcoal-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="max-w-2xl"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-700"><Sparkles className="h-4 w-4" /> CUE intelligence</div><h2 className="mt-3 text-2xl font-semibold text-charcoal-900">Recommendations you can inspect, decide, and measure.</h2><p className="mt-2 text-sm leading-6 text-charcoal-600">Every recommendation preserves what CUE used, why it reached its conclusion, its confidence and risk, the human decision, and the audit trail that followed.</p></div><div className="rounded-xl border border-purple-200 bg-purple-50 px-5 py-4 lg:min-w-56"><p className="text-xs font-semibold uppercase tracking-wider text-purple-700">Revi authority</p><p className="mt-2 text-sm font-semibold text-charcoal-900">Suggest and prepare</p><p className="mt-1 text-xs leading-5 text-charcoal-600">Execution remains behind explicit authority and approval.</p></div></div>
-    </section>
+    </section>}
 
-    <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    {!demoMode && <section className="grid grid-cols-1 gap-3 sm:grid-cols-3">
       <Metric title="Awaiting decision" value={awaitingCount} icon={Clock3} tone="text-amber-700" />
       <Metric title="Approved" value={approvedCount} icon={CheckCircle2} tone="text-emerald-700" />
       <Metric title="Measuring outcomes" value={measuringCount} icon={History} tone="text-blue-700" />
-    </section>
+    </section>}
 
     {recommendations.length === 0 ? <section className="rounded-2xl border border-dashed border-charcoal-300 bg-white px-6 py-14 text-center"><div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50"><Compass className="h-6 w-6 text-purple-700" /></div><h3 className="mt-4 text-base font-semibold text-charcoal-900">No recommendations yet</h3><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-charcoal-600">The intelligence foundation is connected. Recommendations will appear here only after they are created with evidence and a Company Compass alignment.</p></section> :
       <section className="space-y-4">{recommendations.map((recommendation) => {
@@ -99,6 +99,28 @@ export function CompanyCompassDemo({ recommendations, versions, evidence, compas
 }
 
 function Badge({ children, className }: { children: React.ReactNode; className: string }) { return <span className={`rounded-full border px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider ${className}`}>{children}</span>; }
+function DemoOverview() {
+  const signals = [
+    { title: "Revenue trend", value: "+8%", detail: "Higher-value jobs", icon: TrendingUp, tone: "text-emerald-700" },
+    { title: "Booked jobs", value: "-11%", detail: "Compared with last month", icon: TrendingDown, tone: "text-amber-700" },
+    { title: "Open estimates", value: "$7,800", detail: "4 waiting for follow-up", icon: CircleDollarSign, tone: "text-blue-700" },
+    { title: "Follow-up health", value: "68%", detail: "6 opportunities need attention", icon: Activity, tone: "text-purple-700" },
+  ];
+  const integrations = [
+    { name: "Housecall Pro", status: "Core demo source", detail: "Jobs · estimates · customers · invoices" },
+    { name: "Twilio / phone", status: "Connection example", detail: "Missed calls · response time · conversation outcomes" },
+    { name: "QuickBooks", status: "Planned", detail: "Revenue · cash flow · payment signals" },
+    { name: "Reviews", status: "Planned", detail: "Reputation · customer feedback · local trust" },
+  ];
+  return <>
+    <section className="relative overflow-hidden rounded-2xl border border-purple-400/30 bg-[#07101f] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.25)]">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(59,130,246,0.18),transparent_34%),radial-gradient(circle_at_90%_90%,rgba(139,92,246,0.16),transparent_38%)]" />
+      <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="max-w-2xl"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300"><Sparkles className="h-4 w-4" /> CUE intelligence</div><h2 className="mt-3 text-2xl font-semibold text-white">Revenue is growing, but future work needs attention.</h2><p className="mt-2 text-sm leading-6 text-charcoal-300">Higher-ticket jobs lifted revenue 8%, while booked jobs fell 11%. CUE found $7,800 in open estimates and a new missed call that could help close the gap.</p></div><div className="rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-5 py-4 lg:min-w-52"><p className="text-xs font-medium uppercase tracking-wider text-emerald-300">Business health</p><div className="mt-1 flex items-end gap-2"><span className="text-4xl font-semibold text-white">76</span><span className="pb-1 text-sm text-charcoal-300">/ 100</span></div><p className="mt-1 text-xs text-emerald-200">Stable · 3 actions recommended</p></div></div>
+    </section>
+    <section><div className="mb-3"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-500">Connected business signals</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE sees</h3></div><div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">{signals.map(({ title, value, detail, icon: Icon, tone }) => <div key={title} className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><p className="text-xs font-medium text-charcoal-600">{title}</p><Icon className={`h-4 w-4 ${tone}`} /></div><p className={`mt-3 text-2xl font-semibold ${tone}`}>{value}</p><p className="mt-1 text-xs text-charcoal-500">{detail}</p></div>)}</div></section>
+    <section className="rounded-2xl border border-charcoal-200 bg-white p-5 shadow-sm"><div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-500">Connected ecosystem</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">Integration examples</h3></div><p className="max-w-xl text-xs leading-5 text-charcoal-500">CUE combines operating and financial signals while Housecall Pro remains the system where service work is managed.</p></div><div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">{integrations.map((integration) => <div key={integration.name} className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4"><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-charcoal-900">{integration.name}</p><span className="rounded-full bg-purple-100 px-2 py-1 text-[10px] font-semibold text-purple-700">{integration.status}</span></div><p className="mt-3 text-xs leading-5 text-charcoal-600">{integration.detail}</p></div>)}</div></section>
+  </>;
+}
 function Metric({ title, value, icon: Icon, tone }: { title: string; value: number; icon: typeof Clock3; tone: string }) { return <div className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><p className="text-xs font-medium text-charcoal-600">{title}</p><Icon className={`h-4 w-4 ${tone}`} /></div><p className="mt-3 text-2xl font-semibold text-charcoal-900">{value}</p></div>; }
 function Detail({ title, text, icon: Icon }: { title: string; text: string; icon: typeof Compass }) { return <div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4"><h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-charcoal-600"><Icon className="h-4 w-4" /> {title}</h4><p className="mt-2 text-sm leading-6 text-charcoal-800">{text}</p></div>; }
 function Row({ term, value }: { term: string; value: string }) { return <div className="flex justify-between gap-4"><dt className="text-charcoal-500">{term}</dt><dd className="font-medium capitalize text-charcoal-900">{value}</dd></div>; }
