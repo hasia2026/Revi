@@ -14,7 +14,7 @@ export type CompassLink = { id: string; recommendation_version_id: string; compa
 export type RecommendationDecision = { id: string; recommendation_id: string; decision: string; decider_membership_role: string; decision_reason: string | null; created_at: string };
 export type IntelligenceAuditEvent = { id: string; recommendation_id: string | null; event_type: string; actor_kind: string; event_summary: Record<string, unknown>; occurred_at: string };
 
-type Props = { recommendations: IntelligenceRecommendation[]; versions: RecommendationVersion[]; evidence: RecommendationEvidence[]; compassLinks: CompassLink[]; decisions: RecommendationDecision[]; auditEvents: IntelligenceAuditEvent[]; canApprove: boolean; dataAccessError?: string | null };
+type Props = { recommendations: IntelligenceRecommendation[]; versions: RecommendationVersion[]; evidence: RecommendationEvidence[]; compassLinks: CompassLink[]; decisions: RecommendationDecision[]; auditEvents: IntelligenceAuditEvent[]; canApprove: boolean; demoMode?: boolean; dataAccessError?: string | null };
 
 const statusLabels: Record<string, string> = { awaiting_approval: "Awaiting approval", more_information_requested: "More information requested", ready: "Ready" };
 const label = (value: string) => statusLabels[value] ?? value.replaceAll("_", " ");
@@ -22,7 +22,7 @@ const dateTime = (value: string) => new Intl.DateTimeFormat(undefined, { dateSty
 const toneForRisk = (risk: RecommendationVersion["risk_level"]) => risk === "prohibited" || risk === "high" ? "border-red-200 bg-red-50 text-red-700" : risk === "moderate" ? "border-amber-200 bg-amber-50 text-amber-700" : "border-emerald-200 bg-emerald-50 text-emerald-700";
 const toneForConfidence = (confidence: RecommendationVersion["confidence_level"]) => confidence === "high" ? "border-emerald-200 bg-emerald-50 text-emerald-700" : confidence === "medium" ? "border-blue-200 bg-blue-50 text-blue-700" : "border-amber-200 bg-amber-50 text-amber-700";
 
-export function CompanyCompassDemo({ recommendations, versions, evidence, compassLinks, decisions, auditEvents, canApprove, dataAccessError }: Props) {
+export function CompanyCompassDemo({ recommendations, versions, evidence, compassLinks, decisions, auditEvents, canApprove, demoMode = false, dataAccessError }: Props) {
   const router = useRouter();
   const [expandedId, setExpandedId] = useState<string | null>(recommendations[0]?.id ?? null);
   const [decisionFor, setDecisionFor] = useState<string | null>(null);
@@ -34,6 +34,7 @@ export function CompanyCompassDemo({ recommendations, versions, evidence, compas
   const measuringCount = recommendations.filter((item) => item.status === "measuring").length;
 
   async function submitDecision(recommendation: IntelligenceRecommendation, decision: "approved" | "rejected" | "more_information_requested" | "deferred") {
+    if (demoMode) return toast.info("Demo mode: no decision was written to the database.");
     if (!canApprove) return toast.error("Owner or admin approval authority is required.");
     if (decision === "rejected" && !decisionReason.trim()) return toast.error("Add a reason before rejecting this recommendation.");
     setSubmitting(true);
@@ -59,6 +60,7 @@ export function CompanyCompassDemo({ recommendations, versions, evidence, compas
   );
 
   return <div className="space-y-5">
+    {demoMode && <section className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-blue-700" /><div><p className="text-sm font-semibold text-blue-900">Housecall Pro partner demo</p><p className="mt-0.5 text-xs leading-5 text-blue-800">Illustrative scenario only. No customer data is shown, and demo decisions are never written to Supabase.</p></div></section>}
     <section className="rounded-2xl border border-charcoal-200 bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="max-w-2xl"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-700"><Sparkles className="h-4 w-4" /> CUE intelligence</div><h2 className="mt-3 text-2xl font-semibold text-charcoal-900">Recommendations you can inspect, decide, and measure.</h2><p className="mt-2 text-sm leading-6 text-charcoal-600">Every recommendation preserves what CUE used, why it reached its conclusion, its confidence and risk, the human decision, and the audit trail that followed.</p></div><div className="rounded-xl border border-purple-200 bg-purple-50 px-5 py-4 lg:min-w-56"><p className="text-xs font-semibold uppercase tracking-wider text-purple-700">Revi authority</p><p className="mt-2 text-sm font-semibold text-charcoal-900">Suggest and prepare</p><p className="mt-1 text-xs leading-5 text-charcoal-600">Execution remains behind explicit authority and approval.</p></div></div>
     </section>
