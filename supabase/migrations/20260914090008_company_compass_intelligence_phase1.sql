@@ -254,6 +254,9 @@ begin
 end;
 $$;
 
+revoke all on function cue_private.reject_intelligence_immutable_mutation()
+from public, anon, authenticated;
+
 create trigger recommendation_versions_immutable
 before update or delete on public.recommendation_versions
 for each row execute function cue_private.reject_intelligence_immutable_mutation();
