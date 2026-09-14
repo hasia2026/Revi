@@ -1,4 +1,4 @@
--- CUE Company Compass Intelligence — Phase 1 proposal
+-- CUE Company Compass Intelligence — Phase 1 migration
 -- Approved repository migration. Apply to Supabase only after separate explicit approval.
 -- Repository baseline reviewed: hasia2026/Revi @ c317b8f
 
@@ -6,8 +6,8 @@ begin;
 
 -- Privileged helpers and trigger functions live outside the exposed public
 -- schema. The two public mutation RPCs below remain the only client entrypoints.
-create schema if not exists private;
-revoke all on schema private from public, anon, authenticated;
+create schema if not exists cue_private;
+revoke all on schema cue_private from public, anon, authenticated;
 
 -- Root record: lifecycle pointer only. Material recommendation content is versioned.
 create table public.intelligence_recommendations (
@@ -152,18 +152,42 @@ create index intelligence_recommendations_business_status_created_idx
   on public.intelligence_recommendations (business_id, status, created_at desc);
 create index intelligence_recommendations_approval_queue_idx
   on public.intelligence_recommendations (business_id, approval_required, status, created_at desc);
+create index intelligence_recommendations_created_by_user_idx
+  on public.intelligence_recommendations (created_by_user_id);
 create index recommendation_versions_recommendation_version_idx
   on public.recommendation_versions (recommendation_id, version_number desc);
+create index recommendation_versions_business_idx
+  on public.recommendation_versions (business_id);
+create index recommendation_versions_created_by_user_idx
+  on public.recommendation_versions (created_by_user_id);
 create index recommendation_evidence_version_created_idx
   on public.recommendation_evidence (recommendation_version_id, created_at);
+create index recommendation_evidence_business_idx
+  on public.recommendation_evidence (business_id);
 create index recommendation_compass_links_version_idx
   on public.recommendation_compass_links (recommendation_version_id);
+create index recommendation_compass_links_business_idx
+  on public.recommendation_compass_links (business_id);
 create index recommendation_decisions_recommendation_created_idx
   on public.recommendation_decisions (recommendation_id, created_at desc);
+create index recommendation_decisions_business_idx
+  on public.recommendation_decisions (business_id);
+create index recommendation_decisions_version_idx
+  on public.recommendation_decisions (recommendation_version_id);
+create index recommendation_decisions_user_idx
+  on public.recommendation_decisions (decided_by_user_id);
+create index recommendation_decisions_assigned_user_idx
+  on public.recommendation_decisions (assigned_to_user_id);
 create index intelligence_audit_events_business_occurred_idx
   on public.intelligence_audit_events (business_id, occurred_at desc);
 create index intelligence_audit_events_recommendation_idx
   on public.intelligence_audit_events (recommendation_id, occurred_at);
+create index intelligence_audit_events_version_idx
+  on public.intelligence_audit_events (recommendation_version_id);
+create index intelligence_audit_events_decision_idx
+  on public.intelligence_audit_events (decision_id);
+create index intelligence_audit_events_actor_user_idx
+  on public.intelligence_audit_events (actor_user_id);
 
 alter table public.intelligence_recommendations enable row level security;
 alter table public.recommendation_versions enable row level security;
@@ -220,7 +244,7 @@ grant select on public.recommendation_decisions to authenticated;
 grant select on public.intelligence_audit_events to authenticated;
 
 -- Immutable tables reject mutation even if a future grant/policy is loosened.
-create or replace function private.reject_intelligence_immutable_mutation()
+create or replace function cue_private.reject_intelligence_immutable_mutation()
 returns trigger
 language plpgsql
 set search_path = ''
@@ -232,22 +256,22 @@ $$;
 
 create trigger recommendation_versions_immutable
 before update or delete on public.recommendation_versions
-for each row execute function private.reject_intelligence_immutable_mutation();
+for each row execute function cue_private.reject_intelligence_immutable_mutation();
 create trigger recommendation_evidence_immutable
 before update or delete on public.recommendation_evidence
-for each row execute function private.reject_intelligence_immutable_mutation();
+for each row execute function cue_private.reject_intelligence_immutable_mutation();
 create trigger recommendation_compass_links_immutable
 before update or delete on public.recommendation_compass_links
-for each row execute function private.reject_intelligence_immutable_mutation();
+for each row execute function cue_private.reject_intelligence_immutable_mutation();
 create trigger recommendation_decisions_immutable
 before update or delete on public.recommendation_decisions
-for each row execute function private.reject_intelligence_immutable_mutation();
+for each row execute function cue_private.reject_intelligence_immutable_mutation();
 create trigger intelligence_audit_events_immutable
 before update or delete on public.intelligence_audit_events
-for each row execute function private.reject_intelligence_immutable_mutation();
+for each row execute function cue_private.reject_intelligence_immutable_mutation();
 
 -- Conservative Phase 1 approver rule. Must be verified against live role values.
-create or replace function private.is_business_intelligence_approver(p_business_id uuid)
+create or replace function cue_private.is_business_intelligence_approver(p_business_id uuid)
 returns boolean
 language sql
 stable
@@ -263,7 +287,7 @@ as $$
   );
 $$;
 
-revoke all on function private.is_business_intelligence_approver(uuid) from public, anon, authenticated;
+revoke all on function cue_private.is_business_intelligence_approver(uuid) from public, anon, authenticated;
 
 -- Phase 1 creation contract. Evidence and Compass links arrive as JSON arrays;
 -- each item is validated and inserted in the same transaction.
@@ -417,13 +441,13 @@ begin
   for update;
 
   if not found then raise exception 'recommendation not found'; end if;
-  if v_user_id is null or not private.is_business_intelligence_approver(v_rec.business_id) then
+  if v_user_id is null or not cue_private.is_business_intelligence_approver(v_rec.business_id) then
     raise exception 'approval authority required';
   end if;
   if v_rec.current_version_number <> p_expected_version_number then
     raise exception 'recommendation version changed; review the current version';
   end if;
-  if v_rec.status not in ('awaiting_approval','ready','approved') then
+  if v_rec.status not in ('awaiting_approval','ready') then
     raise exception 'recommendation is not currently decidable';
   end if;
   -- Material modification requires a new recommendation version. That revision
@@ -434,6 +458,20 @@ begin
   end if;
   if p_decision = 'rejected' and nullif(btrim(p_decision_reason),'') is null then
     raise exception 'decision reason is required';
+  end if;
+  if p_modified_action_spec is not null then
+    raise exception 'modified action requires the future recommendation revision function';
+  end if;
+  if p_decision = 'reassigned' then
+    if p_assigned_to_user_id is null or not exists (
+      select 1 from public.business_members bm
+      where bm.business_id = v_rec.business_id
+        and bm.user_id = p_assigned_to_user_id
+    ) then
+      raise exception 'reassignment target must be a member of this business';
+    end if;
+  elsif p_assigned_to_user_id is not null then
+    raise exception 'assigned user is valid only for a reassignment decision';
   end if;
 
   select id into v_version_id
@@ -483,4 +521,4 @@ grant execute on function public.decide_intelligence_recommendation(uuid,integer
 
 commit;
 
--- End proposal. This file intentionally contains no DROP/rollback execution.
+-- End migration. This file intentionally contains no destructive rollback SQL.
