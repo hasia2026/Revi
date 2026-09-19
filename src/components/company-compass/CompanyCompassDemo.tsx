@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Sparkles, Activity, TrendingUp, MessageSquareText, UsersRound, Clock3, BellRing, CalendarClock } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Sparkles, Activity, TrendingUp, MessageSquareText, BellRing, CalendarClock, X, BarChart3, ListChecks, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const scenarios = [
@@ -21,10 +21,52 @@ const signals = [
 ];
 
 export function CompanyCompassDemo() {
-  const [activeId, setActiveId] = useState("invoice");
+  const [activeId, setActiveId] = useState("tech-sales");
   const [actioned, setActioned] = useState<string[]>([]);
+  const [reportOpen, setReportOpen] = useState(false);
   const active = scenarios.find((s) => s.id === activeId) ?? scenarios[0];
   const done = actioned.includes(active.id);
+
+  const reportContent: Record<string, { title: string; summary: string; metrics: [string, string][]; detail: string[] }> = {
+    "tech-sales": {
+      title: "Technician Sales Report",
+      summary: "Weekly sales performance connected from technician, job, line-item, and revenue records.",
+      metrics: [["Revenue", "$42,680"], ["Jobs", "31"], ["Sold", "17"], ["Conversion", "55%"]],
+      detail: ["Mike · 8 sold · $18,450 · 57%", "Carlos · 6 sold · $13,280 · 55%", "Jordan · 7 sold · $10,950 · 54%", "Drill-down available to individual jobs and line items."]
+    },
+    workday: {
+      title: "Technician Workday Report",
+      summary: "A job-by-job view of Mike's Tuesday instead of one daily time total.",
+      metrics: [["Hours", "7.4"], ["Jobs", "3"], ["Revenue", "$2,575"], ["Unlinked", "0"]],
+      detail: ["8:00 · #1042 · Diagnostic · 1.6 hrs · $450", "10:30 · #1048 · Replacement · 2.8 hrs · $1,850", "1:15 · #1051 · Repair · 1.4 hrs · $275", "CUE reconciles the time entries back to the jobs."]
+    },
+    booking: {
+      title: "Booking Rules Review",
+      summary: "CUE compared the requested service, day, service area, and existing HCP booking rules.",
+      metrics: [["Conflicts", "2"], ["Routes", "2"], ["Accepted", "1"], ["Unresolved", "0"]],
+      detail: ["Drain service · Mon–Wed · ZIP 926xx → route for review", "Drain service · Thu · ZIP 928xx → route for review", "Estimate · Tue–Thu · all areas → available", "CUE shows the conflict and the suggested routing decision."]
+    },
+    conversation: {
+      title: "Booking Conversation Report",
+      summary: "CUE detected booking intent and checked whether an appointment outcome followed.",
+      metrics: [["Signals", "3"], ["No appointment", "3"], ["Oldest", "47 min"], ["Priority", "High"]],
+      detail: ["Garcia · wants to schedule · 18 min · follow up", "Patel · asked for pricing · 31 min · review", "Lee · ready to book · 47 min · escalate", "The report connects conversation activity to the appointment outcome."]
+    },
+    "service-plan": {
+      title: "Service Plan Context Report",
+      summary: "A customer-level view combining plan history, delivered service, value, and renewal timing.",
+      metrics: [["Customer", "Anderson"], ["Plan value", "$250"], ["Renewal", "43 days"], ["Next action", "Review"]],
+      detail: ["Pro Club · maintenance · $125", "Pro Club · prior service · $125", "Renewal · 43 days · no next action logged", "CUE gives staff the context before the next customer conversation."]
+    },
+    "data-quality": {
+      title: "Data Reconciliation Report",
+      summary: "CUE identifies records that exist but cannot yet support reliable cross-workflow reporting.",
+      metrics: [["Gaps", "3"], ["Time", "1"], ["Line item", "1"], ["Booking", "1"]],
+      detail: ["Time entry → missing job link → technician productivity affected", "Line item → needs record match → sales reporting affected", "Booking → needs outcome → conversion reporting affected", "CUE makes the data-quality work visible instead of hiding it inside reports."]
+    }
+  };
+
+  const report = reportContent[active.id];
 
   return (
     <div className="space-y-5">
@@ -74,8 +116,9 @@ export function CompanyCompassDemo() {
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
-              <Button variant={done ? "secondary" : "cue"} size="sm" onClick={() => !done && setActioned([...actioned,active.id])}>{done ? <CheckCircle2 className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}{done ? "Review logged" : active.action}</Button>
-              <span className="text-[11px] text-charcoal-400">CUE recommends the next step; the owner stays in control.</span>
+              <Button variant="cue" size="sm" onClick={() => setReportOpen(true)}><BarChart3 className="h-4 w-4" />Show mock report</Button>
+              <Button variant={done ? "secondary" : "outline"} size="sm" onClick={() => !done && setActioned([...actioned, active.id])}>{done ? <CheckCircle2 className="h-4 w-4" /> : <ListChecks className="h-4 w-4" />}{done ? "Action logged" : active.action}</Button>
+              <span className="text-[11px] text-charcoal-400">Click the report to see what a pilot user would actually receive.</span>
             </div>
           </div>
 
@@ -85,6 +128,36 @@ export function CompanyCompassDemo() {
           </aside>
         </div>
       </section>
+
+      {reportOpen && (
+        <section className="rounded-xl border border-cue-purple-300 bg-white p-5 shadow-lg ring-2 ring-cue-purple-100">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2"><BarChart3 className="h-4 w-4 text-cue-purple-600" /><p className="text-xs font-semibold uppercase tracking-[0.16em] text-cue-purple-700">Mock report · generated by CUE</p></div>
+              <h3 className="mt-2 text-xl font-semibold text-charcoal-900">{report.title}</h3>
+              <p className="mt-1 max-w-3xl text-sm leading-6 text-charcoal-600">{report.summary}</p>
+            </div>
+            <button type="button" aria-label="Close mock report" onClick={() => setReportOpen(false)} className="rounded-lg p-2 text-charcoal-400 hover:bg-charcoal-100 hover:text-charcoal-700"><X className="h-5 w-5" /></button>
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {report.metrics.map(([label, value]) => <div key={label} className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4"><p className="text-[10px] font-semibold uppercase tracking-wider text-charcoal-500">{label}</p><p className="mt-2 text-xl font-semibold text-charcoal-900">{value}</p></div>)}
+          </div>
+
+          <div className="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-[1.3fr_0.7fr]">
+            <div className="rounded-xl border border-charcoal-200">
+              <div className="flex items-center justify-between border-b border-charcoal-200 px-4 py-3"><p className="text-xs font-semibold text-charcoal-900">What CUE found</p><span className="text-[10px] text-charcoal-400">Demo data</span></div>
+              <div className="divide-y divide-charcoal-200">{report.detail.map((line) => <div key={line} className="flex gap-3 px-4 py-3 text-xs text-charcoal-700"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-cue-blue-500" /><span>{line}</span></div>)}</div>
+            </div>
+            <div className="rounded-xl border border-cue-blue-200 bg-cue-blue-50/60 p-4">
+              <p className="text-xs font-semibold uppercase tracking-wider text-cue-blue-700">Owner decision</p>
+              <p className="mt-2 text-sm font-semibold text-charcoal-900">{active.action}</p>
+              <p className="mt-2 text-xs leading-5 text-charcoal-600">CUE surfaces the evidence, explains why it matters, and gives the user a clear next step. The user decides whether to act.</p>
+              <button type="button" onClick={() => { setActioned(actioned.includes(active.id) ? actioned : [...actioned, active.id]); setReportOpen(false); }} className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-cue-blue-700 hover:underline">Log this action <ExternalLink className="h-3.5 w-3.5" /></button>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="rounded-xl border border-cue-purple-200 bg-white p-5 shadow-sm">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
