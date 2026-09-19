@@ -5,22 +5,19 @@ import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Spark
 import { Button } from "@/components/ui/Button";
 
 const scenarios = [
-  { id: "invoice", label: "Completed Job → No Invoice", title: "7 completed jobs have no invoice", value: "$12,480", description: "These jobs are marked completed but don't have an invoice. Review before today's close.", columns: ["Job","Customer","Tech","Status","Value"], rows: [["#10482","Smith","Mike","Completed","$2,450"],["#10491","Jones","Carlos","Completed","$1,875"],["#10502","Wilson","Mike","Completed","$3,200"]], action: "Review unbilled jobs" },
-  { id: "estimate", label: "Estimate Follow-Up", title: "14 estimates are waiting for follow-up", value: "$38,700", description: "Prioritize estimates where the customer requested follow-up, the estimate is above $5,000, and there has been no activity for 5 days.", columns: ["Estimate","Customer","Value","Age","Priority"], rows: [["#E-2204","Garcia","$8,900","6 days","High"],["#E-2198","Patel","$6,400","5 days","High"],["#E-2187","Lee","$3,250","4 days","Medium"]], action: "Open follow-up queue" },
-  { id: "po", label: "PO → Job Costing", title: "$18,420 in purchases aren't reflected in job costs", value: "$18,420", description: "Purchase orders are attached to completed jobs, but recorded material cost is still $0. Review the variance before margin reporting.", columns: ["Job","PO","Purchased","Recorded","Variance"], rows: [["#10771","PO-884","$7,250","$0","$7,250"],["#10784","PO-891","$6,170","$0","$6,170"],["#10802","PO-897","$5,000","$0","$5,000"]], action: "Review cost variance" },
-  { id: "membership", label: "Membership Value", title: "Membership value delivered — renewal approaching", value: "$250", description: "This Pro Club member received maintenance and service benefits with $250 of retail value delivered year to date. Renewal is in 43 days.", columns: ["Customer","Plan","Service","Retail Value","Renewal"], rows: [["Anderson","Pro Club","Maintenance","$125","43 days"],["Anderson","Pro Club","Prior service","$125","43 days"]], action: "Review membership" },
-  { id: "documentation", label: "Missing Job Documentation", title: "Job #10842 is financially complete but documentation is incomplete", value: "4/5", description: "CUE checks required completion evidence. The serial number is missing and one after photo is incomplete.", columns: ["Requirement","Status","Review"], rows: [["Before photos","Complete","✓"],["Equipment photo","Complete","✓"],["Serial number","Missing","Review"],["After photos","4/5","Review"],["Customer signature","Complete","✓"]], action: "Open completion review" },
-  { id: "tech-sales", label: "Technician Sales", title: "See what each technician sold — without merging reports", value: "$42,680", description: "CUE connects technician, job, line item, revenue, and conversion data into one weekly view so the owner can drill from a tech to the exact jobs sold.", columns: ["Tech","Jobs","Sold","Revenue","Conv."], rows: [["Mike","14","8","$18,450","57%"],["Carlos","11","6","$13,280","55%"],["Jordan","13","7","$10,950","54%"]], action: "Open technician detail" },
-  { id: "workday", label: "Technician Workday", title: "Mike's Tuesday is a job-by-job timeline", value: "7.4 hrs", description: "Daily time totals become useful when CUE ties each time entry back to the job, customer, and revenue outcome.", columns: ["Time","Job","Work","Hours","Revenue"], rows: [["8:00"," #1042","Diagnostic","1.6","$450"],["10:30","#1048","Replacement","2.8","$1,850"],["1:15","#1051","Repair","1.4","$275"]], action: "View full workday" },
-  { id: "stalled", label: "Stalled Conversation", title: "Customer showed booking intent — no appointment created", value: "18 min", description: "CUE detects when a customer asks to schedule but the conversation stops before an appointment is created, then surfaces the next action.", columns: ["Customer","Signal","Age","Appointment","Action"], rows: [["Garcia","Wants to schedule","18 min","None","Follow up"],["Patel","Asked for pricing","31 min","None","Review"],["Lee","Ready to book","47 min","None","Escalate"]], action: "Open response queue" },
-  { id: "booking", label: "Booking Rules", title: "Online booking request doesn't fit the native rules", value: "2 rules", description: "CUE evaluates service, day, time, and service-area constraints so a lead can be routed instead of silently rejected or booked incorrectly.", columns: ["Service","Day","Area","Native HCP","CUE"], rows: [["Estimate","Tue–Thu","All","Available","Available"],["Drain service","Mon–Wed","ZIP 926xx","Conflict","Route"],["Drain service","Thu","ZIP 928xx","Conflict","Route"]], action: "Review booking route" },
+  { id: "tech-sales", label: "Technician Sales", title: "See what each technician sold — without merging reports", value: "$42,680", description: "CUE connects technician, job, line item, revenue, and conversion data into one weekly view so the owner can drill from a technician to the exact jobs sold.", columns: ["Tech","Jobs","Sold","Revenue","Conv."], rows: [["Mike","14","8","$18,450","57%"],["Carlos","11","6","$13,280","55%"],["Jordan","13","7","$10,950","54%"]], action: "Open technician detail" },
+  { id: "workday", label: "Technician Workday", title: "Mike's Tuesday is a job-by-job timeline", value: "7.4 hrs", description: "Daily time totals become useful when CUE ties each time entry back to the job, customer, work performed, and revenue outcome.", columns: ["Time","Job","Work","Hours","Revenue"], rows: [["8:00"," #1042","Diagnostic","1.6","$450"],["10:30","#1048","Replacement","2.8","$1,850"],["1:15","#1051","Repair","1.4","$275"]], action: "View full workday" },
+  { id: "booking", label: "Booking Rules", title: "Online booking request doesn't fit the native rules", value: "2 conflicts", description: "CUE evaluates service, day, time, and service-area constraints so the business can route customers instead of losing or misbooking them.", columns: ["Service","Day","Area","HCP","CUE"], rows: [["Estimate","Tue–Thu","All","Available","Available"],["Drain service","Mon–Wed","ZIP 926xx","Conflict","Route"],["Drain service","Thu","ZIP 928xx","Conflict","Route"]], action: "Review booking route" },
+  { id: "conversation", label: "Customer Conversation", title: "A customer asked to book — but no appointment was created", value: "18 min", description: "CUE detects booking intent in the conversation and checks whether the operational outcome actually happened.", columns: ["Customer","Signal","Age","Appointment","Next"], rows: [["Garcia","Wants to schedule","18 min","None","Follow up"],["Patel","Asked for pricing","31 min","None","Review"],["Lee","Ready to book","47 min","None","Escalate"]], action: "Open response queue" },
+  { id: "service-plan", label: "Service Plan Context", title: "Service-plan history needs context before the next conversation", value: "$250", description: "CUE keeps service-plan activity, delivered value, upcoming renewal, and customer context together so staff can act from the same picture.", columns: ["Customer","Plan","Service","Value","Renewal"], rows: [["Anderson","Pro Club","Maintenance","$125","43 days"],["Anderson","Pro Club","Prior service","$125","43 days"],["Anderson","Pro Club","Next action","—","43 days"]], action: "Review plan context" },
+  { id: "data-quality", label: "Data Quality", title: "Important fields are present in the system — but not connected", value: "3 gaps", description: "CUE identifies information that prevents clean reporting, such as time entries without a linked job or records that cannot be reconciled across workflows.", columns: ["Signal","Source","Impact","Status"], rows: [["Time entry","Time tracking","Tech productivity","Needs link"],["Line item","Job record","Sales reporting","Needs match"],["Booking","Online booking","Conversion","Needs outcome"]], action: "Review data gaps" },
 ];
 
 const signals = [
-  ["Completed jobs","42","Processed today",TrendingUp],
-  ["Unbilled work","$12,480","7 jobs",CircleDollarSign],
-  ["Estimate follow-up","$38,700","14 estimates",Activity],
-  ["Documentation","2 jobs","Need review",FileWarning],
+  ["Technician revenue","$42,680","This week",CircleDollarSign],
+  ["Technician conversion","55%","31 jobs · 17 sold",TrendingUp],
+  ["Booking outcomes","3","Need appointment review",CalendarClock],
+  ["Data gaps","3","Need reconciliation",FileWarning],
 ];
 
 export function CompanyCompassDemo() {
@@ -43,7 +40,7 @@ export function CompanyCompassDemo() {
 
       <section>
         <div className="mb-3 flex items-end justify-between">
-          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-400">Morning operations check</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE sees across the workflow</h3></div>
+          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-400">Daily intelligence check</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE understands across the workflow</h3></div>
           <span className="text-xs text-charcoal-400">Demonstration data</span>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
@@ -53,8 +50,8 @@ export function CompanyCompassDemo() {
 
       <section className="rounded-xl border border-charcoal-200 bg-white shadow-sm">
         <div className="border-b border-charcoal-200 px-5 pt-4">
-          <div className="flex items-center gap-2"><Package className="h-4 w-4 text-cue-orange-300" /><h3 className="text-sm font-semibold text-charcoal-900">Contractor workflow · Where the leak happens</h3></div>
-          <p className="mt-1 pb-4 text-xs text-charcoal-400">Five familiar operating exceptions. Click one to see how CUE turns workflow data into an action.</p>
+          <div className="flex items-center gap-2"><Package className="h-4 w-4 text-cue-orange-300" /><h3 className="text-sm font-semibold text-charcoal-900">HCP workflow · Where CUE adds intelligence</h3></div>
+          <p className="mt-1 pb-4 text-xs text-charcoal-400">Five HCP workflow scenarios. Click one to see how CUE connects the data and surfaces the next action.</p>
           <div className="flex gap-1 overflow-x-auto">
             {scenarios.map((s) => <button key={s.id} onClick={() => setActiveId(s.id)} className={\`whitespace-nowrap border-b-2 px-3 py-3 text-xs font-semibold transition \${activeId === s.id ? "border-cue-purple-500 text-cue-purple-700" : "border-transparent text-charcoal-500 hover:text-charcoal-800"}\`}>{s.label}</button>)}
           </div>
@@ -116,20 +113,20 @@ export function CompanyCompassDemo() {
 
       <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_0.8fr]">
         <div className="rounded-xl border border-charcoal-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-500" /><h3 className="text-sm font-semibold text-charcoal-900">End-of-day operations check</h3></div>
-          <div className="mt-4 grid grid-cols-3 gap-3">{[["37","clean"],["3","need review"],["2","revenue exceptions"]].map(([v,l])=><div key={l} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3 text-center"><p className="text-2xl font-semibold text-charcoal-900">{v}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500">{l}</p></div>)}</div>
-          <p className="mt-4 text-xs leading-5 text-charcoal-500">Instead of another dashboard to monitor, CUE creates a short exception queue from the work already happening in HCP.</p>
+          <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-500" /><h3 className="text-sm font-semibold text-charcoal-900">CUE outcome check</h3></div>
+          <div className="mt-4 grid grid-cols-3 gap-3">{[["17","sold this week"],["3","booking reviews"],["3","data gaps"]].map(([v,l])=><div key={l} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3 text-center"><p className="text-2xl font-semibold text-charcoal-900">{v}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500">{l}</p></div>)}</div>
+          <p className="mt-4 text-xs leading-5 text-charcoal-500">CUE turns disconnected operational records into a short list of actions and measurable outcomes.</p>
         </div>
         <div className="rounded-xl border border-charcoal-200 bg-white p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-charcoal-900">Connected evidence</h3>
-          <p className="mt-1 text-xs leading-5 text-charcoal-400">The intelligence layer combines signals without replacing the systems contractors already use.</p>
-          <div className="mt-4 space-y-2">{[["Housecall Pro","Demo workflow data","Jobs · estimates · invoices"],["Twilio","Demo event","Calls · conversations"],["QuickBooks","Planned","Revenue · cash flow"],["Reviews","Planned","Reputation signals"]].map(([name,status,detail])=><div key={name} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3"><div className="flex items-center justify-between gap-3"><p className="text-xs font-semibold text-charcoal-900">{name}</p><span className="text-[10px] font-medium text-cue-purple-600">{status}</span></div><p className="mt-1 text-[11px] text-charcoal-400">{detail}</p></div>)}</div>
+          <h3 className="text-sm font-semibold text-charcoal-900">Connected systems</h3>
+          <p className="mt-1 text-xs leading-5 text-charcoal-400">CUE is designed to sit above the systems the business already uses and connect the signals they contain.</p>
+          <div className="mt-4 space-y-2">{[["Housecall Pro","Core system","Jobs · techs · time · booking"],["QuickBooks","Planned","Revenue · payments"],["Twilio","Planned","Customer conversations"],["Booking channels","Planned","Lead · appointment outcomes"]].map(([name,status,detail])=><div key={name} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3"><div className="flex items-center justify-between gap-3"><p className="text-xs font-semibold text-charcoal-900">{name}</p><span className="text-[10px] font-medium text-cue-purple-600">{status}</span></div><p className="mt-1 text-[11px] text-charcoal-400">{detail}</p></div>)}</div>
         </div>
       </section>
 
       <section className="rounded-xl border border-cue-purple-200 bg-[#0b1220] p-5 text-white">
         <div className="flex items-center gap-2"><MessageSquareText className="h-4 w-4 text-cue-purple-300" /><h3 className="text-sm font-semibold">Outcome loop</h3></div>
-        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">{[["1","Work happens","Job, estimate, PO, membership, or customer event."],["2","CUE watches","Related workflow data is checked for an exception."],["3","Owner acts","A specific review or follow-up is presented."],["4","Outcome returns","CUE watches what happened next."]].map(([n,title,copy])=><div key={n} className="rounded-lg border border-white/10 bg-white/5 p-3"><span className="text-xs font-bold text-cue-purple-300">{n}</span><p className="mt-2 text-xs font-semibold">{title}</p><p className="mt-1 text-[11px] leading-5 text-charcoal-300">{copy}</p></div>)}</div>
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">{[["1","Work happens","Job, technician, booking, conversation, or service-plan event."],["2","CUE watches","CUE connects related records and checks the business outcome."],["3","Owner acts","A specific action or drill-down is presented."],["4","Outcome returns","The outcome feeds back into the operating picture."]].map(([n,title,copy])=><div key={n} className="rounded-lg border border-white/10 bg-white/5 p-3"><span className="text-xs font-bold text-cue-purple-300">{n}</span><p className="mt-2 text-xs font-semibold">{title}</p><p className="mt-1 text-[11px] leading-5 text-charcoal-300">{copy}</p></div>)}</div>
       </section>
     </div>
   );
