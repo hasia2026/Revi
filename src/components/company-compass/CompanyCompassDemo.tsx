@@ -1,261 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Activity,
-  ArrowRight,
-  CheckCircle2,
-  CircleDollarSign,
-  Clock3,
-  MessageSquareText,
-  PhoneMissed,
-  Sparkles,
-  TrendingDown,
-  TrendingUp,
-  Users,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Sparkles, Activity, TrendingUp, MessageSquareText } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-const signals = [
-  {
-    label: "Revenue trend",
-    value: "+8%",
-    detail: "Higher-value jobs",
-    icon: TrendingUp,
-    tone: "text-emerald-300",
-  },
-  {
-    label: "Booked jobs",
-    value: "-11%",
-    detail: "Compared with last month",
-    icon: TrendingDown,
-    tone: "text-amber-300",
-  },
-  {
-    label: "Open estimates",
-    value: "$7,800",
-    detail: "4 waiting for follow-up",
-    icon: CircleDollarSign,
-    tone: "text-blue-600",
-  },
-  {
-    label: "Follow-up health",
-    value: "68%",
-    detail: "6 opportunities need attention",
-    icon: Activity,
-    tone: "text-purple-600",
-  },
+const scenarios = [
+  { id: "invoice", label: "Completed Job → No Invoice", title: "7 completed jobs have no invoice", value: "$12,480", description: "These jobs are marked completed but don't have an invoice. Review before today's close.", columns: ["Job","Customer","Tech","Status","Value"], rows: [["#10482","Smith","Mike","Completed","$2,450"],["#10491","Jones","Carlos","Completed","$1,875"],["#10502","Wilson","Mike","Completed","$3,200"]], action: "Review unbilled jobs" },
+  { id: "estimate", label: "Estimate Follow-Up", title: "14 estimates are waiting for follow-up", value: "$38,700", description: "Prioritize estimates where the customer requested follow-up, the estimate is above $5,000, and there has been no activity for 5 days.", columns: ["Estimate","Customer","Value","Age","Priority"], rows: [["#E-2204","Garcia","$8,900","6 days","High"],["#E-2198","Patel","$6,400","5 days","High"],["#E-2187","Lee","$3,250","4 days","Medium"]], action: "Open follow-up queue" },
+  { id: "po", label: "PO → Job Costing", title: "$18,420 in purchases aren't reflected in job costs", value: "$18,420", description: "Purchase orders are attached to completed jobs, but recorded material cost is still $0. Review the variance before margin reporting.", columns: ["Job","PO","Purchased","Recorded","Variance"], rows: [["#10771","PO-884","$7,250","$0","$7,250"],["#10784","PO-891","$6,170","$0","$6,170"],["#10802","PO-897","$5,000","$0","$5,000"]], action: "Review cost variance" },
+  { id: "membership", label: "Membership Value", title: "Membership value delivered — renewal approaching", value: "$250", description: "This Pro Club member received maintenance and service benefits with $250 of retail value delivered year to date. Renewal is in 43 days.", columns: ["Customer","Plan","Service","Retail Value","Renewal"], rows: [["Anderson","Pro Club","Maintenance","$125","43 days"],["Anderson","Pro Club","Prior service","$125","43 days"]], action: "Review membership" },
+  { id: "documentation", label: "Missing Job Documentation", title: "Job #10842 is financially complete but documentation is incomplete", value: "4/5", description: "CUE checks required completion evidence. The serial number is missing and one after photo is incomplete.", columns: ["Requirement","Status","Review"], rows: [["Before photos","Complete","✓"],["Equipment photo","Complete","✓"],["Serial number","Missing","Review"],["After photos","4/5","Review"],["Customer signature","Complete","✓"]], action: "Open completion review" },
 ];
 
-const actions = [
-  {
-    id: "missed-call",
-    urgency: "Act now",
-    title: "Return a high-intent missed call",
-    explanation:
-      "A new prospect called 4 minutes ago. Calls returned within 5 minutes are more likely to become conversations.",
-    impact: "Estimated opportunity: $450",
-    source: "Twilio sample event",
-    icon: PhoneMissed,
-    accent: "border-red-400/40 bg-red-500/10",
-  },
-  {
-    id: "estimates",
-    urgency: "Revenue opportunity",
-    title: "Follow up on 4 open estimates",
-    explanation:
-      "Booked jobs are down while $7,800 in quoted work is still undecided. Start with the two highest-value estimates.",
-    impact: "Potential pipeline: $7,800",
-    source: "Housecall Pro planned connection",
-    icon: CircleDollarSign,
-    accent: "border-amber-400/40 bg-amber-500/10",
-  },
-  {
-    id: "reviews",
-    urgency: "Growth opportunity",
-    title: "Ask 12 satisfied customers for reviews",
-    explanation:
-      "These customers completed jobs without an open issue, but no review request has been recorded.",
-    impact: "Strengthen local trust",
-    source: "Reviews + job history",
-    icon: Users,
-    accent: "border-cue-blue-400/40 bg-cue-blue-500/10",
-  },
+const signals = [
+  ["Completed jobs","42","Processed today",TrendingUp],
+  ["Unbilled work","$12,480","7 jobs",CircleDollarSign],
+  ["Estimate follow-up","$38,700","14 estimates",Activity],
+  ["Documentation","2 jobs","Need review",FileWarning],
 ];
 
 export function CompanyCompassDemo() {
-  const [completed, setCompleted] = useState(false);
+  const [activeId, setActiveId] = useState("invoice");
+  const [actioned, setActioned] = useState<string[]>([]);
+  const active = scenarios.find((s) => s.id === activeId) ?? scenarios[0];
+  const done = actioned.includes(active.id);
 
   return (
     <div className="space-y-5">
       <section className="relative overflow-hidden rounded-2xl border border-cue-purple-400/30 bg-[#07101f] p-6 shadow-[0_20px_80px_rgba(0,0,0,0.3)]">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(59,130,246,0.18),transparent_34%),radial-gradient(circle_at_90%_90%,rgba(139,92,246,0.16),transparent_38%)]" />
-        <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-cue-purple-300">
-              <Sparkles className="h-4 w-4" /> CUE intelligence
-            </div>
-            <h2 className="mt-3 text-2xl font-semibold text-white">
-              Revenue is growing, but future work needs attention.
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-charcoal-300">
-              Higher-ticket jobs lifted revenue 8%, while booked jobs fell 11%.
-              CUE found $7,800 in open estimates and a new missed call that could
-              help close the gap.
-            </p>
-          </div>
-          <div className="rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-5 py-4 lg:min-w-48">
-            <p className="text-xs font-medium uppercase tracking-wider text-emerald-300">
-              Business health
-            </p>
-            <div className="mt-1 flex items-end gap-2">
-              <span className="text-4xl font-semibold text-white">76</span>
-              <span className="pb-1 text-sm text-charcoal-300">/ 100</span>
-            </div>
-            <p className="mt-1 text-xs text-emerald-200">Stable · 3 actions recommended</p>
-          </div>
+        <div className="relative">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-cue-purple-300"><Sparkles className="h-4 w-4" /> CUE intelligence</div>
+          <h2 className="mt-3 max-w-3xl text-2xl font-semibold text-white">HCP records the work. CUE watches what happens next.</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-charcoal-300">CUE sits above the workflow and looks across jobs, estimates, purchases, memberships, documentation, and customer activity to surface the exceptions that are easy to miss during a busy day.</p>
+          <div className="mt-5 flex flex-wrap gap-2 text-[11px] text-charcoal-300">{["Capture","Understand","Enhance","Execute","Expand"].map((item,i)=><span key={item} className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">{i+1}. {item}</span>)}</div>
         </div>
       </section>
 
       <section>
-        <div className="mb-3 flex items-end justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-400">
-              Live business signals
-            </p>
-            <h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE sees</h3>
-          </div>
+        <div className="mb-3 flex items-end justify-between">
+          <div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-400">Morning operations check</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE sees across the workflow</h3></div>
           <span className="text-xs text-charcoal-400">Demonstration data</span>
         </div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {signals.map((signal) => {
-            const Icon = signal.icon;
-            return (
-              <div key={signal.label} className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium text-charcoal-600">{signal.label}</p>
-                  <Icon className={`h-4 w-4 ${signal.tone}`} />
-                </div>
-                <p className={`mt-3 text-2xl font-semibold ${signal.tone}`}>{signal.value}</p>
-                <p className="mt-1 text-xs text-charcoal-500">{signal.detail}</p>
-              </div>
-            );
-          })}
+          {signals.map(([label,value,detail,Icon]) => { const I = Icon as typeof Activity; return <div key={String(label)} className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><p className="text-xs font-medium text-charcoal-600">{label}</p><I className="h-4 w-4 text-cue-blue-300" /></div><p className="mt-3 text-2xl font-semibold text-charcoal-900">{value}</p><p className="mt-1 text-xs text-charcoal-500">{detail}</p></div>; })}
         </div>
       </section>
 
-      <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1.45fr_0.75fr]">
-        <div className="overflow-hidden rounded-xl border border-charcoal-200 bg-white shadow-sm">
-          <div className="border-b border-charcoal-200 px-5 py-4">
-            <div className="flex items-center gap-2">
-              <Zap className="h-4 w-4 text-cue-orange-300" />
-              <h3 className="text-sm font-semibold text-charcoal-900">Recommended next actions</h3>
-            </div>
-            <p className="mt-1 text-xs text-charcoal-400">
-              Prioritized by urgency, value, and customer impact.
-            </p>
-          </div>
-
-          <div className="divide-y divide-charcoal-200">
-            {actions.map((action) => {
-              const Icon = action.icon;
-              const isMissedCall = action.id === "missed-call";
-              return (
-                <article key={action.id} className="p-5">
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${action.accent}`}>
-                      <Icon className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full border border-charcoal-200 bg-charcoal-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-charcoal-600">
-                          {action.urgency}
-                        </span>
-                        <span className="text-[11px] text-charcoal-500">{action.source}</span>
-                      </div>
-                      <h4 className="mt-2 text-sm font-semibold text-charcoal-900">{action.title}</h4>
-                      <p className="mt-1 text-xs leading-5 text-charcoal-600">{action.explanation}</p>
-                      <p className="mt-2 text-xs font-medium text-blue-600">{action.impact}</p>
-                    </div>
-                    {isMissedCall ? (
-                      <Button
-                        variant={completed ? "secondary" : "cue"}
-                        size="sm"
-                        disabled={completed}
-                        onClick={() => setCompleted(true)}
-                        className="shrink-0"
-                      >
-                        {completed ? <CheckCircle2 className="h-4 w-4" /> : <PhoneMissed className="h-4 w-4" />}
-                        {completed ? "Callback logged" : "Log callback"}
-                      </Button>
-                    ) : (
-                      <Button variant="ghost" size="sm" className="shrink-0 text-charcoal-700">
-                        Review <ArrowRight className="h-4 w-4" />
-                      </Button>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
+      <section className="rounded-xl border border-charcoal-200 bg-white shadow-sm">
+        <div className="border-b border-charcoal-200 px-5 pt-4">
+          <div className="flex items-center gap-2"><Package className="h-4 w-4 text-cue-orange-300" /><h3 className="text-sm font-semibold text-charcoal-900">Contractor workflow · Where the leak happens</h3></div>
+          <p className="mt-1 pb-4 text-xs text-charcoal-400">Five familiar operating exceptions. Click one to see how CUE turns workflow data into an action.</p>
+          <div className="flex gap-1 overflow-x-auto">
+            {scenarios.map((s) => <button key={s.id} onClick={() => setActiveId(s.id)} className={\`whitespace-nowrap border-b-2 px-3 py-3 text-xs font-semibold transition \${activeId === s.id ? "border-cue-purple-500 text-cue-purple-700" : "border-transparent text-charcoal-500 hover:text-charcoal-800"}\`}>{s.label}</button>)}
           </div>
         </div>
 
-        <div className="space-y-5">
-          <div className="rounded-xl border border-charcoal-200 bg-white p-5 shadow-sm">
-            <h3 className="text-sm font-semibold text-charcoal-900">Connected evidence</h3>
-            <p className="mt-1 text-xs leading-5 text-charcoal-400">
-              CUE combines signals instead of making the owner open every system.
-            </p>
-            <div className="mt-4 space-y-2">
-              {[
-                ["Twilio", "Sample event", "Ready to connect"],
-                ["Housecall Pro", "Planned", "Jobs · estimates · invoices"],
-                ["QuickBooks", "Planned", "Revenue · cash flow"],
-                ["Reviews", "Planned", "Reputation signals"],
-              ].map(([name, status, detail]) => (
-                <div key={name} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3">
-                  <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-semibold text-charcoal-900">{name}</p>
-                    <span className="text-[10px] font-medium text-purple-600">{status}</span>
-                  </div>
-                  <p className="mt-1 text-[11px] text-charcoal-400">{detail}</p>
-                </div>
-              ))}
+        <div className="grid grid-cols-1 gap-6 p-5 xl:grid-cols-[1.5fr_0.75fr]">
+          <div>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-charcoal-200 bg-charcoal-50 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-charcoal-600">Detected by CUE · no AI theatrics</span>
+                <h4 className="mt-3 text-lg font-semibold text-charcoal-900">{active.title}</h4>
+                <p className="mt-1 max-w-2xl text-sm leading-6 text-charcoal-600">{active.description}</p>
+              </div>
+              <div className="shrink-0 rounded-xl bg-charcoal-50 px-4 py-3"><p className="text-[10px] font-semibold uppercase tracking-wider text-charcoal-500">Exception value</p><p className="mt-1 text-xl font-semibold text-charcoal-900">{active.value}</p></div>
+            </div>
+
+            <div className="mt-5 overflow-hidden rounded-xl border border-charcoal-200">
+              <div className="grid bg-charcoal-50 px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500" style={{ gridTemplateColumns: \`repeat(\${active.columns.length}, minmax(0, 1fr))\` }}>{active.columns.map((c) => <span key={c}>{c}</span>)}</div>
+              <div className="divide-y divide-charcoal-200">{active.rows.map((row,ri) => <div key={ri} className="grid px-3 py-3 text-xs text-charcoal-700" style={{ gridTemplateColumns: \`repeat(\${active.columns.length}, minmax(0, 1fr))\` }}>{row.map((cell,ci) => <span key={ci} className={ci === row.length-1 ? "font-semibold text-charcoal-900" : ""}>{cell}</span>)}</div>)}</div>
+            </div>
+
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Button variant={done ? "secondary" : "cue"} size="sm" onClick={() => !done && setActioned([...actioned,active.id])}>{done ? <CheckCircle2 className="h-4 w-4" /> : <ArrowRight className="h-4 w-4" />}{done ? "Review logged" : active.action}</Button>
+              <span className="text-[11px] text-charcoal-400">CUE recommends the next step; the owner stays in control.</span>
             </div>
           </div>
 
-          <div className="rounded-xl border border-blue-200 bg-blue-50 p-5 shadow-sm">
-            <div className="flex items-center gap-2">
-              <MessageSquareText className="h-4 w-4 text-cue-blue-300" />
-              <h3 className="text-sm font-semibold text-charcoal-900">Outcome loop</h3>
-            </div>
-            {completed ? (
-              <div className="mt-4">
-                <div className="flex items-center gap-2 text-emerald-300">
-                  <CheckCircle2 className="h-5 w-5" />
-                  <span className="text-sm font-semibold">Action completed</span>
-                </div>
-                <p className="mt-2 text-xs leading-5 text-charcoal-600">
-                  Callback logged. CUE will watch for a conversation, estimate,
-                  and booked-job outcome.
-                </p>
-              </div>
-            ) : (
-              <div className="mt-4 space-y-3">
-                <div className="flex items-center gap-3 text-xs text-charcoal-600">
-                  <PhoneMissed className="h-4 w-4 text-red-300" /> Missed call captured
-                </div>
-                <div className="flex items-center gap-3 text-xs text-charcoal-600">
-                  <Sparkles className="h-4 w-4 text-cue-purple-300" /> Opportunity explained
-                </div>
-                <div className="flex items-center gap-3 text-xs text-charcoal-600">
-                  <Clock3 className="h-4 w-4 text-amber-300" /> Waiting for owner action
-                </div>
-              </div>
-            )}
-          </div>
+          <aside className="rounded-xl border border-cue-blue-200 bg-cue-blue-50/50 p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cue-blue-700">Why this matters</p>
+            <div className="mt-4 space-y-4">{[["Event","A workflow event occurs."],["Context","CUE checks related records."],["Exception","It finds something worth reviewing."],["Action","The owner gets a specific next step."]].map(([step,copy],i)=><div key={step} className="flex gap-3"><div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[10px] font-bold text-cue-blue-700 shadow-sm">{i+1}</div><div><p className="text-xs font-semibold text-charcoal-900">{step}</p><p className="mt-0.5 text-[11px] leading-5 text-charcoal-600">{copy}</p></div></div>)}</div>
+          </aside>
         </div>
+      </section>
+
+      <section className="grid grid-cols-1 gap-5 xl:grid-cols-[1fr_0.8fr]">
+        <div className="rounded-xl border border-charcoal-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-500" /><h3 className="text-sm font-semibold text-charcoal-900">End-of-day operations check</h3></div>
+          <div className="mt-4 grid grid-cols-3 gap-3">{[["37","clean"],["3","need review"],["2","revenue exceptions"]].map(([v,l])=><div key={l} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3 text-center"><p className="text-2xl font-semibold text-charcoal-900">{v}</p><p className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-charcoal-500">{l}</p></div>)}</div>
+          <p className="mt-4 text-xs leading-5 text-charcoal-500">Instead of another dashboard to monitor, CUE creates a short exception queue from the work already happening in HCP.</p>
+        </div>
+        <div className="rounded-xl border border-charcoal-200 bg-white p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-charcoal-900">Connected evidence</h3>
+          <p className="mt-1 text-xs leading-5 text-charcoal-400">The intelligence layer combines signals without replacing the systems contractors already use.</p>
+          <div className="mt-4 space-y-2">{[["Housecall Pro","Demo workflow data","Jobs · estimates · invoices"],["Twilio","Demo event","Calls · conversations"],["QuickBooks","Planned","Revenue · cash flow"],["Reviews","Planned","Reputation signals"]].map(([name,status,detail])=><div key={name} className="rounded-lg border border-charcoal-200 bg-charcoal-50 p-3"><div className="flex items-center justify-between gap-3"><p className="text-xs font-semibold text-charcoal-900">{name}</p><span className="text-[10px] font-medium text-cue-purple-600">{status}</span></div><p className="mt-1 text-[11px] text-charcoal-400">{detail}</p></div>)}</div>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-cue-purple-200 bg-[#0b1220] p-5 text-white">
+        <div className="flex items-center gap-2"><MessageSquareText className="h-4 w-4 text-cue-purple-300" /><h3 className="text-sm font-semibold">Outcome loop</h3></div>
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">{[["1","Work happens","Job, estimate, PO, membership, or customer event."],["2","CUE watches","Related workflow data is checked for an exception."],["3","Owner acts","A specific review or follow-up is presented."],["4","Outcome returns","CUE watches what happened next."]].map(([n,title,copy])=><div key={n} className="rounded-lg border border-white/10 bg-white/5 p-3"><span className="text-xs font-bold text-cue-purple-300">{n}</span><p className="mt-2 text-xs font-semibold">{title}</p><p className="mt-1 text-[11px] leading-5 text-charcoal-300">{copy}</p></div>)}</div>
       </section>
     </div>
   );
