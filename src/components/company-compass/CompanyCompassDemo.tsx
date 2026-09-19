@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Sparkles, Activity, TrendingUp, MessageSquareText } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleDollarSign, FileWarning, Package, Sparkles, Activity, TrendingUp, MessageSquareText, UsersRound, Clock3, BellRing, CalendarClock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const scenarios = [
@@ -10,6 +10,10 @@ const scenarios = [
   { id: "po", label: "PO → Job Costing", title: "$18,420 in purchases aren't reflected in job costs", value: "$18,420", description: "Purchase orders are attached to completed jobs, but recorded material cost is still $0. Review the variance before margin reporting.", columns: ["Job","PO","Purchased","Recorded","Variance"], rows: [["#10771","PO-884","$7,250","$0","$7,250"],["#10784","PO-891","$6,170","$0","$6,170"],["#10802","PO-897","$5,000","$0","$5,000"]], action: "Review cost variance" },
   { id: "membership", label: "Membership Value", title: "Membership value delivered — renewal approaching", value: "$250", description: "This Pro Club member received maintenance and service benefits with $250 of retail value delivered year to date. Renewal is in 43 days.", columns: ["Customer","Plan","Service","Retail Value","Renewal"], rows: [["Anderson","Pro Club","Maintenance","$125","43 days"],["Anderson","Pro Club","Prior service","$125","43 days"]], action: "Review membership" },
   { id: "documentation", label: "Missing Job Documentation", title: "Job #10842 is financially complete but documentation is incomplete", value: "4/5", description: "CUE checks required completion evidence. The serial number is missing and one after photo is incomplete.", columns: ["Requirement","Status","Review"], rows: [["Before photos","Complete","✓"],["Equipment photo","Complete","✓"],["Serial number","Missing","Review"],["After photos","4/5","Review"],["Customer signature","Complete","✓"]], action: "Open completion review" },
+  { id: "tech-sales", label: "Technician Sales", title: "See what each technician sold — without merging reports", value: "$42,680", description: "CUE connects technician, job, line item, revenue, and conversion data into one weekly view so the owner can drill from a tech to the exact jobs sold.", columns: ["Tech","Jobs","Sold","Revenue","Conv."], rows: [["Mike","14","8","$18,450","57%"],["Carlos","11","6","$13,280","55%"],["Jordan","13","7","$10,950","54%"]], action: "Open technician detail" },
+  { id: "workday", label: "Technician Workday", title: "Mike's Tuesday is a job-by-job timeline", value: "7.4 hrs", description: "Daily time totals become useful when CUE ties each time entry back to the job, customer, and revenue outcome.", columns: ["Time","Job","Work","Hours","Revenue"], rows: [["8:00"," #1042","Diagnostic","1.6","$450"],["10:30","#1048","Replacement","2.8","$1,850"],["1:15","#1051","Repair","1.4","$275"]], action: "View full workday" },
+  { id: "stalled", label: "Stalled Conversation", title: "Customer showed booking intent — no appointment created", value: "18 min", description: "CUE detects when a customer asks to schedule but the conversation stops before an appointment is created, then surfaces the next action.", columns: ["Customer","Signal","Age","Appointment","Action"], rows: [["Garcia","Wants to schedule","18 min","None","Follow up"],["Patel","Asked for pricing","31 min","None","Review"],["Lee","Ready to book","47 min","None","Escalate"]], action: "Open response queue" },
+  { id: "booking", label: "Booking Rules", title: "Online booking request doesn't fit the native rules", value: "2 rules", description: "CUE evaluates service, day, time, and service-area constraints so a lead can be routed instead of silently rejected or booked incorrectly.", columns: ["Service","Day","Area","Native HCP","CUE"], rows: [["Estimate","Tue–Thu","All","Available","Available"],["Drain service","Mon–Wed","ZIP 926xx","Conflict","Route"],["Drain service","Thu","ZIP 928xx","Conflict","Route"]], action: "Review booking route" },
 ];
 
 const signals = [
@@ -82,6 +86,31 @@ export function CompanyCompassDemo() {
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cue-blue-700">Why this matters</p>
             <div className="mt-4 space-y-4">{[["Event","A workflow event occurs."],["Context","CUE checks related records."],["Exception","It finds something worth reviewing."],["Action","The owner gets a specific next step."]].map(([step,copy],i)=><div key={step} className="flex gap-3"><div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white text-[10px] font-bold text-cue-blue-700 shadow-sm">{i+1}</div><div><p className="text-xs font-semibold text-charcoal-900">{step}</p><p className="mt-0.5 text-[11px] leading-5 text-charcoal-600">{copy}</p></div></div>)}</div>
           </aside>
+        </div>
+      </section>
+
+      <section className="rounded-xl border border-cue-purple-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2"><BellRing className="h-4 w-4 text-cue-purple-600" /><h3 className="text-sm font-semibold text-charcoal-900">CUE Command Center · What needs attention?</h3></div>
+            <p className="mt-1 text-xs leading-5 text-charcoal-500">Instead of making the owner hunt through reports, CUE turns connected HCP activity into a short exception queue.</p>
+          </div>
+          <span className="rounded-full border border-cue-purple-200 bg-cue-purple-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-cue-purple-700">5 active signals</span>
+        </div>
+        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+          <div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4">
+              <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold text-charcoal-900">$1,850 estimate</p><p className="mt-1 text-[11px] text-charcoal-500">No follow-up</p></div><span className="text-[10px] font-semibold text-cue-purple-600">48 hrs</span></div>
+              <button className="mt-4 text-[11px] font-semibold text-cue-blue-700 hover:underline">Follow up →</button>
+            </div><div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4">
+              <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold text-charcoal-900">2 booking leads</p><p className="mt-1 text-[11px] text-charcoal-500">No appointment</p></div><span className="text-[10px] font-semibold text-cue-purple-600">18–47 min</span></div>
+              <button className="mt-4 text-[11px] font-semibold text-cue-blue-700 hover:underline">Respond →</button>
+            </div><div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4">
+              <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold text-charcoal-900">Mike · 57%</p><p className="mt-1 text-[11px] text-charcoal-500">Weekly conversion</p></div><span className="text-[10px] font-semibold text-cue-purple-600">14 jobs</span></div>
+              <button className="mt-4 text-[11px] font-semibold text-cue-blue-700 hover:underline">View tech →</button>
+            </div><div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4">
+              <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-semibold text-charcoal-900">3 jobs</p><p className="mt-1 text-[11px] text-charcoal-500">Time not linked</p></div><span className="text-[10px] font-semibold text-cue-purple-600">7.4 hrs total</span></div>
+              <button className="mt-4 text-[11px] font-semibold text-cue-blue-700 hover:underline">Review →</button>
+            </div>
         </div>
       </section>
 
