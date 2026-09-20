@@ -117,9 +117,52 @@ function DemoOverview() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_15%_0%,rgba(59,130,246,0.18),transparent_34%),radial-gradient(circle_at_90%_90%,rgba(139,92,246,0.16),transparent_38%)]" />
       <div className="relative flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between"><div className="max-w-2xl"><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-purple-300"><Sparkles className="h-4 w-4" /> CUE intelligence</div><h2 className="mt-3 text-2xl font-semibold text-white">Revenue is growing, but future work needs attention.</h2><p className="mt-2 text-sm leading-6 text-charcoal-300">Higher-ticket jobs lifted revenue 8%, while booked jobs fell 11%. CUE found $7,800 in open estimates and a new missed call that could help close the gap.</p></div><div className="rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-5 py-4 lg:min-w-52"><p className="text-xs font-medium uppercase tracking-wider text-emerald-300">Business health</p><div className="mt-1 flex items-end gap-2"><span className="text-4xl font-semibold text-white">76</span><span className="pb-1 text-sm text-charcoal-300">/ 100</span></div><p className="mt-1 text-xs text-emerald-200">Stable · 3 actions recommended</p></div></div>
     </section>
+    <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1.45fr_0.75fr]">
+      <div className="rounded-2xl border border-purple-200 bg-white p-5 shadow-sm">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <Compass className="h-4 w-4 text-purple-700" />
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-purple-700">CUE workspace</p>
+            </div>
+            <h3 className="mt-2 text-lg font-semibold text-charcoal-900">What needs your attention?</h3>
+            <p className="mt-1 text-xs leading-5 text-charcoal-500">CUE is the interface. Housecall Pro remains the system of record underneath it.</p>
+          </div>
+          <span className="rounded-full border border-purple-200 bg-purple-50 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-purple-700">4 active signals</span>
+        </div>
+        <div className="mt-4 space-y-2">
+          <CueAction title="$1,850 estimate" detail="No follow-up for 48 hours" action="Follow up" tone="text-purple-700" />
+          <CueAction title="2 booking leads" detail="No appointment created · 18–47 min" action="Respond" tone="text-blue-700" />
+          <CueAction title="Mike · 57% conversion" detail="14 jobs · 8 sold this week" action="View technician" tone="emerald-700" />
+          <CueAction title="3 jobs · 7.4 hrs" detail="Time entries need reconciliation" action="Review data" tone="text-amber-700" />
+        </div>
+      </div>
+      <div className="rounded-2xl border border-charcoal-200 bg-[#07101f] p-5 text-white shadow-sm">
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-purple-300" />
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-purple-300">Revi · CUE guide</p>
+        </div>
+        <p className="mt-4 text-sm font-semibold">“I found four open estimates totaling $7,800 with no recent follow-up.”</p>
+        <p className="mt-2 text-xs leading-5 text-charcoal-300">The $1,850 estimate has been untouched for 48 hours. I can prepare the follow-up for your approval.</p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-semibold">Prepare follow-up</span>
+          <span className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-[10px] text-charcoal-300">Show evidence</span>
+        </div>
+        <p className="mt-4 text-[10px] text-charcoal-400">Revi guides the user; CUE keeps the decision and authority boundary visible.</p>
+      </div>
+    </section>
     <section><div className="mb-3"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-500">Connected business signals</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">What CUE sees</h3></div><div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">{signals.map(({ title, value, detail, icon: Icon, tone }) => <div key={title} className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><p className="text-xs font-medium text-charcoal-600">{title}</p><Icon className={`h-4 w-4 ${tone}`} /></div><p className={`mt-3 text-2xl font-semibold ${tone}`}>{value}</p><p className="mt-1 text-xs text-charcoal-500">{detail}</p></div>)}</div></section>
     <section className="rounded-2xl border border-charcoal-200 bg-white p-5 shadow-sm"><div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-semibold uppercase tracking-[0.18em] text-charcoal-500">Connected ecosystem</p><h3 className="mt-1 text-lg font-semibold text-charcoal-900">Integration examples</h3></div><p className="max-w-xl text-xs leading-5 text-charcoal-500">CUE combines operating and financial signals while Housecall Pro remains the system where service work is managed.</p></div><div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">{integrations.map((integration) => <div key={integration.name} className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4"><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-charcoal-900">{integration.name}</p><span className="rounded-full bg-purple-100 px-2 py-1 text-[10px] font-semibold text-purple-700">{integration.status}</span></div><p className="mt-3 text-xs leading-5 text-charcoal-600">{integration.detail}</p></div>)}</div></section>
   </>;
+}
+function CueAction({ title, detail, action, tone }: { title: string; detail: string; action: string; tone: string }) {
+  return <div className="flex flex-col gap-3 rounded-xl border border-charcoal-200 bg-charcoal-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-w-0">
+      <p className="text-xs font-semibold text-charcoal-900">{title}</p>
+      <p className="mt-1 text-[11px] leading-5 text-charcoal-500">{detail}</p>
+    </div>
+    <span className={`shrink-0 text-[10px] font-semibold ${tone}`}>{action} →</span>
+  </div>;
 }
 function Metric({ title, value, icon: Icon, tone }: { title: string; value: number; icon: typeof Clock3; tone: string }) { return <div className="rounded-xl border border-charcoal-200 bg-white p-4 shadow-sm"><div className="flex items-center justify-between"><p className="text-xs font-medium text-charcoal-600">{title}</p><Icon className={`h-4 w-4 ${tone}`} /></div><p className="mt-3 text-2xl font-semibold text-charcoal-900">{value}</p></div>; }
 function Detail({ title, text, icon: Icon }: { title: string; text: string; icon: typeof Compass }) { return <div className="rounded-xl border border-charcoal-200 bg-charcoal-50 p-4"><h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-charcoal-600"><Icon className="h-4 w-4" /> {title}</h4><p className="mt-2 text-sm leading-6 text-charcoal-800">{text}</p></div>; }
