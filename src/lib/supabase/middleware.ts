@@ -77,6 +77,7 @@ export async function updateSession(request: NextRequest) {
   // a session exists — otherwise the proxy would redirect to /login first.
   const isPublicRoute =
     pathname === "/" ||
+    pathname === "/demo" ||
     isAuthRoute ||
     isPasswordRecoveryRoute ||
     pathname.startsWith("/auth/") ||
