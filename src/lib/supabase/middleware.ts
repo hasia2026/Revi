@@ -5,7 +5,20 @@ import { NextResponse, type NextRequest } from "next/server";
 // NOTE: We intentionally do not pass the Database generic here.
 // See src/lib/supabase/client.ts for the full explanation.
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request });
+  const requestHeaders = new Headers(request.headers);
+
+  if (
+    request.nextUrl.pathname === "/company-compass" &&
+    request.nextUrl.searchParams.get("demo") === "housecall-pro"
+  ) {
+    requestHeaders.set("x-cue-public-demo", "housecall-pro");
+  }
+
+  let supabaseResponse = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,18 +29,22 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(
-          cookiesToSet: { name: string; value: string; options?: CookieOptions }[]
+          cookiesToSet: {
+            name: string;
+            value: string;
+            options?: CookieOptions;
+          }[],
         ) {
           cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
+            request.cookies.set(name, value),
           );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
+            supabaseResponse.cookies.set(name, value, options),
           );
         },
       },
-    }
+    },
   );
 
   const {
@@ -49,6 +66,12 @@ export async function updateSession(request: NextRequest) {
   const isRegistrationRoute =
     pathname === "/register" || pathname.startsWith("/register/");
 
+  // Public Housecall Pro demo route. The page itself also verifies demo mode
+  // before rendering any authenticated business data.
+  const isHousecallProDemo =
+    pathname === "/company-compass" &&
+    request.nextUrl.searchParams.get("demo") === "housecall-pro";
+
   // Public routes that anyone (authenticated or not) can access.
   // /auth/* must be public so the callback route can exchange the code BEFORE
   // a session exists — otherwise the proxy would redirect to /login first.
@@ -57,7 +80,8 @@ export async function updateSession(request: NextRequest) {
     isAuthRoute ||
     isPasswordRecoveryRoute ||
     pathname.startsWith("/auth/") ||
-    isRegistrationRoute;
+    isRegistrationRoute ||
+    isHousecallProDemo;
 
   if (!user && !isPublicRoute) {
     const url = request.nextUrl.clone();
